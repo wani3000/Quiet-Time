@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/colors.dart';
 import '../../../data/verse_database.dart';
 import '../../../services/memo_service.dart';
+import '../../../services/config_service.dart';
 
 class MeditationListPage extends ConsumerWidget {
   const MeditationListPage({super.key});
@@ -38,14 +39,34 @@ class MeditationListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Generate dummy dates for the past 30 days
-    final dates = List.generate(30, (index) {
-      final date = DateTime.now().subtract(Duration(days: index));
-      return date;
-    });
+    return FutureBuilder<DateTime>(
+      future: ConfigService.getInstallDate(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        
+        final installDate = snapshot.data ?? DateTime.now();
+        final today = DateTime.now();
+        
+        // 설치 날짜부터 오늘까지의 날짜 생성 (역순)
+        final daysDifference = today.difference(installDate).inDays;
+        final dates = List.generate(daysDifference + 1, (index) {
+          final date = today.subtract(Duration(days: index));
+          return date;
+        });
 
-    final groupedDates = _groupDatesByMonth(dates);
+        final groupedDates = _groupDatesByMonth(dates);
 
+        return _buildMeditationList(context, groupedDates);
+      },
+    );
+  }
+  
+  Widget _buildMeditationList(BuildContext context, Map<String, List<DateTime>> groupedDates) {
     return Scaffold(
       backgroundColor: Colors.white, // 강제로 화이트 배경 설정
       appBar: AppBar(
