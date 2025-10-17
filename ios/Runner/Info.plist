@@ -32,6 +32,8 @@
 	<string>앱에서 생성한 말씀카드를 사진 보관함에 저장하기 위해 접근 권한이 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>말씀카드를 사진 보관함에 저장하기 위해 접근 권한이 필요합니다.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>매일 오전 6시에 새로운 말씀을 알려드리기 위해 알림 권한이 필요합니다.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

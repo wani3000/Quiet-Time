@@ -55,6 +55,10 @@ dependencies:
   # Storage (웹에서는 localStorage 사용)
   shared_preferences: ^2.5.3
   
+  # Local notifications
+  flutter_local_notifications: ^17.2.3
+  timezone: ^0.9.4
+  
   # Web plugins
   flutter_web_plugins:
     sdk: flutter

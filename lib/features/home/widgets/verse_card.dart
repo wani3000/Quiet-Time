@@ -39,7 +39,26 @@ class _VerseCardState extends State<VerseCard> {
 
   // Get verse data based on date
   Map<String, String> _getVerseData() {
-    return VerseDatabase.getVerseByDate(widget.date);
+    String targetDate;
+    
+    if (widget.date != null) {
+      // 특정 날짜가 지정된 경우 그 날짜 사용
+      targetDate = widget.date!;
+    } else {
+      // 홈 화면에서 호출된 경우 (date가 null)
+      final now = DateTime.now();
+      
+      // 오전 6시 이전이면 전날 말씀 표시
+      if (now.hour < 6) {
+        final yesterday = now.subtract(const Duration(days: 1));
+        targetDate = '${yesterday.year}-${yesterday.month.toString().padLeft(2, '0')}-${yesterday.day.toString().padLeft(2, '0')}';
+      } else {
+        // 오전 6시 이후면 오늘 말씀 표시
+        targetDate = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+      }
+    }
+    
+    return VerseDatabase.getVerseByDate(targetDate);
   }
 
   Future<void> _saveCard() async {
