@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="매일 새로운 성경 말씀을 아름다운 카드로 만나보세요. 말씀묵상 앱으로 하루를 시작하세요.">
+    <meta name="keywords" content="성경,말씀,묵상,기도,신앙,크리스천,성경구절,카드,말씀카드">
+    <title>말씀묵상 - 매일의 성경 말씀 카드</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .features {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 60px;
+            color: #667eea;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .screenshot-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .screenshot-section h2 {
+            font-size: 3em;
+            margin-bottom: 60px;
+            color: #667eea;
+        }
+
+        .screenshots {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .screenshot {
+            width: 250px;
+            height: 540px;
+            background: #ddd;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            border: 10px solid #333;
+        }
+
+        .download-section {
+            padding: 100px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .download-section h2 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            color: #667eea;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: #000;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5em;
+            }
+
+            .hero-content p {
+                font-size: 1.2em;
+            }
+
+            .features h2,
+            .screenshot-section h2,
+            .download-section h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>📖 말씀묵상</h1>
+            <p>매일 새로운 성경 말씀을 아름다운 카드로 만나보세요</p>
+            <a href="#download" class="cta-button">지금 다운로드</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>✨ 주요 기능</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>매일의 말씀</h3>
+                <p>547개의 엄선된 성경 구절을 날짜별로 자동 제공합니다. 창세기부터 요한계시록까지.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>아름다운 디자인</h3>
+                <p>감동적인 배경 이미지와 깔끔한 타이포그래피로 말씀을 더 깊이 묵상할 수 있습니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>저장 & 공유</h3>
+                <p>말씀 카드를 이미지로 저장하고 SNS로 쉽게 공유하여 은혜를 나눠보세요.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>묵상 노트</h3>
+                <p>개인적인 묵상과 기도 제목을 기록하여 영적 성장을 기록하세요.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>개인정보 보호</h3>
+                <p>모든 데이터는 기기에만 저장됩니다. 개인정보를 수집하지 않습니다.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>오프라인 지원</h3>
+                <p>인터넷 연결 없이도 모든 기능을 사용할 수 있습니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshot Section -->
+    <section class="screenshot-section">
+        <h2>📸 앱 미리보기</h2>
+        <div class="screenshots">
+            <div class="screenshot"></div>
+            <div class="screenshot"></div>
+            <div class="screenshot"></div>
+        </div>
+        <p style="margin-top: 30px; color: #666; font-size: 0.9em;">
+            * 실제 스크린샷은 App Store에서 확인하실 수 있습니다
+        </p>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <h2>🚀 지금 다운로드하세요</h2>
+        <p style="font-size: 1.2em; color: #666; max-width: 600px; margin: 0 auto;">
+            말씀묵상 앱으로 매일 하나님의 말씀과 함께하는<br>
+            은혜로운 하루를 시작하세요.
+        </p>
+
+        <div class="download-buttons">
+            <a href="https://apps.apple.com/app/idXXXXXXXXXX" class="download-btn">
+                <span style="font-size: 2em;">📱</span>
+                <div style="text-align: left;">
+                    <div style="font-size: 0.7em; opacity: 0.8;">Download on the</div>
+                    <div style="font-weight: 700;">App Store</div>
+                </div>
+            </a>
+
+            <!-- 향후 Android 버전 출시 시 -->
+            <!-- 
+            <a href="#" class="download-btn">
+                <span style="font-size: 2em;">🤖</span>
+                <div style="text-align: left;">
+                    <div style="font-size: 0.7em; opacity: 0.8;">GET IT ON</div>
+                    <div style="font-weight: 700;">Google Play</div>
+                </div>
+            </a>
+            -->
+        </div>
+
+        <p style="margin-top: 40px; color: #999; font-size: 0.9em;">
+            iOS 12.0 이상 | 완전 무료 | 광고 없음
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <h3 style="margin-bottom: 20px;">말씀묵상</h3>
+        <p style="opacity: 0.8; margin-bottom: 30px;">
+            "주의 말씀은 내 발에 등이요 내 길에 빛이니이다" - 시편 119:105
+        </p>
+
+        <div class="footer-links">
+            <a href="support.html">고객 지원</a>
+            <a href="privacy.html">개인정보 보호정책</a>
+            <a href="mailto:support@versecard.app">문의하기</a>
+        </div>
+
+        <p style="margin-top: 40px; opacity: 0.6; font-size: 0.9em;">
+            © 2025 말씀묵상. All rights reserved.
+        </p>
+    </footer>
+</body>
+</html>

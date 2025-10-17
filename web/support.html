@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="말씀묵상 앱 고객 지원">
+    <title>고객 지원 - 말씀묵상</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 60px 40px;
+        }
+
+        .faq-section {
+            margin-bottom: 60px;
+        }
+
+        .faq-section h2 {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .faq-question {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid white;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 40px 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🙏 고객 지원</h1>
+            <p>말씀묵상 앱에 대해 궁금한 점이 있으신가요?</p>
+        </div>
+
+        <div class="content">
+            <!-- 주요 기능 -->
+            <div class="faq-section">
+                <h2>✨ 주요 기능</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">📖</div>
+                        <div class="feature-title">매일의 말씀</div>
+                        <div class="feature-desc">547개의 엄선된 성경 구절을 날짜별로 제공합니다</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <div class="feature-title">아름다운 디자인</div>
+                        <div class="feature-desc">감동적인 배경 이미지와 깔끔한 UI</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <div class="feature-title">저장 & 공유</div>
+                        <div class="feature-desc">말씀 카드를 이미지로 저장하고 공유하세요</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-title">묵상 노트</div>
+                        <div class="feature-desc">개인적인 묵상 메모를 기록할 수 있습니다</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 자주 묻는 질문 -->
+            <div class="faq-section">
+                <h2>❓ 자주 묻는 질문</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Q. 앱은 무료인가요?</div>
+                    <div class="faq-answer">
+                        네, 말씀묵상 앱은 완전 무료입니다. 모든 기능을 제한 없이 사용하실 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 로그인이 필요한가요?</div>
+                    <div class="faq-answer">
+                        아니요, 로그인이 필요 없습니다. 앱을 설치하면 바로 사용할 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 인터넷 연결이 필요한가요?</div>
+                    <div class="faq-answer">
+                        아니요, 모든 말씀이 앱에 포함되어 있어 오프라인에서도 사용 가능합니다. 
+                        단, 공유 기능 사용 시에는 인터넷이 필요할 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 말씀은 어떻게 선정되나요?</div>
+                    <div class="faq-answer">
+                        창세기부터 요한계시록까지 전체 성경에서 은혜롭고 의미 있는 구절 547개를 엄선했습니다. 
+                        날짜별로 자동 배정되어 매일 새로운 말씀을 만날 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 묵상 메모는 어디에 저장되나요?</div>
+                    <div class="faq-answer">
+                        모든 묵상 메모는 사용자의 기기에만 저장됩니다. 클라우드나 서버로 전송되지 않으므로 
+                        개인정보가 완벽하게 보호됩니다. 단, 앱 삭제 시 메모도 함께 삭제되니 주의하세요.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 말씀 카드를 저장하려면 어떻게 하나요?</div>
+                    <div class="faq-answer">
+                        말씀 카드를 길게 누르면 저장 및 공유 옵션이 나타납니다. 
+                        "사진 저장" 버튼을 누르면 사진 보관함에 저장됩니다. 
+                        (사진 라이브러리 접근 권한이 필요합니다)
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 특정 날짜의 말씀을 보고 싶어요</div>
+                    <div class="faq-answer">
+                        하단 네비게이션에서 "묵상" 탭을 선택하면 과거 날짜의 말씀을 확인할 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 배경 이미지를 변경할 수 있나요?</div>
+                    <div class="faq-answer">
+                        현재 버전에서는 각 말씀마다 미리 선정된 배경 이미지가 적용됩니다. 
+                        향후 업데이트에서 커스터마이징 기능을 추가할 예정입니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. iPad에서도 사용할 수 있나요?</div>
+                    <div class="faq-answer">
+                        네, iPhone과 iPad 모두 지원합니다. iPad에서는 더 큰 화면으로 말씀을 감상하실 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 앱이 개인정보를 수집하나요?</div>
+                    <div class="faq-answer">
+                        아니요, 말씀묵상 앱은 어떠한 개인정보도 수집하지 않습니다. 
+                        모든 데이터는 기기에만 저장되며 외부로 전송되지 않습니다. 
+                        자세한 내용은 <a href="privacy.html" style="color: #667eea; text-decoration: underline;">개인정보 보호정책</a>을 확인하세요.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q. 앱에 문제가 있어요</div>
+                    <div class="faq-answer">
+                        죄송합니다. 아래 연락처로 문제 상황을 자세히 알려주시면 
+                        최대한 빠르게 해결하도록 하겠습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 사용 팁 -->
+            <div class="faq-section">
+                <h2>💡 사용 팁</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">📱 알림 설정하기</div>
+                    <div class="faq-answer">
+                        iOS 설정 → 알림 → 말씀묵상에서 알림을 활성화하면 
+                        매일 정해진 시간에 말씀을 볼 수 있도록 리마인더를 받을 수 있습니다.
+                        (향후 업데이트 예정)
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">🎨 위젯 활용하기</div>
+                    <div class="faq-answer">
+                        홈 화면에 말씀묵상 위젯을 추가하면 앱을 열지 않고도 
+                        오늘의 말씀을 바로 확인할 수 있습니다.
+                        (향후 업데이트 예정)
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">📤 친구와 나누기</div>
+                    <div class="faq-answer">
+                        말씀 카드를 카카오톡, 인스타그램 스토리, 페이스북 등 
+                        다양한 SNS로 쉽게 공유할 수 있습니다. 
+                        은혜로운 말씀을 친구들과 나눠보세요!
+                    </div>
+                </div>
+            </div>
+
+            <!-- 연락하기 -->
+            <div class="contact-section">
+                <h2>📧 문의하기</h2>
+                <p>더 궁금하신 점이 있으신가요?</p>
+                <p>언제든지 편하게 연락 주세요!</p>
+                
+                <div class="contact-info">
+                    <p>✉️ 이메일: <a href="mailto:support@versecard.app">support@versecard.app</a></p>
+                    <p>🌐 웹사이트: <a href="https://versecard.app" target="_blank">versecard.app</a></p>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.9;">
+                    영업일 기준 24-48시간 내에 답변드리겠습니다.
+                </p>
+            </div>
+
+            <!-- 리뷰 요청 -->
+            <div style="text-align: center; margin-top: 60px; padding: 40px; background: #f8f9fa; border-radius: 12px;">
+                <h3 style="font-size: 1.5em; margin-bottom: 15px; color: #667eea;">⭐ 앱이 도움이 되셨나요?</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    App Store에 리뷰를 남겨주시면 큰 힘이 됩니다!<br>
+                    여러분의 소중한 의견이 앱 개선에 큰 도움이 됩니다.
+                </p>
+                <a href="https://apps.apple.com/app/idXXXXXXXXXX?action=write-review" 
+                   style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                          color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; 
+                          font-weight: 600; transition: all 0.3s ease;">
+                    리뷰 작성하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding: 40px; color: white;">
+        <p style="font-size: 0.9em; opacity: 0.8;">
+            © 2025 말씀묵상. All rights reserved.
+        </p>
+        <p style="margin-top: 10px;">
+            <a href="privacy.html" style="color: white; margin: 0 15px;">개인정보 보호정책</a>
+            <a href="terms.html" style="color: white; margin: 0 15px;">서비스 약관</a>
+        </p>
+    </div>
+</body>
+</html>
+
+
