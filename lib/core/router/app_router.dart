@@ -173,8 +173,11 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   }) {
     return GestureDetector(
       onTap: () => _onTap(index),
+      // 터치 영역을 넓히기 위해 behavior 추가
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        // 터치 영역을 더 넓게 확장 (디자인은 변경하지 않고 터치만 확장)
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
