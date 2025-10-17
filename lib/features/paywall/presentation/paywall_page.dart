@@ -19,6 +19,7 @@ class PaywallPage extends ConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white, // 다크모드에서도 화이트 배경 강제 설정
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

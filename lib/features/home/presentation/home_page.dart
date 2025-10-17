@@ -9,6 +9,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: Colors.white, // 다크모드에서도 화이트 배경 강제 설정
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

@@ -55,6 +55,7 @@ class _SharedMeditationPageState extends ConsumerState<SharedMeditationPage> {
     // final verseData = _getVerseData();
 
     return Scaffold(
+      backgroundColor: Colors.white, // 다크모드에서도 화이트 배경 강제 설정
       appBar: AppBar(
         title: const Text('말씀묵상'),
         elevation: 0,
