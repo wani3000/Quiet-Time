@@ -1,3 +1,5 @@
+import '../services/unsplash_service.dart';
+
 /// 1000개의 성경 말씀 데이터베이스
 /// 전체 성경에서 선별된 말씀들 (최대 3장 이내)
 class VerseDatabase {
@@ -551,6 +553,20 @@ class VerseDatabase {
   static Map<String, String> getVerseByDate(String? date) {
     final targetDate = date ?? DateTime.now().toIso8601String().substring(0, 10);
     final dateHash = targetDate.hashCode;
-    return verses[dateHash.abs() % verses.length];
+    final verse = verses[dateHash.abs() % verses.length];
+    
+    // 기존 이미지 대신 날짜를 저장 (나중에 UnsplashService에서 처리)
+    return {
+      'text': verse['text']!,
+      'reference': verse['reference']!,
+      'image': verse['image']!, // 폴백용으로 유지
+      'date': targetDate, // 날짜 정보 추가
+    };
+  }
+  
+  /// 날짜 기반으로 이미지 URL을 가져오는 비동기 메서드
+  static Future<String> getImageUrlForDate(String? date) async {
+    final targetDate = date ?? DateTime.now().toIso8601String().substring(0, 10);
+    return await UnsplashService.getImageForDate(targetDate);
   }
 }

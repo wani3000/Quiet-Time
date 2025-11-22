@@ -57,7 +57,7 @@ class ImageCacheManager {
   }
 }
 
-/// 최적화된 이미지 위젯
+/// 최적화된 이미지 위젯 (Asset 및 Network 이미지 지원)
 class OptimizedImage extends StatefulWidget {
   final String imagePath;
   final double? width;
@@ -83,6 +83,12 @@ class OptimizedImage extends StatefulWidget {
 class _OptimizedImageState extends State<OptimizedImage> {
   bool _isLoaded = false;
   bool _hasError = false;
+  
+  /// 이미지가 네트워크 URL인지 확인
+  bool get _isNetworkImage {
+    return widget.imagePath.startsWith('http://') || 
+           widget.imagePath.startsWith('https://');
+  }
 
   @override
   void initState() {
@@ -92,13 +98,21 @@ class _OptimizedImageState extends State<OptimizedImage> {
 
   Future<void> _preloadImage() async {
     try {
-      await precacheImage(AssetImage(widget.imagePath), context);
+      if (_isNetworkImage) {
+        // 네트워크 이미지 프리로드
+        await precacheImage(NetworkImage(widget.imagePath), context);
+      } else {
+        // 에셋 이미지 프리로드
+        await precacheImage(AssetImage(widget.imagePath), context);
+      }
+      
       if (mounted) {
         setState(() {
           _isLoaded = true;
         });
       }
     } catch (e) {
+      debugPrint('이미지 로드 실패: ${widget.imagePath} - $e');
       if (mounted) {
         setState(() {
           _hasError = true;
@@ -131,24 +145,62 @@ class _OptimizedImageState extends State<OptimizedImage> {
         );
     }
 
-    return Image.asset(
-      widget.imagePath,
-      width: widget.width,
-      height: widget.height,
-      fit: widget.fit,
-      // 메모리 효율성을 위한 캐시 설정
-      cacheWidth: widget.width?.round(),
-      cacheHeight: widget.height?.round(),
-      errorBuilder: (context, error, stackTrace) {
-        return widget.errorWidget ??
-          Container(
-            width: widget.width,
-            height: widget.height,
-            color: Colors.grey[300],
-            child: const Icon(Icons.error, color: Colors.grey),
-          );
-      },
-    );
+    // 네트워크 이미지 또는 에셋 이미지 렌더링
+    if (_isNetworkImage) {
+      return Image.network(
+        widget.imagePath,
+        width: widget.width,
+        height: widget.height,
+        fit: widget.fit,
+        cacheWidth: widget.width?.round(),
+        cacheHeight: widget.height?.round(),
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return widget.placeholder ??
+            Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.grey[200],
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              ),
+            );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return widget.errorWidget ??
+            Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.grey[300],
+              child: const Icon(Icons.error, color: Colors.grey),
+            );
+        },
+      );
+    } else {
+      return Image.asset(
+        widget.imagePath,
+        width: widget.width,
+        height: widget.height,
+        fit: widget.fit,
+        cacheWidth: widget.width?.round(),
+        cacheHeight: widget.height?.round(),
+        errorBuilder: (context, error, stackTrace) {
+          return widget.errorWidget ??
+            Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.grey[300],
+              child: const Icon(Icons.error, color: Colors.grey),
+            );
+        },
+      );
+    }
   }
 }
 

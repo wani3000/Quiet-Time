@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:go_router/go_router.dart';
 
 /// 로컬 알림 관리 서비스
 class NotificationService {
@@ -9,6 +11,12 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
   
   static bool _isInitialized = false;
+  static GlobalKey<NavigatorState>? _navigatorKey;
+  
+  /// 네비게이터 키 설정 (앱 시작 시 호출)
+  static void setNavigatorKey(GlobalKey<NavigatorState> key) {
+    _navigatorKey = key;
+  }
   
   /// 알림 서비스 초기화
   static Future<void> initialize() async {
@@ -50,7 +58,40 @@ class NotificationService {
   /// 알림 탭 시 처리
   static void _onNotificationTapped(NotificationResponse response) {
     debugPrint('알림 탭됨: ${response.payload}');
-    // TODO: 홈 화면으로 이동하는 로직 추가 가능
+    
+    // 앱이 실행 중일 때 네비게이션 처리
+    try {
+      // 현재 컨텍스트가 있는지 확인
+      final context = _getCurrentContext();
+      if (context != null && context.mounted) {
+        // 홈 화면으로 이동
+        context.go('/');
+        debugPrint('알림 클릭으로 홈 화면으로 이동');
+      } else {
+        debugPrint('컨텍스트를 찾을 수 없음 - 앱이 종료된 상태에서 알림 클릭');
+        // 앱이 종료된 상태에서 알림을 클릭하면 자동으로 앱이 시작되고 홈 화면이 표시됨
+        // 이 경우 별도의 네비게이션 처리가 필요하지 않음
+      }
+    } catch (e) {
+      debugPrint('알림 클릭 처리 중 오류: $e');
+    }
+  }
+  
+  /// 현재 앱 컨텍스트 가져오기
+  static BuildContext? _getCurrentContext() {
+    try {
+      // 먼저 네비게이터 키를 통해 컨텍스트 가져오기 시도
+      if (_navigatorKey?.currentContext != null) {
+        return _navigatorKey!.currentContext;
+      }
+      
+      // 네비게이터 키가 없으면 루트 엘리먼트에서 가져오기
+      final context = WidgetsBinding.instance.rootElement;
+      return context;
+    } catch (e) {
+      debugPrint('컨텍스트 가져오기 실패: $e');
+      return null;
+    }
   }
   
   /// 알림 권한 요청
@@ -128,6 +169,7 @@ class NotificationService {
         '새로운 말씀으로 하루를 시작해보세요.',
         scheduledDate,
         notificationDetails,
+        payload: 'daily_verse_notification', // 페이로드 추가
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -167,6 +209,7 @@ class NotificationService {
         '오늘의 말씀이 도착했어요!',
         '새로운 말씀으로 하루를 시작해보세요.',
         notificationDetails,
+        payload: 'test_notification', // 테스트 알림 페이로드
       );
       
       debugPrint('테스트 알림 전송 완료');

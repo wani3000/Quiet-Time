@@ -7,6 +7,7 @@ import '../../../core/theme/text_theme.dart';
 import '../../../core/utils/image_saver.dart';
 import '../../../core/utils/image_cache_manager.dart';
 import '../../../data/verse_database.dart';
+import '../../../services/unsplash_service.dart';
 
 class VerseCard extends StatefulWidget {
   final String? date;
@@ -42,18 +43,13 @@ class _VerseCardState extends State<VerseCard> {
     String targetDate;
     
     if (widget.date != null) {
-      // 특정 날짜가 지정된 경우 그 날짜 사용
       targetDate = widget.date!;
     } else {
-      // 홈 화면에서 호출된 경우 (date가 null)
       final now = DateTime.now();
-      
-      // 오전 6시 이전이면 전날 말씀 표시
       if (now.hour < 6) {
         final yesterday = now.subtract(const Duration(days: 1));
         targetDate = '${yesterday.year}-${yesterday.month.toString().padLeft(2, '0')}-${yesterday.day.toString().padLeft(2, '0')}';
       } else {
-        // 오전 6시 이후면 오늘 말씀 표시
         targetDate = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
       }
     }
@@ -69,20 +65,41 @@ class _VerseCardState extends State<VerseCard> {
     });
 
     try {
-      // Capture the widget as image
-      final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      final downloadWidget = _buildDownloadCard();
+      
+      final downloadKey = GlobalKey();
+      final downloadBoundary = RepaintBoundary(
+        key: downloadKey,
+        child: downloadWidget,
+      );
+      
+      final overlay = Overlay.of(context);
+      late OverlayEntry overlayEntry;
+      
+      overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          left: -10000,
+          top: -10000,
+          child: downloadBoundary,
+        ),
+      );
+      
+      overlay.insert(overlayEntry);
+      
+      // 렌더링 대기 시간 확보
+      await Future.delayed(const Duration(milliseconds: 200));
+      
+      final boundary = downloadKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) {
-        throw Exception('Unable to capture widget');
+        throw Exception('Unable to capture download widget');
       }
-
-      // Wait a bit for the widget to be fully rendered
-      await Future.delayed(const Duration(milliseconds: 100));
       
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
 
-      // Save using ImageSaver
+      overlayEntry.remove();
+
       final success = await ImageSaver.saveToGallery(pngBytes);
       
       if (mounted) {
@@ -96,8 +113,8 @@ class _VerseCardState extends State<VerseCard> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('저장에 실패했습니다.'),
+          SnackBar(
+            content: Text('저장에 실패했습니다: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -110,6 +127,147 @@ class _VerseCardState extends State<VerseCard> {
       }
     }
   }
+  
+  // 다운로드용 카드 위젯
+  Widget _buildDownloadCard() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = math.min(screenWidth - 32, 400.0);
+    final cardHeight = cardWidth * 5 / 4;
+    
+    final verseData = _getVerseData();
+
+    // ✨ [핵심 수정 1] Material 위젯으로 감싸서 노란 밑줄 문제 해결
+    return Material(
+      type: MaterialType.transparency, // 배경을 투명하게 설정
+      child: Container(
+        width: cardWidth,
+        height: cardHeight,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Background Image
+            FutureBuilder<Map<String, String>>(
+              // ✨ [핵심 수정 2] 다운로드용 카드에도 ID를 넘겨줘야 화면과 똑같은 이미지가 저장됨!
+              future: UnsplashService.fetchDailyImage(
+                query: 'sky',
+                uniqueId: verseData['reference'], 
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return OptimizedImage(
+                    imagePath: verseData['image']!,
+                    width: cardWidth,
+                    height: cardHeight,
+                    fit: BoxFit.cover,
+                  );
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return OptimizedImage(
+                    imagePath: verseData['image']!,
+                    width: cardWidth,
+                    height: cardHeight,
+                    fit: BoxFit.cover,
+                  );
+                } else {
+                  final imageData = snapshot.data!;
+                  final imageUrl = imageData['url']!;
+                  final author = imageData['author']!;
+
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      OptimizedImage(
+                        imagePath: imageUrl,
+                        width: cardWidth,
+                        height: cardHeight,
+                        fit: BoxFit.cover,
+                        placeholder: Container(
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                        errorWidget: OptimizedImage(
+                          imagePath: verseData['image']!,
+                          width: cardWidth,
+                          height: cardHeight,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      if (author != 'Default Image')
+                        Positioned(
+                          bottom: 8,
+                          left: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              'Photo by $author on Unsplash',
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: Colors.white54,
+                                fontFamily: 'Pretendard',
+                                decoration: TextDecoration.none, // 안전장치
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }
+              },
+            ),
+            // Dimmed Overlay
+            Container(
+              color: Colors.black.withValues(alpha: 0.6),
+            ),
+            // Text Content
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Verse Text
+                    Text(
+                      verseData['text']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        height: 1.5,
+                        decoration: TextDecoration.none, // 안전장치
+                      ),
+                      maxLines: null,
+                      overflow: TextOverflow.visible,
+                    ),
+                    const SizedBox(height: 16),
+                    // Verse Reference
+                    Text(
+                      verseData['reference']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.white70,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.none, // 안전장치
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
 
   @override
@@ -118,18 +276,18 @@ class _VerseCardState extends State<VerseCard> {
     final cardWidth = widget.isThumbnail 
         ? double.infinity 
         : widget.isSquare
-            ? screenWidth - 40 // Screen width minus padding (20px on each side)
-            : math.min(screenWidth - 32, 400.0); // 16px padding on each side, max 400px width
+            ? screenWidth - 40 
+            : math.min(screenWidth - 32, 400.0); 
     final cardHeight = widget.isThumbnail 
-        ? 200.0 // Fixed height for thumbnail
+        ? 200.0 
         : widget.isSquare
-            ? screenWidth - 40 // Square aspect ratio matching width
-            : cardWidth * 5 / 4; // 4:5 aspect ratio for Instagram-style card (width * 5/4)
+            ? screenWidth - 40 
+            : cardWidth * 5 / 4; 
     
     final verseData = _getVerseData();
 
     return Column(
-      mainAxisSize: MainAxisSize.min, // Important: set to minimum size
+      mainAxisSize: MainAxisSize.min,
       children: [
         RepaintBoundary(
           key: _cardKey,
@@ -151,104 +309,57 @@ class _VerseCardState extends State<VerseCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Background Image - 최적화된 이미지 로딩
-                  OptimizedImage(
-                    imagePath: verseData['image']!,
-                    width: cardWidth,
-                    height: cardHeight,
-                    fit: BoxFit.cover,
-                    placeholder: Container(
-                      color: Colors.grey[200],
-                      child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
+                  FutureBuilder<Map<String, String>>(
+                    // ✨ [핵심 수정 3] 화면 표시용 카드에도 ID 적용 (잘하셨음!)
+                    future: UnsplashService.fetchDailyImage(
+                      query: 'sky',
+                      uniqueId: verseData['reference'], 
                     ),
-                  ),
-                  // Dimmed Overlay
-                  Container(
-                    color: Colors.black.withValues(alpha: 0.4), // 40% dimmed
-                  ),
-                  // Download Button (positioned on top of card)
-                  if (widget.showActions && widget.showButtons)
-                    Positioned(
-                      bottom: 16,
-                      right: 16,
-                      child: GestureDetector(
-                        onTap: _isSaving ? null : _saveCard,
-                        child: Container(
-                          width: 56,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.3),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return OptimizedImage(
+                          imagePath: verseData['image']!,
+                          width: cardWidth,
+                          height: cardHeight,
+                          fit: BoxFit.cover,
+                        );
+                      } else if (snapshot.hasError || !snapshot.hasData) {
+                        return OptimizedImage(
+                          imagePath: verseData['image']!,
+                          width: cardWidth,
+                          height: cardHeight,
+                          fit: BoxFit.cover,
+                        );
+                      } else {
+                        final imageData = snapshot.data!;
+                        final imageUrl = imageData['url']!;
+                        final author = imageData['author']!;
+
+                        return Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            OptimizedImage(
+                              imagePath: imageUrl,
+                              width: cardWidth,
+                              height: cardHeight,
+                              fit: BoxFit.cover,
+                              placeholder: Container(
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                              ),
+                              errorWidget: OptimizedImage(
+                                imagePath: verseData['image']!,
+                                width: cardWidth,
+                                height: cardHeight,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: _isSaving
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                    ),
-                                  )
-                                : SvgPicture.asset(
-                                    'assets/images/ic_download.svg',
-                                    width: 24,
-                                    height: 24,
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                    placeholderBuilder: (context) => const Icon(
-                                      Icons.download,
-                                      size: 24,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  // Text Content
-                  Positioned.fill( // Use Positioned.fill to make text fill the stack
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center, // Center text horizontally
-                        children: [
-                          // Verse Text
-                          Text(
-                            verseData['text']!,
-                            style: AppTextTheme.verseText,
-                            textAlign: TextAlign.center,
-                            maxLines: null, // Allow unlimited lines
-                            overflow: TextOverflow.visible, // Allow text to overflow if needed
-                          ),
-                          
-                          const SizedBox(height: 24),
-                          
-                          // Verse Reference
-                          Text(
-                            verseData['reference']!,
-                            style: AppTextTheme.verseReference,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+                            if (author != 'Default Image')
+                              Positioned(
+                                bottom: 8,
+                                left: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(

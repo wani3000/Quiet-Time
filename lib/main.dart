@@ -44,6 +44,9 @@ class VerseCardApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 네비게이터 키를 알림 서비스에 설정
+    NotificationService.setNavigatorKey(AppRouter.router.routerDelegate.navigatorKey);
+    
     return MaterialApp.router(
       title: ConfigService.appName,
       theme: AppTheme.lightTheme,

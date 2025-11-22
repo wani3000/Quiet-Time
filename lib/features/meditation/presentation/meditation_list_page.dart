@@ -5,6 +5,7 @@ import '../../../core/theme/colors.dart';
 import '../../../data/verse_database.dart';
 import '../../../services/memo_service.dart';
 import '../../../services/config_service.dart';
+import '../../../core/utils/image_cache_manager.dart';
 
 class MeditationListPage extends ConsumerWidget {
   const MeditationListPage({super.key});
@@ -35,6 +36,69 @@ class MeditationListPage extends ConsumerWidget {
     }
     
     return grouped;
+  }
+
+  // 썸네일 이미지 빌드
+  Widget _buildThumbnailImage(String dateString) {
+    final verseData = VerseDatabase.getVerseByDate(dateString);
+    
+    return FutureBuilder<String>(
+      future: VerseDatabase.getImageUrlForDate(dateString),
+      builder: (context, snapshot) {
+        String imageUrl;
+        
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // 로딩 중에는 폴백 이미지 사용
+          imageUrl = verseData['image']!;
+        } else if (snapshot.hasError || !snapshot.hasData) {
+          // 오류 시 폴백 이미지 사용
+          imageUrl = verseData['image']!;
+        } else {
+          // Unsplash 이미지 사용
+          imageUrl = snapshot.data!;
+        }
+        
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            // 배경 이미지
+            OptimizedImage(
+              imagePath: imageUrl,
+              width: 56,
+              height: 56,
+              fit: BoxFit.cover,
+              placeholder: Container(
+                color: const Color(0xFFD9D9D9),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF868E96)),
+                  ),
+                ),
+              ),
+              errorWidget: OptimizedImage(
+                imagePath: verseData['image']!, // 폴백 이미지
+                width: 56,
+                height: 56,
+                fit: BoxFit.cover,
+              ),
+            ),
+            // 어둡게 오버레이
+            Container(
+              color: Colors.black.withValues(alpha: 0.3),
+            ),
+            // 중앙 아이콘 (선택사항)
+            const Center(
+              child: Icon(
+                Icons.article_outlined,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -82,7 +146,8 @@ class MeditationListPage extends ConsumerWidget {
       body: Container(
         color: Colors.white, // 그라디언트 대신 단색 배경
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          // ✨ [핵심 수정] 하단(bottom)에 120px 여유를 줘서 가려지지 않게 함
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 120),
           children: [
             ...groupedDates.entries.map((entry) {
               final monthName = entry.key;
@@ -133,13 +198,23 @@ class MeditationListPage extends ConsumerWidget {
                                   height: 56,
                                   child: Row(
                                     children: [
-                                      // 56x56 thumbnail
+                                      // 56x56 thumbnail - 실제 말씀카드 이미지
                                       Container(
                                         width: 56,
                                         height: 56,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFFD9D9D9), // #D9D9D9
                                           borderRadius: BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(alpha: 0.1),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: _buildThumbnailImage(dateString),
                                         ),
                                       ),
                                       
