@@ -363,3 +363,74 @@ class _VerseCardState extends State<VerseCard> {
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    'Photo by $author on Unsplash',
+                                    style: const TextStyle(
+                                      fontSize: 9,
+                                      color: Colors.white54,
+                                      fontFamily: 'Pretendard',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                  // Dimmed Overlay
+                  Container(
+                    color: Colors.black.withValues(alpha: 0.4),
+                  ),
+                  // Text Content
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Verse Text
+                          Text(
+                            verseData['text']!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: null,
+                            overflow: TextOverflow.visible,
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Verse Reference
+                          Text(
+                            verseData['reference']!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white70,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

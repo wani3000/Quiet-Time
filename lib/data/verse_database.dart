@@ -567,6 +567,18 @@ class VerseDatabase {
   /// 날짜 기반으로 이미지 URL을 가져오는 비동기 메서드
   static Future<String> getImageUrlForDate(String? date) async {
     final targetDate = date ?? DateTime.now().toIso8601String().substring(0, 10);
-    return await UnsplashService.getImageForDate(targetDate);
+    final verseData = getVerseByDate(targetDate);
+    final reference = verseData['reference']!;
+    
+    try {
+      final imageData = await UnsplashService.fetchDailyImage(
+        query: 'sky',
+        uniqueId: reference,
+      );
+      return imageData['url']!;
+    } catch (e) {
+      // 오류 시 폴백 이미지 반환
+      return verseData['image']!;
+    }
   }
 }
