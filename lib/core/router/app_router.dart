@@ -139,10 +139,10 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
         ],
       ),
       child: Container(
-        height: 80,
+        height: 64,
         padding: const EdgeInsets.symmetric(
           horizontal: 56,  // Figma 디자인의 56px 패딩
-          vertical: 8,
+          vertical: 0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,12 +177,12 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
       behavior: HitTestBehavior.opaque,
       child: Container(
         // 터치 영역을 더 넓게 확장 (디자인은 변경하지 않고 터치만 확장)
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 24,
               height: 24,
               child: SvgPicture.asset(
@@ -193,11 +193,11 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                 colorFilter: null, // SVG 자체 색상 사용
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Pretendard',
                 color: isSelected ? const Color(0xFF212529) : const Color(0xFFADB5BD),

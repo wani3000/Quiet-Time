@@ -371,7 +371,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                   isThumbnail: false,
                   showActions: false,
                   date: widget.date,
-                  isSquare: true, // Use square size for detail page
+                  isSquare: false, // 홈과 동일한 5:4 비율 사용
                 ),
               ),
             ),
@@ -425,15 +425,12 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      _getVerseReference(),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.slate600,
-                      ),
+                  Text(
+                    _getVerseReference(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.slate600,
                     ),
                   ),
                 ],
@@ -729,13 +726,14 @@ class _MemoEditModalState extends State<_MemoEditModal> {
         ),
       ),
       child: SafeArea(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.85,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // 헤더
               Container(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 12, 12, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -757,41 +755,41 @@ class _MemoEditModalState extends State<_MemoEditModal> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF8F9FA),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: SingleChildScrollView(
-                    child: TextField(
-                      controller: _controller,
-                      maxLines: null,
-                      minLines: 6,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.newline,
-                      decoration: InputDecoration(
-                        hintText: widget.isNewMemo 
-                            ? '오늘 말씀을 통해 받은 은혜나 깨달음을 기록해보세요...'
-                            : '묵상 메모를 수정해보세요...',
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(16),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 14,
-                        ),
-                      ),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.5,
-                        color: Colors.black,
-                      ),
-                      autofocus: true,
+              // 텍스트 입력 영역 (고정 높이)
+              Container(
+                height: 200, // 고정 높이로 키보드가 올라와도 적절히 보임
+                margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8F9FA),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: _controller,
+                  maxLines: null,
+                  expands: true,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(
+                    hintText: widget.isNewMemo 
+                        ? '오늘 말씀을 통해 받은 은혜나 깨달음을 기록해보세요...'
+                        : '묵상 메모를 수정해보세요...',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(16),
+                    hintStyle: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 14,
                     ),
                   ),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    height: 1.5,
+                    color: Colors.black,
+                  ),
+                  autofocus: true,
                 ),
               ),
+              // 버튼 영역
               Container(
                 padding: const EdgeInsets.all(20),
                 child: Row(
@@ -802,7 +800,7 @@ class _MemoEditModalState extends State<_MemoEditModal> {
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.grey[600],
                           side: BorderSide(color: Colors.grey[300]!),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -820,7 +818,7 @@ class _MemoEditModalState extends State<_MemoEditModal> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

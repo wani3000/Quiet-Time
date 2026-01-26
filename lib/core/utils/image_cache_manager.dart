@@ -93,7 +93,16 @@ class _OptimizedImageState extends State<OptimizedImage> {
   @override
   void initState() {
     super.initState();
-    _preloadImage();
+    // context는 initState에서 사용할 수 없으므로 didChangeDependencies로 이동
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 최초 한 번만 프리로드 실행
+    if (!_isLoaded && !_hasError) {
+      _preloadImage();
+    }
   }
 
   Future<void> _preloadImage() async {

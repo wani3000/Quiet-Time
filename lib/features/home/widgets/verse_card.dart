@@ -26,12 +26,15 @@ class VerseCard extends StatefulWidget {
   });
 
   @override
-  State<VerseCard> createState() => _VerseCardState();
+  State<VerseCard> createState() => VerseCardState();
 }
 
-class _VerseCardState extends State<VerseCard> {
+class VerseCardState extends State<VerseCard> {
+
   final GlobalKey _cardKey = GlobalKey();
   bool _isSaving = false;
+  
+  bool get isSaving => _isSaving;
 
   @override
   void initState() {
@@ -57,7 +60,8 @@ class _VerseCardState extends State<VerseCard> {
     return VerseDatabase.getVerseByDate(targetDate);
   }
 
-  Future<void> _saveCard() async {
+  // Public method for external access
+  Future<void> saveCard() async {
     if (_isSaving) return;
     
     setState(() {
