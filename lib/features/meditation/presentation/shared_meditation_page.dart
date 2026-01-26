@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/colors.dart';
+import '../../../core/utils/toast_utils.dart';
 // import '../../../data/verse_database.dart';
 import '../../home/widgets/verse_card.dart';
 
@@ -35,12 +36,7 @@ class _SharedMeditationPageState extends ConsumerState<SharedMeditationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('앱 다운로드 링크를 열 수 없습니다'),
-            backgroundColor: AppColors.error,
-          ),
-        );
+        ToastUtils.showError(context, '앱 다운로드 링크를 열 수 없습니다');
       }
     }
   }

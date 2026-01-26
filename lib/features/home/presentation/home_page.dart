@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/verse_card.dart';
 import '../../../core/theme/colors.dart';
+import '../../../core/utils/toast_utils.dart';
 import '../../../services/notification_service.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -69,12 +70,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           onPressed: () async {
                             await NotificationService.showTestNotification();
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('테스트 알림을 보냈습니다'),
-                                  backgroundColor: AppColors.primary,
-                                ),
-                              );
+                              ToastUtils.show(context, '테스트 알림을 보냈습니다');
                             }
                           },
                           style: ElevatedButton.styleFrom(

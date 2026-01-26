@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/theme/text_theme.dart';
 import '../../../core/utils/image_saver.dart';
 import '../../../core/utils/image_cache_manager.dart';
+import '../../../core/utils/toast_utils.dart';
 import '../../../data/verse_database.dart';
 import '../../../services/unsplash_service.dart';
 
@@ -107,21 +108,11 @@ class VerseCardState extends State<VerseCard> {
       final success = await ImageSaver.saveToGallery(pngBytes);
       
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(success ? '말씀 카드가 저장되었습니다!' : '저장에 실패했습니다.'),
-            backgroundColor: success ? Colors.green : Colors.red,
-          ),
-        );
+        ToastUtils.show(context, success ? '말씀 카드가 저장되었습니다' : '저장에 실패했습니다');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('저장에 실패했습니다: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ToastUtils.showError(context, '저장에 실패했습니다');
       }
     } finally {
       if (mounted) {
@@ -225,7 +216,7 @@ class VerseCardState extends State<VerseCard> {
             ),
             // Dimmed Overlay
             Container(
-              color: Colors.black.withValues(alpha: 0.6),
+              color: Colors.black.withValues(alpha: 0.25),
             ),
             // Text Content
             Positioned.fill(
@@ -387,7 +378,7 @@ class VerseCardState extends State<VerseCard> {
                   ),
                   // Dimmed Overlay
                   Container(
-                    color: Colors.black.withValues(alpha: 0.4),
+                    color: Colors.black.withValues(alpha: 0.25),
                   ),
                   // Text Content
                   Positioned.fill(

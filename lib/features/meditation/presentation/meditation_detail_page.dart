@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/image_saver.dart';
+import '../../../core/utils/toast_utils.dart';
 import '../../../data/verse_database.dart';
 import '../../../services/memo_service.dart';
 import '../../../services/config_service.dart';
@@ -59,13 +60,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           _isLoadingNote = false;
         });
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('메모를 불러오는 중 오류가 발생했습니다: ${e.toString()}'),
-            backgroundColor: AppColors.error,
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        ToastUtils.showError(context, '메모를 불러오는 중 오류가 발생했습니다');
       }
     }
   }
@@ -91,12 +86,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     await Clipboard.setData(ClipboardData(text: textToCopy));
     
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('말씀이 복사되었습니다'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      ToastUtils.show(context, '말씀이 복사되었습니다');
     }
   }
 
@@ -127,23 +117,11 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       
       final success = await ImageSaver.saveToGallery(pngBytes);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(success ? '말씀카드가 다운로드되었습니다' : '다운로드에 실패했습니다'),
-            backgroundColor: success ? AppColors.primary500 : AppColors.error,
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        ToastUtils.show(context, success ? '말씀카드가 다운로드되었습니다' : '다운로드에 실패했습니다');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('다운로드 중 오류가 발생했습니다: ${e.toString()}'),
-            backgroundColor: AppColors.error,
-            duration: const Duration(seconds: 4),
-          ),
-        );
+        ToastUtils.showError(context, '다운로드에 실패했습니다');
       }
     } finally {
       if (mounted) {
@@ -175,22 +153,10 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
         // 성공했을 때만 성공 메시지 표시
         if (success) {
           debugPrint('성공 메시지 표시');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('메모가 저장되었습니다'),
-              backgroundColor: AppColors.success,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          ToastUtils.showSuccess(context, '메모가 저장되었습니다');
         } else {
           debugPrint('실패 메시지 표시');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('메모 저장에 실패했습니다'),
-              backgroundColor: AppColors.error,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          ToastUtils.showError(context, '메모 저장에 실패했습니다');
         }
       }
     } catch (e) {
@@ -199,13 +165,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           _isSavingNote = false;
         });
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('메모 저장 중 오류가 발생했습니다: ${e.toString()}'),
-            backgroundColor: AppColors.error,
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        ToastUtils.showError(context, '메모 저장에 실패했습니다');
       }
     }
   }
@@ -261,13 +221,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           );
           
           if (success && mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('공유가 완료되었습니다'),
-                backgroundColor: AppColors.primary500,
-                duration: Duration(seconds: 2),
-              ),
-            );
+            ToastUtils.showSuccess(context, '공유가 완료되었습니다');
           }
         } catch (e) {
           debugPrint('Web Share API 호출 실패: $e');
@@ -283,13 +237,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
         await Share.share(shareText, subject: '말씀묵상 공유');
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('공유에 실패했습니다'),
-              backgroundColor: AppColors.error,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          ToastUtils.showError(context, '공유에 실패했습니다');
         }
       }
     }
@@ -299,13 +247,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     if (mounted) {
       // 클립보드에 복사
       Clipboard.setData(ClipboardData(text: '$shareText\n\n$shareUrl'));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('링크가 클립보드에 복사되었습니다'),
-          backgroundColor: AppColors.primary500,
-          duration: Duration(seconds: 2),
-        ),
-      );
+      ToastUtils.show(context, '링크가 클립보드에 복사되었습니다');
     }
   }
 
@@ -361,18 +303,13 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Verse Card Thumbnail
-            GestureDetector(
-              onTap: () {
-                context.go('/meditation/detail/${widget.date}/fullscreen');
-              },
-              child: RepaintBoundary(
-                key: _cardKey,
-                child: VerseCard(
-                  isThumbnail: false,
-                  showActions: false,
-                  date: widget.date,
-                  isSquare: false, // 홈과 동일한 5:4 비율 사용
-                ),
+            RepaintBoundary(
+              key: _cardKey,
+              child: VerseCard(
+                isThumbnail: false,
+                showActions: false,
+                date: widget.date,
+                isSquare: false, // 홈과 동일한 5:4 비율 사용
               ),
             ),
             
@@ -408,7 +345,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primary,
+                            color: Colors.black,
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -498,26 +435,23 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                                 ? const SizedBox(
                                     width: 18,
                                     height: 18,
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                                   )
-                                : Text(
+                                : const Text(
                                     '묵상 시작하기',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.black, // 텍스트 컬러를 블랙으로
+                                      color: Colors.white,
                                     ),
                                   ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white, // 배경 컬러 제거 (화이트)
-                              foregroundColor: Colors.black, // 전경 컬러를 블랙으로
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(200), // radius를 200으로
-                                side: const BorderSide(
-                                  color: Colors.black, // stroke 컬러를 블랙으로
-                                  width: 1,
-                                ),
+                                borderRadius: BorderRadius.circular(300),
                               ),
+                              elevation: 0,
                             ),
                           ),
                         ),
@@ -543,26 +477,23 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                                 ? const SizedBox(
                                     width: 18,
                                     height: 18,
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                                   )
-                                : Text(
+                                : const Text(
                                     '묵상 수정하기',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.black, // 텍스트 컬러를 블랙으로
+                                      color: Colors.white,
                                     ),
                                   ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white, // 배경 컬러 제거 (화이트)
-                              foregroundColor: Colors.black, // 전경 컬러를 블랙으로
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(200), // radius를 200으로
-                                side: const BorderSide(
-                                  color: Colors.black, // stroke 컬러를 블랙으로
-                                  width: 1,
-                                ),
+                                borderRadius: BorderRadius.circular(300),
                               ),
+                              elevation: 0,
                             ),
                           ),
                         ),
@@ -701,13 +632,7 @@ class _MemoEditModalState extends State<_MemoEditModal> {
     final text = _controller.text.trim();
     
     if (text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('메모 내용을 입력해주세요'),
-          backgroundColor: AppColors.warning,
-          duration: Duration(seconds: 2),
-        ),
-      );
+      ToastUtils.show(context, '메모 내용을 입력해주세요');
       return;
     }
     
@@ -749,7 +674,7 @@ class _MemoEditModalState extends State<_MemoEditModal> {
                       onPressed: () => Navigator.of(context).pop(),
                       icon: const Icon(Icons.close),
                       style: IconButton.styleFrom(
-                        foregroundColor: Colors.grey,
+                        foregroundColor: Colors.black,
                       ),
                     ),
                   ],
@@ -792,45 +717,24 @@ class _MemoEditModalState extends State<_MemoEditModal> {
               // 버튼 영역
               Container(
                 padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.grey[600],
-                          side: BorderSide(color: Colors.grey[300]!),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          '취소',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _handleSave,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(300),
                       ),
+                      elevation: 0,
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _handleSave,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          '저장하기',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                    child: const Text(
+                      '저장하기',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
