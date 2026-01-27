@@ -54,59 +54,78 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             child: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  left: 16, 
-                  right: 16, 
-                  top: 80,  // 상단에서 80px 떨어지게
-                  bottom: 140, // 하단 여백 (플로팅 버튼 + 네비게이션 바)
-                ),
-                child: Column(
-                  children: [
-                    // 개발 모드에서만 테스트 알림 버튼 표시
-                    if (kDebugMode) ...[
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await NotificationService.showTestNotification();
-                            if (context.mounted) {
-                              ToastUtils.show(context, '테스트 알림을 보냈어요');
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text(
-                            '테스트 알림 보내기',
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          final now = DateTime.now();
-                          final today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
-                          context.go('/meditation/detail/$today');
-                        },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: VerseCard(key: _verseCardKey),
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 상단 헤더 타이틀
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
+                    child: Text(
+                      '오늘 주신 말씀',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Pretendard',
+                        color: Colors.black,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                        left: 16, 
+                        right: 16, 
+                        bottom: 140, // 하단 여백 (플로팅 버튼 + 네비게이션 바)
+                      ),
+                      child: Column(
+                        children: [
+                          // 개발 모드에서만 테스트 알림 버튼 표시
+                          if (kDebugMode) ...[
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await NotificationService.showTestNotification();
+                                  if (context.mounted) {
+                                    ToastUtils.show(context, '테스트 알림을 보냈어요');
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text(
+                                  '테스트 알림 보내기',
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                          Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                final now = DateTime.now();
+                                final today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+                                context.go('/meditation/detail/$today');
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: VerseCard(key: _verseCardKey),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

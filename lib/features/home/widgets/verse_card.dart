@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/text_theme.dart';
 import '../../../core/utils/image_saver.dart';
 import '../../../core/utils/image_cache_manager.dart';
@@ -209,13 +210,12 @@ class VerseCardState extends State<VerseCard> {
                     Text(
                       verseData['text']!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: GoogleFonts.nanumMyeongjo(
                         color: Colors.white,
-                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
                         height: 1.5,
-                        decoration: TextDecoration.none, // 안전장치
+                        decoration: TextDecoration.none,
                       ),
                       maxLines: null,
                       overflow: TextOverflow.visible,
@@ -225,12 +225,11 @@ class VerseCardState extends State<VerseCard> {
                     Text(
                       verseData['reference']!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: GoogleFonts.nanumMyeongjo(
                         fontSize: 14,
                         color: Colors.white70,
-                        fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w400,
-                        decoration: TextDecoration.none, // 안전장치
+                        decoration: TextDecoration.none,
                       ),
                     ),
                   ],
@@ -350,9 +349,8 @@ class VerseCardState extends State<VerseCard> {
                           // Verse Text
                           Text(
                             verseData['text']!,
-                            style: const TextStyle(
+                            style: GoogleFonts.nanumMyeongjo(
                               color: Colors.white,
-                              fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
                               fontSize: 18,
                               height: 1.5,
@@ -367,10 +365,9 @@ class VerseCardState extends State<VerseCard> {
                           // Verse Reference
                           Text(
                             verseData['reference']!,
-                            style: const TextStyle(
+                            style: GoogleFonts.nanumMyeongjo(
                               fontSize: 14,
                               color: Colors.white70,
-                              fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,
                             ),
                             textAlign: TextAlign.center,
