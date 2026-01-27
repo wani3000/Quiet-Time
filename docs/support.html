@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객 지원 - 말씀묵상</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #fafafa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        .app-name {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: #222;
+        }
+        p {
+            margin-bottom: 16px;
+            color: #444;
+        }
+        .contact-box {
+            background-color: #f8f9fa;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #007AFF;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: white;
+            font-size: 18px;
+        }
+        .contact-info h3 {
+            font-size: 14px;
+            color: #888;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .contact-info a, .contact-info span {
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contact-info a:hover {
+            color: #007AFF;
+        }
+        .faq {
+            margin-top: 32px;
+        }
+        .faq-item {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .faq-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .faq-item p {
+            margin-bottom: 0;
+            font-size: 15px;
+        }
+        .app-info {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .app-info h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .app-info p {
+            color: #666;
+        }
+        .version {
+            display: inline-block;
+            background-color: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>고객 지원</h1>
+        <p class="app-name">말씀묵상 앱</p>
+
+        <p>말씀묵상 앱을 이용해 주셔서 감사합니다. 문의사항이나 피드백이 있으시면 아래 연락처로 연락해 주세요.</p>
+
+        <div class="contact-box">
+            <div class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                    <h3>이메일 문의</h3>
+                    <a href="mailto:wani3000@gmail.com">wani3000@gmail.com</a>
+                </div>
+            </div>
+        </div>
+
+        <h2>자주 묻는 질문</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <h3>Q. 묵상 메모는 어디에 저장되나요?</h3>
+                <p>A. 모든 묵상 메모는 사용자의 기기에만 저장됩니다. 외부 서버로 전송되지 않으며, 앱 삭제 시 함께 삭제됩니다.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q. 다른 기기에서도 사용할 수 있나요?</h3>
+                <p>A. 앱은 여러 기기에 설치하실 수 있지만, 현재 버전에서는 기기 간 데이터 동기화가 지원되지 않습니다.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q. 배경 이미지가 로드되지 않아요.</h3>
+                <p>A. 배경 이미지는 인터넷 연결이 필요합니다. 네트워크 연결 상태를 확인해 주세요.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q. 알림이 오지 않아요.</h3>
+                <p>A. 기기 설정에서 말씀묵상 앱의 알림 권한이 허용되어 있는지 확인해 주세요.</p>
+            </div>
+        </div>
+
+        <div class="app-info">
+            <h2>말씀묵상</h2>
+            <p>매일 말씀과 함께하는 묵상의 시간</p>
+            <span class="version">Version 1.0.1</span>
+        </div>
+    </div>
+</body>
+</html>
