@@ -188,27 +188,6 @@ class VerseCardState extends State<VerseCard> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      if (author != 'Default Image')
-                        Positioned(
-                          bottom: 8,
-                          left: 8,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.3),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              'Photo by $author on Unsplash',
-                              style: const TextStyle(
-                                fontSize: 9,
-                                color: Colors.white54,
-                                fontFamily: 'Pretendard',
-                                decoration: TextDecoration.none, // 안전장치
-                              ),
-                            ),
-                          ),
-                        ),
                     ],
                   );
                 }
@@ -351,26 +330,6 @@ class VerseCardState extends State<VerseCard> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            if (author != 'Default Image')
-                              Positioned(
-                                bottom: 8,
-                                left: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.3),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Text(
-                                    'Photo by $author on Unsplash',
-                                    style: const TextStyle(
-                                      fontSize: 9,
-                                      color: Colors.white54,
-                                      fontFamily: 'Pretendard',
-                                    ),
-                                  ),
-                                ),
-                              ),
                           ],
                         );
                       }

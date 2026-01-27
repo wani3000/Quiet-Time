@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/verse_card.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/toast_utils.dart';
@@ -92,9 +93,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                     ],
                     Center(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: VerseCard(key: _verseCardKey),
+                      child: GestureDetector(
+                        onTap: () {
+                          final now = DateTime.now();
+                          final today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+                          context.go('/meditation/detail/$today');
+                        },
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: VerseCard(key: _verseCardKey),
+                        ),
                       ),
                     ),
                   ],

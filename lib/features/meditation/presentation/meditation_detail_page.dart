@@ -176,7 +176,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, // 키보드에 맞춰 크기 조정
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0xFFD1D3D9), // iOS 키보드 배경색과 유사
       builder: (BuildContext context) {
         return Padding(
           padding: EdgeInsets.only(
@@ -204,10 +204,155 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     return false;
   }
 
-  void _shareMeditation() async {
+  void _shareMeditation() {
+    // 공유 옵션 선택 모달 표시
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 핸들바
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  '공유하기',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Pretendard',
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // 말씀만 공유하기
+                _buildShareOption(
+                  icon: Icons.format_quote,
+                  title: '말씀만 공유하기',
+                  subtitle: '오늘의 말씀과 이미지를 공유해요',
+                  onTap: () {
+                    Navigator.pop(context);
+                    _executeShare(includeMemo: false);
+                  },
+                ),
+                const SizedBox(height: 12),
+                // 말씀과 묵상메모 공유하기
+                _buildShareOption(
+                  icon: Icons.edit_note,
+                  title: '말씀과 내 묵상메모 공유하기',
+                  subtitle: _savedNote.isEmpty 
+                      ? '아직 작성된 묵상메모가 없어요' 
+                      : '말씀과 나의 묵상을 함께 공유해요',
+                  enabled: _savedNote.isNotEmpty,
+                  onTap: _savedNote.isNotEmpty ? () {
+                    Navigator.pop(context);
+                    _executeShare(includeMemo: true);
+                  } : null,
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildShareOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback? onTap,
+    bool enabled = true,
+  }) {
+    return GestureDetector(
+      onTap: enabled ? onTap : null,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: enabled ? Colors.grey[50] : Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: enabled ? Colors.grey[200]! : Colors.grey[200]!,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: enabled ? Colors.black : Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Pretendard',
+                      color: enabled ? Colors.black : Colors.grey[400],
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'Pretendard',
+                      color: enabled ? Colors.grey[600] : Colors.grey[400],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: enabled ? Colors.grey[400] : Colors.grey[300],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _executeShare({required bool includeMemo}) async {
     final verseText = _getVerseText();
     final verseRef = _getVerseReference();
-    final shareText = '$verseText\n\n- $verseRef\n\n#말씀묵상 #오늘의말씀';
+    
+    String shareText;
+    if (includeMemo && _savedNote.isNotEmpty) {
+      shareText = '$verseText\n\n- $verseRef\n\n📝 나의 묵상\n$_savedNote\n\n#말씀묵상 #오늘의말씀';
+    } else {
+      shareText = '$verseText\n\n- $verseRef\n\n#말씀묵상 #오늘의말씀';
+    }
     
     // 공유 시트 위치 (iPad/시뮬레이터용)
     final box = context.findRenderObject() as RenderBox?;
