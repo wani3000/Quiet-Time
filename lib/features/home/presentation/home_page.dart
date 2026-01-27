@@ -70,7 +70,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           onPressed: () async {
                             await NotificationService.showTestNotification();
                             if (context.mounted) {
-                              ToastUtils.show(context, '테스트 알림을 보냈습니다');
+                              ToastUtils.show(context, '테스트 알림을 보냈어요');
                             }
                           },
                           style: ElevatedButton.styleFrom(

@@ -108,11 +108,11 @@ class VerseCardState extends State<VerseCard> {
       final success = await ImageSaver.saveToGallery(pngBytes);
       
       if (mounted) {
-        ToastUtils.show(context, success ? '말씀 카드가 저장되었습니다' : '저장에 실패했습니다');
+        ToastUtils.show(context, success ? '말씀카드를 갤러리에 다운로드 했어요!' : '저장에 실패했어요');
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showError(context, '저장에 실패했습니다');
+        ToastUtils.showError(context, '저장에 실패했어요');
       }
     } finally {
       if (mounted) {
@@ -234,7 +234,7 @@ class VerseCardState extends State<VerseCard> {
                         color: Colors.white,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: 18,
                         height: 1.5,
                         decoration: TextDecoration.none, // 안전장치
                       ),
@@ -247,7 +247,7 @@ class VerseCardState extends State<VerseCard> {
                       verseData['reference']!,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Colors.white70,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w400,
@@ -395,7 +395,7 @@ class VerseCardState extends State<VerseCard> {
                               color: Colors.white,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
-                              fontSize: 16,
+                              fontSize: 18,
                               height: 1.5,
                             ),
                             textAlign: TextAlign.center,
@@ -409,7 +409,7 @@ class VerseCardState extends State<VerseCard> {
                           Text(
                             verseData['reference']!,
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.white70,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w400,

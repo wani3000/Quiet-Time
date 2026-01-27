@@ -36,7 +36,7 @@ class _SharedMeditationPageState extends ConsumerState<SharedMeditationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showError(context, '앱 다운로드 링크를 열 수 없습니다');
+        ToastUtils.showError(context, '앱 다운로드 링크를 열 수 없어요');
       }
     }
   }

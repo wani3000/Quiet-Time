@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/utils/image_saver.dart';
@@ -60,7 +62,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           _isLoadingNote = false;
         });
         
-        ToastUtils.showError(context, '메모를 불러오는 중 오류가 발생했습니다');
+        ToastUtils.showError(context, '메모를 불러오는 중 오류가 발생했어요');
       }
     }
   }
@@ -86,7 +88,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     await Clipboard.setData(ClipboardData(text: textToCopy));
     
     if (mounted) {
-      ToastUtils.show(context, '말씀이 복사되었습니다');
+      ToastUtils.show(context, '말씀이 복사되었어요');
     }
   }
 
@@ -117,11 +119,11 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       
       final success = await ImageSaver.saveToGallery(pngBytes);
       if (mounted) {
-        ToastUtils.show(context, success ? '말씀카드가 다운로드되었습니다' : '다운로드에 실패했습니다');
+        ToastUtils.show(context, success ? '말씀카드를 갤러리에 다운로드 했어요!' : '다운로드에 실패했어요');
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showError(context, '다운로드에 실패했습니다');
+        ToastUtils.showError(context, '다운로드에 실패했어요');
       }
     } finally {
       if (mounted) {
@@ -153,10 +155,10 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
         // 성공했을 때만 성공 메시지 표시
         if (success) {
           debugPrint('성공 메시지 표시');
-          ToastUtils.showSuccess(context, '메모가 저장되었습니다');
+          ToastUtils.showSuccess(context, '메모가 저장되었어요');
         } else {
           debugPrint('실패 메시지 표시');
-          ToastUtils.showError(context, '메모 저장에 실패했습니다');
+          ToastUtils.showError(context, '메모 저장에 실패했어요');
         }
       }
     } catch (e) {
@@ -165,7 +167,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           _isSavingNote = false;
         });
         
-        ToastUtils.showError(context, '메모 저장에 실패했습니다');
+        ToastUtils.showError(context, '메모 저장에 실패했어요');
       }
     }
   }
@@ -203,41 +205,65 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   }
 
   void _shareMeditation() async {
+    final verseText = _getVerseText();
     final verseRef = _getVerseReference();
-    final shareUrl = ConfigService.getShareUrl(widget.date);
-    final shareText = '$verseRef\n\n오늘의 묵상을 함께 나누어요!';
+    final shareText = '$verseText\n\n- $verseRef\n\n#말씀묵상 #오늘의말씀';
+    
+    // 공유 시트 위치 (iPad/시뮬레이터용)
+    final box = context.findRenderObject() as RenderBox?;
+    final sharePositionOrigin = box != null 
+        ? Rect.fromLTWH(0, 0, box.size.width, box.size.height / 2)
+        : null;
     
     if (kIsWeb) {
-      // 웹에서는 Web Share API 직접 호출 (Safari 네이티브 공유 시트)
-      debugPrint('Web Share API 지원 여부: ${_isWebShareSupported()}');
-      
-      if (_isWebShareSupported()) {
-        try {
-          debugPrint('Web Share API 직접 호출 시도');
-          final success = await _webShare(
-            '말씀묵상 공유', 
-            shareText, 
-            shareUrl
-          );
-          
-          if (success && mounted) {
-            ToastUtils.showSuccess(context, '공유가 완료되었습니다');
-          }
-        } catch (e) {
-          debugPrint('Web Share API 호출 실패: $e');
-          _fallbackWebShare(shareText, shareUrl);
-        }
-      } else {
-        debugPrint('Web Share API 미지원, 폴백 사용');
-        _fallbackWebShare(shareText, shareUrl);
-      }
+      // 웹에서는 텍스트만 공유
+      _fallbackWebShare(shareText, ConfigService.getShareUrl(widget.date));
     } else {
-      // iOS/Android 앱에서는 OS 기본 공유 기능 사용
+      // iOS/Android 앱에서는 이미지와 함께 공유
       try {
-        await Share.share(shareText, subject: '말씀묵상 공유');
+        // 말씀 카드 이미지 생성
+        final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+        if (boundary == null) {
+          // 이미지 생성 실패 시 텍스트만 공유
+          await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
+          return;
+        }
+        
+        final image = await boundary.toImage(pixelRatio: 3.0);
+        final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+        final pngBytes = byteData?.buffer.asUint8List();
+        
+        if (pngBytes == null) {
+          await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
+          return;
+        }
+        
+        // 임시 파일로 저장
+        final tempDir = await getTemporaryDirectory();
+        final file = File('${tempDir.path}/verse_card_${DateTime.now().millisecondsSinceEpoch}.png');
+        await file.writeAsBytes(pngBytes);
+        
+        // 이미지와 텍스트 함께 공유
+        await Share.shareXFiles(
+          [XFile(file.path)],
+          text: shareText,
+          subject: '오늘의 말씀',
+          sharePositionOrigin: sharePositionOrigin,
+        );
+        
+        // 임시 파일 삭제
+        if (await file.exists()) {
+          await file.delete();
+        }
       } catch (e) {
+        debugPrint('공유 실패: $e');
         if (mounted) {
-          ToastUtils.showError(context, '공유에 실패했습니다');
+          // 실패 시 텍스트만 공유 시도
+          try {
+            await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
+          } catch (e2) {
+            ToastUtils.showError(context, '공유에 실패했어요');
+          }
         }
       }
     }
@@ -247,7 +273,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     if (mounted) {
       // 클립보드에 복사
       Clipboard.setData(ClipboardData(text: '$shareText\n\n$shareUrl'));
-      ToastUtils.show(context, '링크가 클립보드에 복사되었습니다');
+      ToastUtils.show(context, '링크가 클립보드에 복사되었어요');
     }
   }
 
