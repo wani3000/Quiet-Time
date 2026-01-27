@@ -2,9 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../core/theme/text_theme.dart';
 import '../../../core/utils/image_saver.dart';
 import '../../../core/utils/image_cache_manager.dart';
 import '../../../core/utils/toast_utils.dart';
@@ -36,11 +34,34 @@ class VerseCardState extends State<VerseCard> {
   final GlobalKey _cardKey = GlobalKey();
   bool _isSaving = false;
   
+  // 이미지 Future를 캐싱하여 rebuild 시 깜빡임 방지
+  late Future<Map<String, String>> _imageFuture;
+  late Map<String, String> _verseData;
+  
   bool get isSaving => _isSaving;
 
   @override
   void initState() {
     super.initState();
+    _verseData = _getVerseData();
+    // Future를 initState에서 한 번만 생성
+    _imageFuture = UnsplashService.fetchDailyImage(
+      query: 'sky',
+      uniqueId: _verseData['reference'],
+    );
+  }
+
+  @override
+  void didUpdateWidget(VerseCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // date가 변경된 경우에만 Future를 다시 생성
+    if (oldWidget.date != widget.date) {
+      _verseData = _getVerseData();
+      _imageFuture = UnsplashService.fetchDailyImage(
+        query: 'sky',
+        uniqueId: _verseData['reference'],
+      );
+    }
   }
 
   // Get verse data based on date
@@ -129,12 +150,10 @@ class VerseCardState extends State<VerseCard> {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = math.min(screenWidth - 32, 400.0);
     final cardHeight = cardWidth * 5 / 4;
-    
-    final verseData = _getVerseData();
 
-    // ✨ [핵심 수정 1] Material 위젯으로 감싸서 노란 밑줄 문제 해결
+    // 캐싱된 Future 사용 - 다운로드 시에도 동일한 이미지 사용
     return Material(
-      type: MaterialType.transparency, // 배경을 투명하게 설정
+      type: MaterialType.transparency,
       child: Container(
         width: cardWidth,
         height: cardHeight,
@@ -143,22 +162,18 @@ class VerseCardState extends State<VerseCard> {
           children: [
             // Background Image
             FutureBuilder<Map<String, String>>(
-              // ✨ [핵심 수정 2] 다운로드용 카드에도 ID를 넘겨줘야 화면과 똑같은 이미지가 저장됨!
-              future: UnsplashService.fetchDailyImage(
-                query: 'sky',
-                uniqueId: verseData['reference'], 
-              ),
+              future: _imageFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return OptimizedImage(
-                    imagePath: verseData['image']!,
+                    imagePath: _verseData['image']!,
                     width: cardWidth,
                     height: cardHeight,
                     fit: BoxFit.cover,
                   );
                 } else if (snapshot.hasError || !snapshot.hasData) {
                   return OptimizedImage(
-                    imagePath: verseData['image']!,
+                    imagePath: _verseData['image']!,
                     width: cardWidth,
                     height: cardHeight,
                     fit: BoxFit.cover,
@@ -166,7 +181,6 @@ class VerseCardState extends State<VerseCard> {
                 } else {
                   final imageData = snapshot.data!;
                   final imageUrl = imageData['url']!;
-                  final author = imageData['author']!;
 
                   return Stack(
                     fit: StackFit.expand,
@@ -183,7 +197,7 @@ class VerseCardState extends State<VerseCard> {
                           ),
                         ),
                         errorWidget: OptimizedImage(
-                          imagePath: verseData['image']!,
+                          imagePath: _verseData['image']!,
                           width: cardWidth,
                           height: cardHeight,
                           fit: BoxFit.cover,
@@ -208,7 +222,7 @@ class VerseCardState extends State<VerseCard> {
                   children: [
                     // Verse Text
                     Text(
-                      verseData['text']!,
+                      _verseData['text']!,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.nanumMyeongjo(
                         color: Colors.white,
@@ -223,7 +237,7 @@ class VerseCardState extends State<VerseCard> {
                     const SizedBox(height: 16),
                     // Verse Reference
                     Text(
-                      verseData['reference']!,
+                      _verseData['reference']!,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.nanumMyeongjo(
                         fontSize: 14,
@@ -257,8 +271,6 @@ class VerseCardState extends State<VerseCard> {
             ? screenWidth - 40 
             : cardWidth * 5 / 4; 
     
-    final verseData = _getVerseData();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -283,22 +295,19 @@ class VerseCardState extends State<VerseCard> {
                 fit: StackFit.expand,
                 children: [
                   FutureBuilder<Map<String, String>>(
-                    // ✨ [핵심 수정 3] 화면 표시용 카드에도 ID 적용 (잘하셨음!)
-                    future: UnsplashService.fetchDailyImage(
-                      query: 'sky',
-                      uniqueId: verseData['reference'], 
-                    ),
+                    // 캐싱된 Future 사용 - rebuild 시 깜빡임 방지
+                    future: _imageFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return OptimizedImage(
-                          imagePath: verseData['image']!,
+                          imagePath: _verseData['image']!,
                           width: cardWidth,
                           height: cardHeight,
                           fit: BoxFit.cover,
                         );
                       } else if (snapshot.hasError || !snapshot.hasData) {
                         return OptimizedImage(
-                          imagePath: verseData['image']!,
+                          imagePath: _verseData['image']!,
                           width: cardWidth,
                           height: cardHeight,
                           fit: BoxFit.cover,
@@ -306,7 +315,6 @@ class VerseCardState extends State<VerseCard> {
                       } else {
                         final imageData = snapshot.data!;
                         final imageUrl = imageData['url']!;
-                        final author = imageData['author']!;
 
                         return Stack(
                           fit: StackFit.expand,
@@ -323,7 +331,7 @@ class VerseCardState extends State<VerseCard> {
                                 ),
                               ),
                               errorWidget: OptimizedImage(
-                                imagePath: verseData['image']!,
+                                imagePath: _verseData['image']!,
                                 width: cardWidth,
                                 height: cardHeight,
                                 fit: BoxFit.cover,
@@ -348,7 +356,7 @@ class VerseCardState extends State<VerseCard> {
                         children: [
                           // Verse Text
                           Text(
-                            verseData['text']!,
+                            _verseData['text']!,
                             style: GoogleFonts.nanumMyeongjo(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
@@ -364,7 +372,7 @@ class VerseCardState extends State<VerseCard> {
                           
                           // Verse Reference
                           Text(
-                            verseData['reference']!,
+                            _verseData['reference']!,
                             style: GoogleFonts.nanumMyeongjo(
                               fontSize: 14,
                               color: Colors.white70,
