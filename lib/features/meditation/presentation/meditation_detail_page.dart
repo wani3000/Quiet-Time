@@ -440,7 +440,15 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       ? '${parsedDate.year}년 ${parsedDate.month}월 ${parsedDate.day}일'
       : widget.date;
 
-    return Scaffold(
+    return GestureDetector(
+      // 좌→우 스와이프로 뒤로가기
+      onHorizontalDragEnd: (details) {
+        // 스와이프 속도가 충분히 빠르고, 오른쪽 방향일 때
+        if (details.primaryVelocity != null && details.primaryVelocity! > 300) {
+          _navigateBack();
+        }
+      },
+      child: Scaffold(
       backgroundColor: Colors.white, // 강제로 화이트 배경 설정
       extendBody: true, // body가 bottomNavigationBar 뒤로 확장되도록
       appBar: AppBar(
@@ -679,6 +687,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
         ),
       ),
       bottomNavigationBar: _buildFloatingActionButtons(),
+      ),
     );
   }
 

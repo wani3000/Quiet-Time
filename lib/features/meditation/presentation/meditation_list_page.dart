@@ -7,8 +7,38 @@ import '../../../services/memo_service.dart';
 import '../../../services/config_service.dart';
 import '../../../core/utils/image_cache_manager.dart';
 
-class MeditationListPage extends ConsumerWidget {
+// 스크롤 위치를 페이지 외부에서 유지 (페이지가 다시 생성되어도 유지됨)
+double _savedScrollOffset = 0.0;
+
+class MeditationListPage extends ConsumerStatefulWidget {
   const MeditationListPage({super.key});
+
+  @override
+  ConsumerState<MeditationListPage> createState() => _MeditationListPageState();
+}
+
+class _MeditationListPageState extends ConsumerState<MeditationListPage> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    // 저장된 스크롤 위치로 초기화
+    _scrollController = ScrollController(initialScrollOffset: _savedScrollOffset);
+    // 스크롤 위치 변경 시 저장
+    _scrollController.addListener(_saveScrollPosition);
+  }
+
+  void _saveScrollPosition() {
+    _savedScrollOffset = _scrollController.offset;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_saveScrollPosition);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   String _getVersePreview(String date) {
     // VerseDatabase와 동일한 데이터 소스 사용
@@ -102,7 +132,7 @@ class MeditationListPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return FutureBuilder<DateTime>(
       future: ConfigService.getInstallDate(),
       builder: (context, snapshot) {
@@ -146,6 +176,7 @@ class MeditationListPage extends ConsumerWidget {
       body: Container(
         color: Colors.white, // 그라디언트 대신 단색 배경
         child: ListView(
+          controller: _scrollController, // 스크롤 위치 유지를 위한 컨트롤러
           // ✨ [핵심 수정] 하단(bottom)에 120px 여유를 줘서 가려지지 않게 함
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 120),
           children: [
