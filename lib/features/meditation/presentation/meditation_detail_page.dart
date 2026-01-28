@@ -18,10 +18,12 @@ import '../../home/widgets/verse_card.dart';
 
 class MeditationDetailPage extends ConsumerStatefulWidget {
   final String date;
+  final bool fromHome;
   
   const MeditationDetailPage({
     super.key,
     required this.date,
+    this.fromHome = false, // 기본값: 묵상 목록에서 진입
   });
 
   @override
@@ -423,8 +425,12 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   }
 
   void _navigateBack() {
-    // iOS 스타일의 간단한 뒤로가기
-    context.go('/meditation');
+    // 진입 경로에 따라 다른 곳으로 이동
+    if (widget.fromHome) {
+      context.go('/'); // 홈으로
+    } else {
+      context.go('/meditation'); // 묵상 목록으로
+    }
   }
 
 

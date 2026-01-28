@@ -58,7 +58,9 @@ class AppRouter {
         name: 'meditation-detail',
         builder: (context, state) {
           final date = state.pathParameters['date'] ?? '';
-          return MeditationDetailPage(date: date);
+          // 진입 경로를 query parameter로 전달 (from=home 또는 from=list)
+          final from = state.uri.queryParameters['from'] ?? 'list';
+          return MeditationDetailPage(date: date, fromHome: from == 'home');
         },
         routes: [
           GoRoute(

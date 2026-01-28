@@ -203,15 +203,8 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                   ),
                   
                   // White container with cards
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
+                  Column(
+                    children: [
                         ...monthDates.asMap().entries.map((dateEntry) {
                           final dateIndex = dateEntry.key;
                           final date = dateEntry.value;
@@ -319,9 +312,8 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                                 const SizedBox(height: 12),
                             ],
                           );
-                        }).toList(),
-                      ],
-                    ),
+                      }).toList(),
+                    ],
                   ),
                   
                   // Spacing between month sections
