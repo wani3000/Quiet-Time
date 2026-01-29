@@ -30,6 +30,10 @@ class ConfigService {
     }
   }
   
+  /// 테스트용 1월 1일 가데이터 여부 (제거용 마이그레이션)
+  static bool _isTestInstallDate(DateTime d) =>
+      (d.year == 2025 || d.year == 2026) && d.month == 1 && d.day == 1;
+
   /// 앱 설치 날짜를 가져옵니다
   static Future<DateTime> getInstallDate() async {
     try {
@@ -37,13 +41,19 @@ class ConfigService {
       final dateString = prefs.getString(_installDateKey);
       
       if (dateString != null) {
-        return DateTime.parse(dateString);
+        final parsed = DateTime.parse(dateString);
+        if (_isTestInstallDate(parsed)) {
+          final today = DateTime.now();
+          final newDate = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+          await prefs.setString(_installDateKey, newDate);
+          return today;
+        }
+        return parsed;
       }
     } catch (e) {
       print('설치 날짜 불러오기 실패: $e');
     }
     
-    // 설치 날짜가 없으면 오늘 날짜 반환
     return DateTime.now();
   }
   

@@ -216,7 +216,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                               // Card item
                               InkWell(
                                 onTap: () {
-                                  context.go('/meditation/detail/$dateString');
+                                  context.push('/meditation/detail/$dateString');
                                 },
                                 child: Container(
                                   height: 56,

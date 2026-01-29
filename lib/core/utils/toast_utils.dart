@@ -32,7 +32,7 @@ class ToastUtils {
           ),
           textAlign: TextAlign.center,
         ),
-        backgroundColor: const Color(0xFF1A1A1A),
+        backgroundColor: const Color(0xFF1A1A1A).withOpacity(0.7),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),

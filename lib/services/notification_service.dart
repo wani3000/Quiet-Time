@@ -182,42 +182,6 @@ class NotificationService {
     }
   }
   
-  /// 즉시 테스트 알림 보내기 (개발용)
-  static Future<void> showTestNotification() async {
-    try {
-      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-        'test_channel',
-        '테스트 알림',
-        channelDescription: '알림 테스트용',
-        importance: Importance.high,
-        priority: Priority.high,
-      );
-      
-      const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true,
-      );
-      
-      const NotificationDetails notificationDetails = NotificationDetails(
-        android: androidDetails,
-        iOS: iosDetails,
-      );
-      
-      await _notifications.show(
-        999, // test notification id
-        '오늘의 말씀이 도착했어요!',
-        '새로운 말씀으로 하루를 시작해보세요.',
-        notificationDetails,
-        payload: 'test_notification', // 테스트 알림 페이로드
-      );
-      
-      debugPrint('테스트 알림 전송 완료');
-    } catch (e) {
-      debugPrint('테스트 알림 전송 실패: $e');
-    }
-  }
-  
   /// 모든 알림 취소
   static Future<void> cancelAllNotifications() async {
     try {

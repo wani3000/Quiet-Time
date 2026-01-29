@@ -425,11 +425,16 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   }
 
   void _navigateBack() {
-    // 진입 경로에 따라 다른 곳으로 이동
-    if (widget.fromHome) {
-      context.go('/'); // 홈으로
+    // pop()을 사용하여 뒤로가기 애니메이션 적용
+    if (context.canPop()) {
+      context.pop();
     } else {
-      context.go('/meditation'); // 묵상 목록으로
+      // 스택이 비어있는 경우 (딥링크 등)
+      if (widget.fromHome) {
+        context.go('/');
+      } else {
+        context.go('/meditation');
+      }
     }
   }
 
@@ -446,47 +451,53 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       ? '${parsedDate.year}년 ${parsedDate.month}월 ${parsedDate.day}일'
       : widget.date;
 
+    final routeAnimation = ModalRoute.of(context)?.animation ?? const AlwaysStoppedAnimation(1.0);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
     return GestureDetector(
       // 좌→우 스와이프로 뒤로가기
       onHorizontalDragEnd: (details) {
-        // 스와이프 속도가 충분히 빠르고, 오른쪽 방향일 때
         if (details.primaryVelocity != null && details.primaryVelocity! > 300) {
           _navigateBack();
         }
       },
-      child: Scaffold(
-      backgroundColor: Colors.white, // 강제로 화이트 배경 설정
-      extendBody: true, // body가 bottomNavigationBar 뒤로 확장되도록
-      appBar: AppBar(
-        backgroundColor: Colors.white, // AppBar 배경도 화이트로
-        title: Text(
-          displayDate,
-          style: const TextStyle(fontSize: 14),
-        ),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: _navigateBack,
-        ),
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColors.slate50,
-              AppColors.white,
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24), // px-5 py-6
-          child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Body only (슬라이드 애니메이션 대상)
+          Scaffold(
+            backgroundColor: Colors.white,
+            extendBody: true,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Text(
+                displayDate,
+                style: const TextStyle(fontSize: 14),
+              ),
+              elevation: 0,
+              surfaceTintColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _navigateBack,
+              ),
+            ),
+            body: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.slate50,
+                    AppColors.white,
+                  ],
+                ),
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
             // Verse Card Thumbnail
             RepaintBoundary(
               key: _cardKey,
@@ -686,27 +697,79 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                     ),
             ),
             
-            // 하단 여백 (플로팅 버튼을 위한 공간)
-            const SizedBox(height: 120),
-          ],
+                    // 하단 여백 (플로팅 바를 위한 공간)
+                    const SizedBox(height: 120),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: _buildFloatingActionButtons(),
+          // 네비 바: 페이지 슬라이드와 무관하게 고정, 아이콘/라벨만 아래→위 디졸브
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildNavBarOverlay(routeAnimation, screenWidth),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildFloatingActionButtons() {
+  Widget _buildNavBarOverlay(Animation<double> routeAnimation, double screenWidth) {
+    return AnimatedBuilder(
+      animation: routeAnimation,
+      builder: (context, _) {
+        final t = routeAnimation.value;
+        final opacity = Curves.easeOut.transform(t);
+        final slideUpDy = 12 * (1 - t); // 아래→위 디졸브 (px)
+        final counterDx = -(1 - t) * screenWidth;
+
+        return Transform.translate(
+          offset: Offset(counterDx, 0),
+          child: _buildFloatingActionButtons(
+            contentOpacity: opacity,
+            contentOffsetY: slideUpDy,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFloatingActionButtons({
+    double contentOpacity = 1,
+    double contentOffsetY = 0,
+  }) {
+    final content = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildActionButton(
+          icon: _isDownloading
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.slate600),
+                )
+              : const Icon(Icons.download, size: 24),
+          label: _isDownloading ? '처리중...' : '다운로드',
+          onTap: _isDownloading ? null : _downloadCard,
+          isLoading: _isDownloading,
+        ),
+        _buildActionButton(
+          icon: const Icon(Icons.share, size: 24),
+          label: '공유하기',
+          onTap: _shareMeditation,
+          isLoading: false,
+        ),
+      ],
+    );
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24), // 좌우 24px, 하단 24px 마진
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: const Color(0xFFF1F3F5),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(200), // 전체 모서리를 둥글게
+        border: Border.all(color: const Color(0xFFF1F3F5), width: 1),
+        borderRadius: BorderRadius.circular(200),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -717,32 +780,13 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       ),
       child: Container(
         height: 80,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 56,  // 좌우 패딩
-          vertical: 8,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildActionButton(
-              icon: _isDownloading 
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.slate600),
-                    )
-                  : const Icon(Icons.download, size: 24),
-              label: _isDownloading ? '처리중...' : '다운로드',
-              onTap: _isDownloading ? null : _downloadCard,
-              isLoading: _isDownloading,
-            ),
-            _buildActionButton(
-              icon: const Icon(Icons.share, size: 24),
-              label: '공유하기',
-              onTap: _shareMeditation,
-              isLoading: false,
-            ),
-          ],
+        padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+        child: Transform.translate(
+          offset: Offset(0, contentOffsetY),
+          child: Opacity(
+            opacity: contentOpacity,
+            child: content,
+          ),
         ),
       ),
     );

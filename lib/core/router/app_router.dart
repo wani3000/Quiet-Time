@@ -56,11 +56,38 @@ class AppRouter {
       GoRoute(
         path: '/meditation/detail/:date',
         name: 'meditation-detail',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final date = state.pathParameters['date'] ?? '';
           // 진입 경로를 query parameter로 전달 (from=home 또는 from=list)
           final from = state.uri.queryParameters['from'] ?? 'list';
-          return MeditationDetailPage(date: date, fromHome: from == 'home');
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: MeditationDetailPage(date: date, fromHome: from == 'home'),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              // iOS 스타일 슬라이드 애니메이션
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              
+              // 뒤로가기 시 이전 페이지가 살짝 왼쪽으로 밀리는 효과
+              var secondaryTween = Tween(begin: Offset.zero, end: const Offset(-0.3, 0.0))
+                  .chain(CurveTween(curve: curve));
+              var secondaryOffsetAnimation = secondaryAnimation.drive(secondaryTween);
+              
+              return SlideTransition(
+                position: secondaryOffsetAnimation,
+                child: SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                ),
+              );
+            },
+          );
         },
         routes: [
           GoRoute(
@@ -122,46 +149,55 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
     }
   }
 
-  Widget _buildCustomBottomNavigationBar() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24), // 좌우 24px, 하단 24px 마진 추가
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: const Color(0xFFF1F3F5),
-          width: 1,
+  Widget _buildCustomBottomNavigationBar({
+    double contentOpacity = 1,
+    double contentOffsetY = 0,
+    double counterDx = 0,
+  }) {
+    final content = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildNavItem(
+          index: 0,
+          iconPath: _currentIndex == 0 ? 'assets/images/ic_home_black.svg' : 'assets/images/ic_home_gray.svg',
+          label: '홈',
+          isSelected: _currentIndex == 0,
         ),
-        borderRadius: BorderRadius.circular(200), // radius를 200으로 변경
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
+        _buildNavItem(
+          index: 1,
+          iconPath: _currentIndex == 1 ? 'assets/images/ic_pray_black.svg' : 'assets/images/ic_pray_gray.svg',
+          label: '묵상',
+          isSelected: _currentIndex == 1,
+        ),
+      ],
+    );
+
+    return Transform.translate(
+      offset: Offset(counterDx, 0),
       child: Container(
-        height: 64,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 56,  // Figma 디자인의 56px 패딩
-          vertical: 0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-          _buildNavItem(
-            index: 0,
-            iconPath: _currentIndex == 0 ? 'assets/images/ic_home_black.svg' : 'assets/images/ic_home_gray.svg',
-            label: '홈',
-            isSelected: _currentIndex == 0,
-          ),
-          _buildNavItem(
-            index: 1,
-            iconPath: _currentIndex == 1 ? 'assets/images/ic_pray_black.svg' : 'assets/images/ic_pray_gray.svg',
-            label: '묵상',
-            isSelected: _currentIndex == 1,
-          ),
+        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: const Color(0xFFF1F3F5), width: 1),
+          borderRadius: BorderRadius.circular(200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+            ),
           ],
+        ),
+        child: Container(
+          height: 80,
+          padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+          child: Transform.translate(
+            offset: Offset(0, contentOffsetY),
+            child: Opacity(
+              opacity: contentOpacity,
+              child: content,
+            ),
+          ),
         ),
       ),
     );
@@ -195,11 +231,11 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                 colorFilter: null, // SVG 자체 색상 사용
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Pretendard',
                 color: isSelected ? const Color(0xFF212529) : const Color(0xFFADB5BD),
@@ -213,39 +249,45 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // URL 기반으로 현재 탭 인덱스 결정
     final location = GoRouterState.of(context).uri.path;
-    
-    // 현재 URL에 따라 올바른 탭 인덱스 설정
-    int correctIndex;
-    if (location == '/meditation') {
-      correctIndex = 1;
-    } else {
-      correctIndex = 0; // 홈 또는 기타 경로
-    }
-    
-    // 현재 인덱스가 URL과 다르면 setState로 동기화
+    int correctIndex = location == '/meditation' ? 1 : 0;
     if (_currentIndex != correctIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _currentIndex = correctIndex;
-          });
-        }
+        if (mounted) setState(() => _currentIndex = correctIndex);
       });
     }
-    
+
+    final secondary = ModalRoute.of(context)?.secondaryAnimation ?? const AlwaysStoppedAnimation<double>(0);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
-      backgroundColor: Colors.white, // 강제로 화이트 배경 설정
-      extendBody: true, // body가 bottomNavigationBar 뒤로 확장되도록
-      body: IndexedStack(
-        index: _currentIndex,
-        children: const [
-          HomePage(),
-          MeditationListPage(),
+      backgroundColor: Colors.white,
+      extendBody: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          IndexedStack(
+            index: _currentIndex,
+            children: const [HomePage(), MeditationListPage()],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: AnimatedBuilder(
+              animation: secondary,
+              builder: (context, _) {
+                final t = secondary.value;
+                return _buildCustomBottomNavigationBar(
+                  contentOpacity: 1,
+                  contentOffsetY: 0,
+                  counterDx: t * screenWidth,
+                );
+              },
+            ),
+          ),
         ],
       ),
-      bottomNavigationBar: _buildCustomBottomNavigationBar(),
     );
   }
 }

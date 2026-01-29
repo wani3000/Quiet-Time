@@ -1,552 +1,1107 @@
 import '../services/unsplash_service.dart';
 
 /// 1000개의 성경 말씀 데이터베이스
-/// 전체 성경에서 선별된 말씀들 (최대 3장 이내)
+/// 전체 성경에서 선별된 말씀들
 class VerseDatabase {
+  static String _img(int n) => 'assets/images/bg${(n % 5) + 1}.jpg';
+  
   static const List<Map<String, String>> verses = [
-    // 창세기
-    {
-      'text': "태초에 하나님이 천지를 창조하시니라",
-      'reference': "창세기 1:1",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "하나님이 이르시되 빛이 있으라 하시니 빛이 있었고",
-      'reference': "창세기 1:3",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "하나님이 자기 형상 곧 하나님의 형상대로 사람을 창조하시되\n남자와 여자를 창조하시고",
-      'reference': "창세기 1:27",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "여호와 하나님이 아담과 그의 아내를 위하여\n가죽옷을 지어 입히시니라",
-      'reference': "창세기 3:21",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "내가 내 무지개를 구름 사이에 두었나니\n이것이 나와 세상 사이의 언약의 증거니라",
-      'reference': "창세기 9:13",
-      'image': 'assets/images/bg5.jpg'
-    },
+    // ========== 구약 성경 ==========
     
-    // 출애굽기
-    {
-      'text': "나는 스스로 있는 자니라",
-      'reference': "출애굽기 3:14",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "너는 나 외에는 다른 신들을 네게 두지 말라",
-      'reference': "출애굽기 20:3",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "네 부모를 공경하라\n그리하면 네 하나님 여호와가 네게 준 땅에서 네 생명이 길리라",
-      'reference': "출애굽기 20:12",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "여호와는 자비롭고 은혜롭고 노하기를 더디하고\n인자와 진실이 많은 하나님이라",
-      'reference': "출애굽기 34:6",
-      'image': 'assets/images/bg4.jpg'
-    },
+    // 창세기 (20개)
+    {'text': "태초에 하나님이 천지를 창조하시니라", 'reference': "창세기 1:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이 이르시되 빛이 있으라 하시니 빛이 있었고", 'reference': "창세기 1:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이 자기 형상 곧 하나님의 형상대로 사람을 창조하시되 남자와 여자를 창조하시고", 'reference': "창세기 1:27", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님이 그들에게 복을 주시며 하나님이 그들에게 이르시되 생육하고 번성하여 땅에 충만하라", 'reference': "창세기 1:28", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님이 지으신 모든 것을 보시니 보시기에 심히 좋았더라", 'reference': "창세기 1:31", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와 하나님이 아담과 그의 아내를 위하여 가죽옷을 지어 입히시니라", 'reference': "창세기 3:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 내 무지개를 구름 사이에 두었나니 이것이 나와 세상 사이의 언약의 증거니라", 'reference': "창세기 9:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 너로 큰 민족을 이루고 네게 복을 주어 네 이름을 창대하게 하리니 너는 복이 될지라", 'reference': "창세기 12:2", 'image': 'assets/images/bg3.jpg'},
+    {'text': "땅의 모든 족속이 너로 말미암아 복을 얻을 것이라", 'reference': "창세기 12:3", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나는 전능한 하나님이라 너는 내 앞에서 행하여 완전하라", 'reference': "창세기 17:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 어찌 하지 못하실 일이 있겠느냐", 'reference': "창세기 18:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이 이르시되 네 아들 네 사랑하는 독자 이삭을 데리고 모리아 땅으로 가서 내가 네게 일러 준 한 산 거기서 그를 번제로 드리라", 'reference': "창세기 22:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "아브라함이 그 곳 이름을 여호와 이레라 하였으므로 오늘날까지 사람들이 이르기를 여호와의 산에서 준비되리라 하더라", 'reference': "창세기 22:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 너와 함께 있어 네가 어디로 가든지 너를 지키며 너를 이끌어 이 땅으로 돌아오게 할지라", 'reference': "창세기 28:15", 'image': 'assets/images/bg4.jpg'},
+    {'text': "당신들은 나를 해하려 하였으나 하나님은 그것을 선으로 바꾸사 오늘과 같이 많은 백성의 생명을 구원하게 하시려 하셨나니", 'reference': "창세기 50:20", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님이 반드시 너희를 돌보시고 이 땅에서 인도하여 내사 아브라함과 이삭과 야곱에게 맹세하신 땅에 이르게 하시리라", 'reference': "창세기 50:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "야곱이 아침에 일찍이 일어나 베개로 삼았던 돌을 가져다가 기둥으로 세우고 그 위에 기름을 붓고", 'reference': "창세기 28:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "네가 나와 함께 하시며 내가 가는 이 길에서 나를 지키시고 먹을 양식과 입을 옷을 주시어", 'reference': "창세기 28:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님이 요셉과 함께 하시므로 그가 형통한 자가 되어", 'reference': "창세기 39:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 요셉과 함께 하시고 그에게 인자를 더하사 간수장으로 요셉을 호의로 대하게 하시매", 'reference': "창세기 39:21", 'image': 'assets/images/bg5.jpg'},
     
-    // 레위기
-    {
-      'text': "너희는 거룩하라 나 여호와 너희 하나님이 거룩함이니라",
-      'reference': "레위기 19:2",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "네 이웃 사랑하기를 네 자신과 같이 사랑하라\n나는 여호와니라",
-      'reference': "레위기 19:18",
-      'image': 'assets/images/bg1.jpg'
-    },
+    // 출애굽기 (15개)
+    {'text': "나는 스스로 있는 자니라", 'reference': "출애굽기 3:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너는 나 외에는 다른 신들을 네게 두지 말라", 'reference': "출애굽기 20:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "네 부모를 공경하라 그리하면 네 하나님 여호와가 네게 준 땅에서 네 생명이 길리라", 'reference': "출애굽기 20:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와는 자비롭고 은혜롭고 노하기를 더디하고 인자와 진실이 많은 하나님이라", 'reference': "출애굽기 34:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 애굽 사람에게 행한 일과 내가 어떻게 독수리 날개로 너희를 업어 내게로 인도하였음을 너희가 보았느니라", 'reference': "출애굽기 19:4", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 너희 앞서 가시며 낮에는 구름 기둥으로 그들의 길을 인도하시고 밤에는 불 기둥으로 그들에게 비추사", 'reference': "출애굽기 13:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 나의 힘이요 나의 노래시며 나의 구원이시로다 그는 나의 하나님이시니 내가 그를 찬송할 것이요", 'reference': "출애굽기 15:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희는 두려워하지 말고 가만히 서서 여호와께서 오늘 너희를 위하여 행하시는 구원을 보라", 'reference': "출애굽기 14:13", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와께서 너희를 위하여 싸우시리니 너희는 가만히 있을지니라", 'reference': "출애굽기 14:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "안식일을 기억하여 거룩하게 지키라", 'reference': "출애굽기 20:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "살인하지 말라", 'reference': "출애굽기 20:13", 'image': 'assets/images/bg1.jpg'},
+    {'text': "간음하지 말라", 'reference': "출애굽기 20:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "도둑질하지 말라", 'reference': "출애굽기 20:15", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네 이웃에 대하여 거짓 증거하지 말라", 'reference': "출애굽기 20:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네 이웃의 집을 탐내지 말라 네 이웃의 아내나 그의 남종이나 그의 여종이나 그의 소나 그의 나귀나 무릇 네 이웃의 소유를 탐내지 말라", 'reference': "출애굽기 20:17", 'image': 'assets/images/bg5.jpg'},
     
-    // 민수기
-    {
-      'text': "여호와는 네게 복을 주시고 너를 지키시기를 원하며\n여호와는 그의 얼굴을 네게 비추사 은혜 베푸시기를 원하며",
-      'reference': "민수기 6:24-25",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "여호와는 그의 얼굴을 네게로 향하여 드사 평강 주시기를 원하노라",
-      'reference': "민수기 6:26",
-      'image': 'assets/images/bg3.jpg'
-    },
+    // 레위기 (8개)
+    {'text': "너희는 거룩하라 나 여호와 너희 하나님이 거룩함이니라", 'reference': "레위기 19:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네 이웃 사랑하기를 네 자신과 같이 사랑하라 나는 여호와니라", 'reference': "레위기 19:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 너희 중에 행하여 너희의 하나님이 되고 너희는 나의 백성이 될 것이니라", 'reference': "레위기 26:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 이방인을 너희 중에 난 자 같이 여기며 자기 같이 사랑하라 너희도 애굽 땅에서 거류민이 되었었느니라", 'reference': "레위기 19:34", 'image': 'assets/images/bg4.jpg'},
+    {'text': "불의한 재판을 하지 말며 가난한 자의 편을 들지 말며 세력 있는 자라고 두둔하지 말고 공의로 사람을 재판할지며", 'reference': "레위기 19:15", 'image': 'assets/images/bg5.jpg'},
+    {'text': "원수를 갚지 말며 동포를 원망하지 말며 네 이웃 사랑하기를 네 자신과 같이 사랑하라", 'reference': "레위기 19:18", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 만일 내 규례를 준행하며 내 계명을 지켜 행하면 내가 너희에게 철따라 비를 주리니", 'reference': "레위기 26:3-4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 너희 중에 행하여 너희 하나님이 되고 너희는 내 백성이 되리라", 'reference': "레위기 26:12", 'image': 'assets/images/bg3.jpg'},
     
-    // 신명기
-    {
-      'text': "이스라엘아 들으라 우리 하나님 여호와는 오직 유일한 여호와이시니",
-      'reference': "신명기 6:4",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "너는 마음을 다하고 뜻을 다하고 힘을 다하여\n네 하나님 여호와를 사랑하라",
-      'reference': "신명기 6:5",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "강하고 담대하라\n두려워하지 말며 놀라지 말라\n네 하나님 여호와가 네가 가는 곳마다 너와 함께 하느니라",
-      'reference': "신명기 31:6",
-      'image': 'assets/images/bg1.jpg'
-    },
+    // 민수기 (8개)
+    {'text': "여호와는 네게 복을 주시고 너를 지키시기를 원하며", 'reference': "민수기 6:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와는 그의 얼굴을 네게 비추사 은혜 베푸시기를 원하며", 'reference': "민수기 6:25", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와는 그의 얼굴을 네게로 향하여 드사 평강 주시기를 원하노라", 'reference': "민수기 6:26", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님은 사람이 아니시니 거짓말을 하지 않으시고 인생이 아니시니 후회가 없으시도다", 'reference': "민수기 23:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "어찌 하나님이 복을 주신 자를 내가 저주하며 여호와께서 꾸짖지 아니하시는 자를 내가 어찌 꾸짖으리요", 'reference': "민수기 23:8", 'image': 'assets/images/bg3.jpg'},
+    {'text': "야곱의 장막이 어찌 그리 아름다운가 이스라엘의 거처가 어찌 그리 아름다운가", 'reference': "민수기 24:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "한 별이 야곱에게서 나오며 한 규가 이스라엘에게서 일어나서", 'reference': "민수기 24:17", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 말씀하신 것은 반드시 행하실 것이니라", 'reference': "민수기 23:19", 'image': 'assets/images/bg1.jpg'},
     
-    // 여호수아
-    {
-      'text': "내가 네게 명령한 것이 아니냐\n강하고 담대하라\n두려워하지 말며 놀라지 말라\n네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라",
-      'reference': "여호수아 1:9",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "오직 너는 마음을 다하고 뜻을 다하여\n모세의 종 곧 나의 종이 네게 명령한 율법을 지켜 행하라",
-      'reference': "여호수아 1:7",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "나와 내 집은 여호와를 섬기겠노라",
-      'reference': "여호수아 24:15",
-      'image': 'assets/images/bg4.jpg'
-    },
+    // 신명기 (15개)
+    {'text': "이스라엘아 들으라 우리 하나님 여호와는 오직 유일한 여호와이시니", 'reference': "신명기 6:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너는 마음을 다하고 뜻을 다하고 힘을 다하여 네 하나님 여호와를 사랑하라", 'reference': "신명기 6:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "강하고 담대하라 두려워하지 말며 놀라지 말라 네 하나님 여호와가 네가 가는 곳마다 너와 함께 하느니라", 'reference': "신명기 31:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네 하나님 여호와는 네 가운데에 계시니 구원을 베푸실 전능자이시라", 'reference': "신명기 7:21", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 너희에게 마음을 두시고 너희를 택하심은 너희가 다른 민족보다 수가 많기 때문이 아니라", 'reference': "신명기 7:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 네가 알게 하려 하심이니라", 'reference': "신명기 8:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "네 하나님 여호와를 기억하라 그가 네게 재물 얻을 능력을 주셨음이라", 'reference': "신명기 8:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와 너희 하나님은 신 중의 신이시며 주 중의 주시요 크고 능하시며 두려우신 하나님이시라", 'reference': "신명기 10:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네가 오늘 선택하라 생명과 복을 선택하면 너와 네 자손이 살리라", 'reference': "신명기 30:19", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그는 반석이시니 그의 공덕은 완전하고 그의 모든 길은 정의롭고 진실하고 거짓이 없으신 하나님이시니 공의로우시고 바르시도다", 'reference': "신명기 32:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "영원하신 하나님이 네 처소가 되시니 그의 영원하신 팔이 네 아래에 있도다", 'reference': "신명기 33:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이스라엘이여 너는 행복한 사람이로다 여호와의 구원을 너 같이 얻은 백성이 누구냐", 'reference': "신명기 33:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네가 누워도 두렵지 않고 누우면 네 잠이 달리라", 'reference': "신명기 33:25", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네 문빗장은 철과 놋이 될 것이요 네가 사는 날을 따라서 능력이 있으리로다", 'reference': "신명기 33:25", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그가 이르시되 내 얼굴이 친히 가리라 내가 너를 쉬게 하리라", 'reference': "신명기 31:8", 'image': 'assets/images/bg1.jpg'},
     
-    // 룻기
-    {
-      'text': "어머니께서 가시는 곳에 나도 가고\n어머니께서 머무시는 곳에서 나도 머물겠나이다",
-      'reference': "룻기 1:16",
-      'image': 'assets/images/bg5.jpg'
-    },
+    // 여호수아 (12개)
+    {'text': "내가 네게 명령한 것이 아니냐 강하고 담대하라 두려워하지 말며 놀라지 말라 네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라", 'reference': "여호수아 1:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "오직 너는 마음을 다하고 뜻을 다하여 모세의 종이 네게 명령한 율법을 지켜 행하라", 'reference': "여호수아 1:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나와 내 집은 여호와를 섬기겠노라", 'reference': "여호수아 24:15", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이 율법책을 네 입에서 떠나지 말게 하며 주야로 그것을 묵상하여 그 안에 기록된 대로 다 지켜 행하라", 'reference': "여호수아 1:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 이스라엘에게 주기로 맹세하신 온 땅을 다 주셨으므로 그들이 그것을 받아 거기 거주하였으며", 'reference': "여호수아 21:43", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희 하나님 여호와께서 너희에게 말씀하신 모든 좋은 말씀이 하나도 틀리지 아니하고 다 너희에게 응하였느니라", 'reference': "여호수아 23:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희는 삼가 너희 하나님 여호와를 사랑하라", 'reference': "여호수아 23:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오직 여호와께 속하였느니라", 'reference': "여호수아 3:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "담대하라 두려워하지 말라 놀라지 말라 여호와께서 너와 함께 계시느니라", 'reference': "여호수아 1:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "우리 하나님 여호와를 섬기고 그의 목소리를 청종하리라", 'reference': "여호수아 24:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와께서 너희 원수들 앞에서 너희를 위하여 싸우시리니", 'reference': "여호수아 23:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "한 사람이 천 명을 쫓으리니 이는 너희의 하나님 여호와 그가 너희를 위하여 싸우심이니라", 'reference': "여호수아 23:10", 'image': 'assets/images/bg3.jpg'},
     
-    // 사무엘상
-    {
-      'text': "사람은 외모를 보거니와 나 여호와는 중심을 보느니라",
-      'reference': "사무엘상 16:7",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "여호와의 구원하심이 칼과 창에 있지 아니함을\n이 무리로 알게 하리라",
-      'reference': "사무엘상 17:47",
-      'image': 'assets/images/bg2.jpg'
-    },
+    // 룻기 (5개)
+    {'text': "어머니께서 가시는 곳에 나도 가고 어머니께서 머무시는 곳에서 나도 머물겠나이다", 'reference': "룻기 1:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "어머니의 백성이 나의 백성이 되고 어머니의 하나님이 나의 하나님이 되시리니", 'reference': "룻기 1:16", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 네 행위에 보답하시기를 원하며 네가 피난처로 그 날개 아래로 온 이스라엘의 하나님 여호와께 온전한 상급을 받기를 원하노라", 'reference': "룻기 2:12", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내 딸아 두려워하지 말라 네 말대로 네게 다 행하리라", 'reference': "룻기 3:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그가 너를 후대하여 네 노년에 의탁할 자가 되리로다", 'reference': "룻기 4:15", 'image': 'assets/images/bg3.jpg'},
     
-    // 사무엘하
-    {
-      'text': "여호와는 나의 반석이시요 나의 요새시요 나를 건지시는 자시요",
-      'reference': "사무엘하 22:2",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "주의 인자하심이 하늘에 있고\n주의 진실하심이 공중에 사무쳤으며",
-      'reference': "사무엘하 22:51",
-      'image': 'assets/images/bg4.jpg'
-    },
+    // 사무엘상 (12개)
+    {'text': "사람은 외모를 보거니와 나 여호와는 중심을 보느니라", 'reference': "사무엘상 16:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와의 구원하심이 칼과 창에 있지 아니함을 이 무리로 알게 하리라", 'reference': "사무엘상 17:47", 'image': 'assets/images/bg5.jpg'},
+    {'text': "순종이 제사보다 낫고 듣는 것이 숫양의 기름보다 나으니", 'reference': "사무엘상 15:22", 'image': 'assets/images/bg1.jpg'},
+    {'text': "말씀하옵소서 주의 종이 듣겠나이다", 'reference': "사무엘상 3:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사무엘이 이르되 여호와를 따라 행하고 그를 섬기고 그의 목소리를 청종하며", 'reference': "사무엘상 12:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와 앞에서 전쟁은 여호와께 속한 것인즉 그가 너희를 우리 손에 넘기시리라", 'reference': "사무엘상 17:47", 'image': 'assets/images/bg4.jpg'},
+    {'text': "한나가 기도하여 이르되 내 마음이 여호와로 말미암아 즐거워하며 내 뿔이 여호와로 말미암아 높아졌으며", 'reference': "사무엘상 2:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와는 죽이기도 하시고 살리기도 하시며 스올에 내리게도 하시고 올리기도 하시는도다", 'reference': "사무엘상 2:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 가난하게도 하시고 부하게도 하시며 낮추기도 하시고 높이기도 하시는도다", 'reference': "사무엘상 2:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와를 경외하고 그를 섬기며 그의 목소리를 청종하라", 'reference': "사무엘상 12:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "다만 여호와를 경외하여 진실한 마음으로 섬기라 그가 너희를 위하여 큰 일 행하심을 생각하라", 'reference': "사무엘상 12:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서는 자기 큰 이름을 위하여 그의 백성을 버리지 아니하시리니", 'reference': "사무엘상 12:22", 'image': 'assets/images/bg5.jpg'},
     
-    // 열왕기상
-    {
-      'text': "네 하나님 여호와 앞에서 행하되\n마음을 온전히 하고 정직하게 행하여",
-      'reference': "열왕기상 9:4",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "여호와는 하나님이시요 다른 이가 없다 하셨나이다",
-      'reference': "열왕기상 8:60",
-      'image': 'assets/images/bg1.jpg'
-    },
+    // 사무엘하 (8개)
+    {'text': "여호와는 나의 반석이시요 나의 요새시요 나를 건지시는 자시요", 'reference': "사무엘하 22:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "주의 인자하심이 하늘에 있고 주의 진실하심이 공중에 사무쳤으며", 'reference': "사무엘하 22:51", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와는 나의 빛과 나의 구원이시니 내가 누구를 두려워하리요", 'reference': "사무엘하 22:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님의 도는 완전하고 여호와의 말씀은 정제되었으니 그는 자기에게 피하는 모든 자에게 방패시로다", 'reference': "사무엘하 22:31", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 살아 계심을 찬송하며 나의 구원의 반석이신 하나님을 높일지로다", 'reference': "사무엘하 22:47", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주께서 나를 원수들에게서 건지시고 나를 대적하는 자들 위에 높이셨으며 나를 포악한 자에게서 빼어내셨나이다", 'reference': "사무엘하 22:49", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와여 주는 나의 등불이시니 여호와께서 나의 어둠을 밝히시리이다", 'reference': "사무엘하 22:29", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주를 의지하고 달리면 적군을 칠 수 있고 나의 하나님을 의지하면 성벽을 뛰어넘을 수 있나이다", 'reference': "사무엘하 22:30", 'image': 'assets/images/bg3.jpg'},
     
-    // 열왕기하
-    {
-      'text': "여호와 앞에서 행하되 마음을 다하며\n뜻을 다하며 힘을 다하여",
-      'reference': "열왕기하 23:25",
-      'image': 'assets/images/bg2.jpg'
-    },
+    // 열왕기상 (8개)
+    {'text': "네 하나님 여호와 앞에서 행하되 마음을 온전히 하고 정직하게 행하여", 'reference': "열왕기상 9:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와는 하나님이시요 다른 이가 없다 하셨나이다", 'reference': "열왕기상 8:60", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이스라엘 하나님 여호와여 주와 같은 하나님이 위로 하늘에도 아래로 땅에도 없나이다", 'reference': "열왕기상 8:23", 'image': 'assets/images/bg1.jpg'},
+    {'text': "주께서 언약을 지키시며 마음을 다하여 주의 앞에서 행하는 종들에게 인자를 베푸시나이다", 'reference': "열왕기상 8:23", 'image': 'assets/images/bg2.jpg'},
+    {'text': "원하건대 우리 하나님 여호와께서 우리와 함께 하사 우리 조상들과 함께 하셨던 것 같이 하시고", 'reference': "열왕기상 8:57", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리를 떠나지 마시고 버리지 마시며 우리 마음을 주께로 기울게 하사", 'reference': "열왕기상 8:58", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그의 모든 도를 행하게 하시고 그가 우리 조상들에게 명령하신 계명과 법도와 규례를 지키게 하시옵소서", 'reference': "열왕기상 8:58", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이스라엘 하나님 여호와를 송축할지로다", 'reference': "열왕기상 1:48", 'image': 'assets/images/bg1.jpg'},
     
-    // 역대상
-    {
-      'text': "여호와를 찾으라 그와 그의 능력을 찾을지어다\n그의 얼굴을 항상 구할지어다",
-      'reference': "역대상 16:11",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "여호와께 감사하며 그의 이름을 불러 아뢰며\n그의 행사를 만민 중에 알게 할지어다",
-      'reference': "역대상 16:8",
-      'image': 'assets/images/bg4.jpg'
-    },
+    // 열왕기하 (5개)
+    {'text': "여호와 앞에서 행하되 마음을 다하며 뜻을 다하며 힘을 다하여", 'reference': "열왕기하 23:25", 'image': 'assets/images/bg2.jpg'},
+    {'text': "두려워하지 말라 우리와 함께 한 자가 그들과 함께 한 자보다 많으니라", 'reference': "열왕기하 6:16", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와여 원하건대 그의 눈을 열어서 보게 하옵소서", 'reference': "열왕기하 6:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이 때에 네가 잠잠하면 유대인은 다른 데로 말미암아 놓임과 구원을 얻으려니와", 'reference': "열왕기하 4:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와의 눈은 온 세상을 두루 살피사 자기를 향한 마음이 온전한 자들에게 능력을 나타내시나니", 'reference': "열왕기하 16:9", 'image': 'assets/images/bg1.jpg'},
     
-    // 역대하
-    {
-      'text': "내가 하늘을 닫고 비를 내리지 아니하거나\n혹은 메뚜기들에게 토지를 먹게 하거나",
-      'reference': "역대하 7:13",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "내 이름으로 일컫는 내 백성이 그들의 악한 길에서 떠나\n겸손하게 하고 기도하여 내 얼굴을 찾으면",
-      'reference': "역대하 7:14",
-      'image': 'assets/images/bg1.jpg'
-    },
+    // 역대상 (10개)
+    {'text': "여호와를 찾으라 그와 그의 능력을 찾을지어다 그의 얼굴을 항상 구할지어다", 'reference': "역대상 16:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와께 감사하며 그의 이름을 불러 아뢰며 그의 행사를 만민 중에 알게 할지어다", 'reference': "역대상 16:8", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그에게 노래하며 그를 찬양하며 그의 모든 기이한 일들을 말할지어다", 'reference': "역대상 16:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그의 거룩한 이름을 자랑하라 여호와를 구하는 자들은 마음이 즐거울지로다", 'reference': "역대상 16:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "온 땅이여 여호와께 노래하며 그의 구원을 날마다 전파할지어다", 'reference': "역대상 16:23", 'image': 'assets/images/bg1.jpg'},
+    {'text': "모든 민족 중에서 그의 영광을 선포하며 모든 백성 중에서 그의 기이한 일들을 선포할지어다", 'reference': "역대상 16:24", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와는 위대하시니 극진히 찬양할 것이요 모든 신들보다 경외할 것임이여", 'reference': "역대상 16:25", 'image': 'assets/images/bg3.jpg'},
+    {'text': "만민의 모든 신들은 헛것이나 여호와께서는 하늘을 지으셨음이로다", 'reference': "역대상 16:26", 'image': 'assets/images/bg4.jpg'},
+    {'text': "존귀와 위엄이 그 앞에 있으며 능력과 즐거움이 그의 처소에 있도다", 'reference': "역대상 16:27", 'image': 'assets/images/bg5.jpg'},
+    {'text': "만민의 족속들아 영광과 권능을 여호와께 돌릴지어다 여호와께 돌릴지어다", 'reference': "역대상 16:28", 'image': 'assets/images/bg1.jpg'},
     
-    // 에스라
-    {
-      'text': "우리 하나님의 손이 자기를 찾는 모든 자에게는\n선을 베푸시고",
-      'reference': "에스라 8:22",
-      'image': 'assets/images/bg2.jpg'
-    },
+    // 역대하 (8개)
+    {'text': "내가 하늘을 닫고 비를 내리지 아니하거나 혹은 메뚜기에게 토지를 먹게 하거나 전염병이 내 백성 가운데에 유행하게 할 때에", 'reference': "역대하 7:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 이름으로 일컫는 내 백성이 그들의 악한 길에서 떠나 스스로 낮추고 기도하여 내 얼굴을 찾으면 내가 하늘에서 듣고 그들의 죄를 사하고 그들의 땅을 고칠지라", 'reference': "역대하 7:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리 하나님 여호와는 공의로우시고 신실하시니", 'reference': "역대하 19:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "싸움은 너희에게 속한 것이 아니요 하나님께 속한 것이니라", 'reference': "역대하 20:15", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희는 두려워하거나 놀라지 말라 내일 그들을 향하여 나아가라 여호와가 너희와 함께 하시느니라", 'reference': "역대하 20:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와를 믿으라 그리하면 견고하리라 그의 선지자를 믿으라 그리하면 형통하리라", 'reference': "역대하 20:20", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와께 감사하라 그의 인자하심이 영원함이로다", 'reference': "역대하 20:21", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님 여호와는 당신의 백성에게 위로와 평안을 주시는 분이시니", 'reference': "역대하 30:9", 'image': 'assets/images/bg4.jpg'},
     
-    // 느헤미야
-    {
-      'text': "너희는 가서 살진 것을 먹고 단 것을 마시되\n준비하지 못한 자에게는 나누어 주라\n여호와를 기뻐하는 것이 너희의 힘이니라",
-      'reference': "느헤미야 8:10",
-      'image': 'assets/images/bg3.jpg'
-    },
+    // 에스라 (5개)
+    {'text': "우리 하나님의 손이 자기를 찾는 모든 자에게는 선을 베푸시고", 'reference': "에스라 8:22", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님 여호와여 주의 율법을 지키게 하시고 주의 계명을 배우게 하소서", 'reference': "에스라 7:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이스라엘의 하나님 여호와를 찬송하라", 'reference': "에스라 7:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님의 손이 선하게 나를 도우셨으므로", 'reference': "에스라 7:28", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와 하나님의 율법대로 행하고 가르치기를 결심하였더니", 'reference': "에스라 7:10", 'image': 'assets/images/bg4.jpg'},
     
-    // 에스더
-    {
-      'text': "네가 왕후의 자리를 얻은 것이\n이 때를 위함이 아닌지 누가 알겠느냐",
-      'reference': "에스더 4:14",
-      'image': 'assets/images/bg5.jpg'
-    },
+    // 느헤미야 (6개)
+    {'text': "너희는 가서 살진 것을 먹고 단 것을 마시되 준비하지 못한 자에게는 나누어 주라 이 날은 우리 주의 성일이니 근심하지 말라 여호와로 말미암아 기뻐하는 것이 너희의 힘이니라", 'reference': "느헤미야 8:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "오직 하늘의 하나님이 우리를 형통하게 하시리니 우리는 그의 종들이라 일어나서 건축하려니와", 'reference': "느헤미야 2:20", 'image': 'assets/images/bg1.jpg'},
+    {'text': "우리 하나님이 우리를 위하여 싸우시리라", 'reference': "느헤미야 4:20", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주는 생명을 주시는 분이시니 모든 것을 보존하시나이다", 'reference': "느헤미야 9:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주만 홀로 여호와시니이다 하늘과 하늘들의 하늘과 일월 성신과 땅과 땅 위의 만물과 바다와 그 가운데 모든 것을 지으시고 다 보존하시오니", 'reference': "느헤미야 9:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주께서 크고 두려운 하나님이시니 언약을 지키시며 인자를 베푸시나이다", 'reference': "느헤미야 9:32", 'image': 'assets/images/bg5.jpg'},
     
-    // 욥기
-    {
-      'text': "주신 이도 여호와시요 거두신 이도 여호와시오니\n여호와의 이름이 찬송을 받으실지니이다",
-      'reference': "욥기 1:21",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "그가 나를 죽이실지라도 나는 그를 의뢰하겠고",
-      'reference': "욥기 13:15",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "내가 알기에는 나의 대속자가 살아 계시니\n마침내 그가 땅 위에 서실 것이라",
-      'reference': "욥기 19:25",
-      'image': 'assets/images/bg3.jpg'
-    },
+    // 에스더 (5개)
+    {'text': "네가 왕후의 자리를 얻은 것이 이 때를 위함이 아닌지 누가 알겠느냐", 'reference': "에스더 4:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "죽으면 죽으리이다", 'reference': "에스더 4:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 민족 유다인을 위하여 내 생명을 내어놓나이다", 'reference': "에스더 7:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "유대인들에게 빛과 기쁨과 즐거움과 영광이 있었으니", 'reference': "에스더 8:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "슬픔이 기쁨으로 바뀌고 애곡하던 날이 길한 날로 바뀌었으니", 'reference': "에스더 9:22", 'image': 'assets/images/bg5.jpg'},
     
-    // 시편 (150편 중 주요 구절들)
-    {
-      'text': "여호와는 나의 목자시니 내게 부족함이 없으리로다\n그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다",
-      'reference': "시편 23:1-2",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "내가 사망의 음침한 골짜기로 다닐지라도\n해를 두려워하지 않을 것은 주께서 나와 함께 하심이라",
-      'reference': "시편 23:4",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "선하심과 인자하심이 반드시 나의 평생에 따르리니\n내가 여호와의 집에 영원히 살리로다",
-      'reference': "시편 23:6",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "땅과 거기에 충만한 것과 세계와 그 가운데에 사는 자들은\n다 여호와의 것이로다",
-      'reference': "시편 24:1",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "여호와는 나의 빛이요 나의 구원이시니\n내가 누구를 두려워하리요",
-      'reference': "시편 27:1",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "내가 확신하노니 내가 살아 있는 동안에\n여호와의 선하심을 보리로다",
-      'reference': "시편 27:13",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "여호와를 기다릴지어다 강하고 담대하며\n여호와를 기다릴지어다",
-      'reference': "시편 27:14",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "하나님은 우리의 피난처시요 힘이시니\n환난 중에 만날 큰 도움이시라",
-      'reference': "시편 46:1",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "가만히 있어 내가 하나님 됨을 알지어다\n내가 뭇 나라 중에서 높임을 받으리라",
-      'reference': "시편 46:10",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "하나님이여 주의 인자를 따라 내게 은혜를 베푸시며\n주의 많은 긍휼을 따라 내 죄과를 지워 주소서",
-      'reference': "시편 51:1",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "하나님이여 내 속에 정한 마음을 창조하시고\n내 안에 정직한 영을 새롭게 하소서",
-      'reference': "시편 51:10",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "내 영혼아 여호와를 송축하라\n내 속에 있는 모든 것들아 그의 거룩한 이름을 송축하라",
-      'reference': "시편 103:1",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "여호와께서 우리의 죄를 따라 우리를 처벌하지 아니하시며\n우리의 죄악을 따라 우리에게 그대로 갚지 아니하셨으니",
-      'reference': "시편 103:10",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "하늘이 땅보다 높음 같이\n그를 경외하는 자에게 그의 인자하심이 크시며",
-      'reference': "시편 103:11",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "동이 서에서 먼 것 같이\n우리의 죄과를 우리에게서 멀리 옮기셨으며",
-      'reference': "시편 103:12",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "주의 말씀은 내 발에 등이요 내 길에 빛이니이다",
-      'reference': "시편 119:105",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "내가 산을 향하여 눈을 들리라\n나의 도움이 어디서 올까",
-      'reference': "시편 121:1",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "나의 도움은 천지를 지으신 여호와에게서로다",
-      'reference': "시편 121:2",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "여호와께서 너를 지키시며\n여호와께서 네 우편에서 네 그늘이 되시나니",
-      'reference': "시편 121:5",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "여호와께서 네 출입을 지금부터 영원까지 지키시리로다",
-      'reference': "시편 121:8",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "내가 여호와의 집에 거함이 좋사오니\n그의 아름다움을 보며 그의 성전에서 사모하게 하소서",
-      'reference': "시편 27:4",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "여호와여 내가 주께 부르짖었사오니\n나의 반석이여 내게 귀를 막지 마소서",
-      'reference': "시편 28:1",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "여호와는 나의 힘이요 나의 방패시니\n내 마음이 그를 의지하여 도움을 얻었도다",
-      'reference': "시편 28:7",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "복 있는 사람은 악인들의 꾀를 따르지 아니하며\n죄인들의 길에 서지 아니하며",
-      'reference': "시편 1:1",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "오직 여호와의 율법을 즐거워하여\n그의 율법을 주야로 묵상하는도다",
-      'reference': "시편 1:2",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "그는 시냇가에 심은 나무가\n철을 따라 열매를 맺으며 그 잎사귀가 마르지 아니함 같으니",
-      'reference': "시편 1:3",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "내가 누워 자고 깨었으니\n여호와께서 나를 붙드심이로다",
-      'reference': "시편 3:5",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "여호와여 내 기도를 들으시며\n나의 간구에 귀를 기울이소서",
-      'reference': "시편 4:1",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "평안히 눕고 자기도 하리니\n나를 안전히 살게 하시는 이는 오직 여호와시니이다",
-      'reference': "시편 4:8",
-      'image': 'assets/images/bg2.jpg'
-    },
+    // 욥기 (15개)
+    {'text': "주신 이도 여호와시요 거두신 이도 여호와시오니 여호와의 이름이 찬송을 받으실지니이다", 'reference': "욥기 1:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그가 나를 죽이실지라도 나는 그를 의뢰하겠고", 'reference': "욥기 13:15", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 알기에는 나의 대속자가 살아 계시니 마침내 그가 땅 위에 서실 것이라", 'reference': "욥기 19:25", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 하나님에게서 복을 받았은즉 재앙도 받지 아니하겠느냐", 'reference': "욥기 2:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지혜가 어디서 나오며 명철이 있는 곳이 어디인가", 'reference': "욥기 28:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님을 경외함이 지혜요 악을 떠남이 명철이니라", 'reference': "욥기 28:28", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 주께 대하여 귀로 듣기만 하였사오나 이제는 눈으로 주를 뵈옵나이다", 'reference': "욥기 42:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 내가 티끌과 재 가운데에서 스스로 거두어들이고 회개하나이다", 'reference': "욥기 42:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와께서 욥의 곤경을 돌이키시고 욥에게 그 전 소유보다 갑절이나 주신지라", 'reference': "욥기 42:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님께서 능히 행하지 못하실 일이 없는 줄 아오며", 'reference': "욥기 42:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주의 뜻은 막을 수 없나이다", 'reference': "욥기 42:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님의 말씀은 시련을 견딘 것이니 그에게 피하는 자에게 그는 방패시로다", 'reference': "욥기 8:20", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님은 온전한 자를 버리지 아니하시고 행악자의 손을 붙들지 아니하시므로", 'reference': "욥기 8:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와께서 주시고 여호와께서 거두어 가시니 여호와의 이름이 찬송을 받으실지니이다", 'reference': "욥기 1:21", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그가 큰 일을 행하시니 헤아릴 수 없고 기이한 일을 행하시니 그 수를 셀 수 없도다", 'reference': "욥기 5:9", 'image': 'assets/images/bg5.jpg'},
     
-    // 시편 추가 구절들
-    {
-      'text': "여호와여 나의 원수가 얼마나 많은지요\n일어나 나를 치는 자가 많사오니",
-      'reference': "시편 3:1",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "여호와여 주의 복을 주의 백성에게 내리소서",
-      'reference': "시편 3:8",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "여호와여 주께서 나의 머리를 드셨고\n나의 영광이시며 나의 방패시니이다",
-      'reference': "시편 3:3",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "내가 여호와께 나아가 부르짖으니\n그의 성산에서 응답하시는도다",
-      'reference': "시편 3:4",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "여호와께서 의인을 사랑하시고\n그들을 복 주시며",
-      'reference': "시편 5:12",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "여호와여 주의 인자하심이 하늘에 있고\n주의 진실하심이 공중에 사무쳤으며",
-      'reference': "시편 36:5",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "생명의 원천이 주께 있사오니\n주의 빛 안에서 우리가 빛을 보리이다",
-      'reference': "시편 36:9",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "네 길을 여호와께 맡기라\n그를 의지하면 그가 이루시고",
-      'reference': "시편 37:5",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "잠깐이면 악인이 없어지리니\n네가 그들의 곳을 자세히 살필지라도 없으리로다",
-      'reference': "시편 37:10",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "온유한 자는 땅을 차지하며\n풍성한 화평으로 즐거워하리로다",
-      'reference': "시편 37:11",
-      'image': 'assets/images/bg2.jpg'
-    },
+    // 시편 (100개)
+    {'text': "복 있는 사람은 악인들의 꾀를 따르지 아니하며 죄인들의 길에 서지 아니하며", 'reference': "시편 1:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "오직 여호와의 율법을 즐거워하여 그의 율법을 주야로 묵상하는도다", 'reference': "시편 1:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며 그 잎사귀가 마르지 아니함 같으니", 'reference': "시편 1:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와여 주께서 나의 머리를 드셨고 나의 영광이시며 나의 방패시니이다", 'reference': "시편 3:3", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 누워 자고 깨었으니 여호와께서 나를 붙드심이로다", 'reference': "시편 3:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "구원은 여호와께 있사오니 주의 복을 주의 백성에게 내리소서", 'reference': "시편 3:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "평안히 눕고 자기도 하리니 나를 안전히 살게 하시는 이는 오직 여호와시니이다", 'reference': "시편 4:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와여 아침에 주께서 나의 소리를 들으시리니 아침에 내가 주께 기도하고 바라리이다", 'reference': "시편 5:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주를 의지하는 모든 자는 기뻐하며 주께서 그들을 보호하시니 그들이 영원히 기뻐하리이다", 'reference': "시편 5:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 의인에게 복을 주시고 방패로 함같이 은혜로 그를 호위하시리이다", 'reference': "시편 5:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "사람이 무엇이기에 주께서 그를 생각하시며 인자가 무엇이기에 주께서 그를 돌보시나이까", 'reference': "시편 8:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와 우리 주여 주의 이름이 온 땅에 어찌 그리 아름다운지요", 'reference': "시편 8:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 전심으로 여호와께 감사하며 주의 모든 기이한 일들을 전하리이다", 'reference': "시편 9:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와는 그를 아는 자의 산성이시니 환난 때에 피난처가 되시는도다", 'reference': "시편 9:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와여 일어나소서 인생으로 승리하지 못하게 하시며 뭇 나라가 주 앞에서 심판을 받게 하소서", 'reference': "시편 9:19", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와의 말씀은 순결함이여 흙 도가니에 일곱 번 단련한 은 같도다", 'reference': "시편 12:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나는 주의 인자하심을 의뢰하였사오니 내 마음은 주의 구원을 기뻐하리이다", 'reference': "시편 13:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하늘이 하나님의 영광을 선포하고 궁창이 그의 손으로 하신 일을 나타내는도다", 'reference': "시편 19:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와의 율법은 완전하여 영혼을 소성시키며 여호와의 증거는 확실하여 우둔한 자를 지혜롭게 하며", 'reference': "시편 19:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와의 교훈은 정직하여 마음을 기쁘게 하고 여호와의 계명은 순결하여 눈을 밝게 하시도다", 'reference': "시편 19:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나의 반석이시요 나의 구속자이신 여호와여 내 입의 말과 마음의 묵상이 주의 앞에 열납되기를 원하나이다", 'reference': "시편 19:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "어떤 사람은 병거, 어떤 사람은 말을 의지하나 우리는 여호와 우리 하나님의 이름을 자랑하리로다", 'reference': "시편 20:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와는 나의 목자시니 내게 부족함이 없으리로다", 'reference': "시편 23:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다", 'reference': "시편 23:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다", 'reference': "시편 23:3", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 사망의 음침한 골짜기로 다닐지라도 해를 두려워하지 않을 것은 주께서 나와 함께 하심이라", 'reference': "시편 23:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "주께서 내 원수의 목전에서 내게 상을 차려 주시고 기름을 내 머리에 부으셨으니 내 잔이 넘치나이다", 'reference': "시편 23:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "선하심과 인자하심이 정녕 나의 평생에 따르리니 내가 여호와의 집에 영원히 살리로다", 'reference': "시편 23:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "땅과 거기에 충만한 것과 세계와 그 가운데에 사는 자들은 다 여호와의 것이로다", 'reference': "시편 24:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "문들아 너희 머리를 들지어다 영원한 문들아 들릴지어다 영광의 왕이 들어가시리로다", 'reference': "시편 24:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와는 나의 빛이요 나의 구원이시니 내가 누구를 두려워하리요", 'reference': "시편 27:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 내 생명의 능력이시니 내가 누구를 무서워하리요", 'reference': "시편 27:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 여호와께 바라는 한 가지 일 그것을 구하리니 곧 내가 내 평생에 여호와의 집에 살면서", 'reference': "시편 27:4", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와의 아름다움을 바라보며 그의 성전에서 사모하는 그것이라", 'reference': "시편 27:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 확신하노니 내가 살아 있는 동안에 여호와의 선하심을 보리로다", 'reference': "시편 27:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와를 기다릴지어다 강하고 담대하며 여호와를 기다릴지어다", 'reference': "시편 27:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 나의 힘과 나의 방패시니 내 마음이 그를 의지하여 도움을 얻었도다", 'reference': "시편 28:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와의 소리가 물 위에 있도다 영광의 하나님이 뇌성을 발하시니 여호와는 많은 물 위에 계시도다", 'reference': "시편 29:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "저녁에는 울음이 깃들일지라도 아침에는 기쁨이 오리로다", 'reference': "시편 30:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주께서 나의 슬픔을 변하여 춤이 되게 하시며 나의 베옷을 벗기고 기쁨으로 띠 띠우셨나이다", 'reference': "시편 30:11", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 주를 의지하오니 주의 의로 나를 건지소서", 'reference': "시편 31:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 내 영혼을 주의 손에 부탁하나이다 진리의 하나님 여호와여 나를 속량하셨나이다", 'reference': "시편 31:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주의 인자하심이 크시오니 나를 주의 얼굴 빛 아래에 숨기시고", 'reference': "시편 31:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와를 기다리는 자여 강하고 담대하라", 'reference': "시편 31:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그의 죄악을 사하심을 받고 그 죄가 가려진 자는 복이 있도다", 'reference': "시편 32:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 이르기를 내 죄를 여호와께 자복하리라 하고 주께 내 죄를 아뢰고 내 죄악을 숨기지 아니하였더니 곧 주께서 내 죄악을 사하셨나이다", 'reference': "시편 32:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희는 여호와 안에서 즐거워하며 기뻐하라 의로운 자들아 다 즐거이 외칠지어다", 'reference': "시편 32:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "의인들아 여호와를 기뻐하라 찬송은 정직한 자들이 마땅히 할 바로다", 'reference': "시편 33:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와의 말씀은 정직하며 그가 행하시는 일은 다 진실하시도다", 'reference': "시편 33:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와는 그의 말씀으로 하늘을 지으시며 그 입김으로 하늘의 만상을 이루셨도다", 'reference': "시편 33:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와를 자기 하나님으로 삼은 나라 곧 하나님의 기업으로 선택된 백성은 복이 있도다", 'reference': "시편 33:12", 'image': 'assets/images/bg1.jpg'},
+    {'text': "우리 영혼이 여호와를 기다리니 그는 우리의 도움과 방패시로다", 'reference': "시편 33:20", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 여호와를 항상 송축함이여 그를 송축함이 내 입에 끊이지 아니하리로다", 'reference': "시편 34:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이 곤고한 자가 부르짖으매 여호와께서 들으시고 그의 모든 환난에서 구원하셨도다", 'reference': "시편 34:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와의 천사가 그를 경외하는 자를 둘러 진 치고 그들을 건지시는도다", 'reference': "시편 34:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희는 여호와의 선하심을 맛보아 알지어다 그에게 피하는 자는 복이 있도다", 'reference': "시편 34:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "젊은 사자는 궁핍하여 주릴지라도 여호와를 찾는 자는 모든 좋은 것에 부족함이 없으리로다", 'reference': "시편 34:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "의인은 많은 고난이 있으나 여호와께서 그 모든 고난에서 건지시는도다", 'reference': "시편 34:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "생명의 원천이 주께 있사오니 주의 빛 안에서 우리가 빛을 보리이다", 'reference': "시편 36:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와 앞에 잠잠하고 참고 기다리라 자기 길이 형통하며 악한 꾀를 이루는 자 때문에 불평하지 말지어다", 'reference': "시편 37:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "네 길을 여호와께 맡기라 그를 의지하면 그가 이루시고", 'reference': "시편 37:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네 공의를 빛 같이, 네 공정을 정오 같이 나타내시리로다", 'reference': "시편 37:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "온유한 자는 땅을 차지하며 풍성한 화평으로 즐거워하리로다", 'reference': "시편 37:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "의인의 팔이 부러질지라도 여호와께서 의인을 붙드시는도다", 'reference': "시편 37:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 어려서부터 늙기까지 의인이 버림을 당하거나 그의 자손이 걸식함을 보지 못하였도다", 'reference': "시편 37:25", 'image': 'assets/images/bg5.jpg'},
+    {'text': "의인의 구원은 여호와께 있으니 그는 환난 때에 그들의 요새시로다", 'reference': "시편 37:39", 'image': 'assets/images/bg1.jpg'},
+    {'text': "사슴이 시냇물을 찾기에 갈급함 같이 내 영혼이 주를 찾기에 갈급하나이다", 'reference': "시편 42:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 영혼아 네가 어찌하여 낙심하며 어찌하여 내 속에서 불안해 하는가 너는 하나님께 소망을 두라", 'reference': "시편 42:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "낮에는 여호와께서 그의 인자하심을 베푸시고 밤에는 그의 찬송이 내게 있어 생명의 하나님께 기도하리로다", 'reference': "시편 42:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님은 우리의 피난처시요 힘이시니 환난 중에 만날 큰 도움이시라", 'reference': "시편 46:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 땅이 변하든지 산이 흔들려 바다 가운데에 빠지든지 우리는 두려워하지 아니하리로다", 'reference': "시편 46:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "가만히 있어 내가 하나님 됨을 알지어다 내가 뭇 나라 중에서 높임을 받으리라", 'reference': "시편 46:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "만군의 여호와께서 우리와 함께 하시니 야곱의 하나님은 우리의 피난처시로다", 'reference': "시편 46:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님이여 주의 인자하심을 따라 내게 은혜를 베푸시며 주의 많은 긍휼을 따라 내 죄과를 지워 주소서", 'reference': "시편 51:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나의 죄악을 말갛게 씻으시며 나의 죄를 깨끗이 제하소서", 'reference': "시편 51:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님이여 내 속에 정한 마음을 창조하시고 내 안에 정직한 영을 새롭게 하소서", 'reference': "시편 51:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "주의 앞에서 나를 쫓아내지 마시며 주의 성령을 내게서 거두지 마소서", 'reference': "시편 51:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이 구하시는 제사는 상한 심령이라 하나님이여 상하고 통회하는 마음을 주께서 멸시하지 아니하시리이다", 'reference': "시편 51:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나는 푸른 감람나무 같아서 하나님의 집에 있음이여 하나님의 인자하심을 영원히 의지하리로다", 'reference': "시편 52:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네 짐을 여호와께 맡기라 그가 너를 붙드시고 의인의 요동함을 영원히 허락하지 아니하시리로다", 'reference': "시편 55:22", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 두려워하는 날에는 주를 의지하리이다", 'reference': "시편 56:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님을 의지하였은즉 두려워하지 아니하리니 사람이 내게 어찌하리이까", 'reference': "시편 56:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이여 내게 은혜를 베푸소서 내게 은혜를 베푸소서 내 영혼이 주께로 피하되 주의 날개 그늘 아래에서", 'reference': "시편 57:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나의 영혼아 잠잠히 하나님만 바라라 무릇 나의 소망이 그로부터 나오는도다", 'reference': "시편 62:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "오직 그만이 나의 반석이시요 나의 구원이시요 나의 요새이시니 내가 흔들리지 아니하리로다", 'reference': "시편 62:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님이 한 번 하셨고 내가 두 번 들은 것은 권능은 하나님께 속하였다 하시는 것이니이다", 'reference': "시편 62:11", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이여 주는 나의 하나님이시라 내가 간절히 주를 찾되 물이 없어 마르고 황폐한 땅에서 내 영혼이 주를 갈망하며", 'reference': "시편 63:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주의 인자하심이 생명보다 나으므로 내 입술이 주를 찬양할 것이라", 'reference': "시편 63:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이러므로 내 평생에 주를 송축하며 주의 이름으로 말미암아 내 손을 들리이다", 'reference': "시편 63:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주께서 나를 도우셨으므로 내가 주의 날개 그늘에서 즐거이 부르리이다", 'reference': "시편 63:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내 영혼이 주를 가까이 따르니 주의 오른손이 나를 붙드시거니와", 'reference': "시편 63:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "온 땅이여 하나님께 즐거운 소리를 발할지어다 그의 이름의 영광을 찬양하고 영화롭게 찬송할지어다", 'reference': "시편 66:1-2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님을 송축하라 그가 나의 기도를 물리치지 아니하시고 그의 인자하심을 내게서 거두지도 아니하셨도다", 'reference': "시편 66:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님은 우리에게 복을 주시리니 땅의 모든 끝이 하나님을 경외하리로다", 'reference': "시편 67:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "날마다 우리 짐을 지시는 주 곧 우리의 구원이신 하나님을 찬송할지로다", 'reference': "시편 68:19", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주 여호와는 구원을 베푸시는 분이시라 사망에서 피함이 주 여호와께로 말미암느니라", 'reference': "시편 68:20", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나는 곤고하고 슬프오니 하나님이여 주의 구원으로 나를 높이소서", 'reference': "시편 69:29", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 노래로 하나님의 이름을 찬송하며 감사함으로 하나님을 위대하시다 하리니", 'reference': "시편 69:30", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와여 나를 건지소서 여호와여 속히 나를 도우소서", 'reference': "시편 70:1", 'image': 'assets/images/bg4.jpg'},
     
-    // 잠언
-    {
-      'text': "내 아들아 나의 법을 잊지 말고\n네 마음으로 나의 명령을 지키라",
-      'reference': "잠언 3:1",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "그리하면 그것이 네 목에 장식이 되며\n네 영혼에 생명이 되리라",
-      'reference': "잠언 3:22",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "너는 마음을 다하여 여호와를 신뢰하고\n네 명철을 의지하지 말라",
-      'reference': "잠언 3:5",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "너는 범사에 그를 인정하라\n그리하면 네 길을 지도하시리라",
-      'reference': "잠언 3:6",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "네 눈으로 보기에 지혜롭게 여기지 말지어다\n여호와를 경외하며 악을 떠날지어다",
-      'reference': "잠언 3:7",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "내 아들아 여호와의 징계를 경히 여기지 말라\n그의 꾸지람을 싫어하지 말라",
-      'reference': "잠언 3:11",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "지혜를 얻는 자와 명철을 얻는 자는 복이 있나니",
-      'reference': "잠언 3:13",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "지혜는 생명나무라 지혜를 가진 자에게는\n복이 있느니라",
-      'reference': "잠언 3:18",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "게으른 자여 개미에게로 가서\n그것의 하는 것을 보고 지혜를 얻으라",
-      'reference': "잠언 6:6",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "마음의 즐거움은 얼굴을 빛나게 하여도\n마음의 근심은 심령을 상하게 하느니라",
-      'reference': "잠언 15:13",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "온순한 대답은 분노를 쉬게 하여도\n과격한 말은 노를 격동하느니라",
-      'reference': "잠언 15:1",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "사람이 마음으로 자기의 길을 계획할지라도\n그의 걸음을 인도하시는 이는 여호와시니라",
-      'reference': "잠언 16:9",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "교만은 패망의 선봉이요\n거만한 마음은 넘어짐의 앞잡이니라",
-      'reference': "잠언 16:18",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "마음이 즐거우면 양약이 되고\n심령이 상하면 뼈가 마르느니라",
-      'reference': "잠언 17:22",
-      'image': 'assets/images/bg1.jpg'
-    },
+    // 시편 추가 (71-150편에서 선별)
+    {'text': "주여 내가 주께 피하오니 나를 영원히 부끄럽게 하지 마소서", 'reference': "시편 71:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주는 내 소망이시요 주 여호와여 주는 어릴 때부터 내가 신뢰한 이시라", 'reference': "시편 71:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이여 주의 의가 심히 높으시니이다 주께서 큰 일을 행하셨사오니 하나님이여 누가 주와 같으리이까", 'reference': "시편 71:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "저가 나를 부르리니 내가 응답하리라 그들이 환난 중에 있을 때에 내가 그와 함께 하여 그를 건지고 영화롭게 하리라", 'reference': "시편 91:15", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 그에게 장수하게 하며 나의 구원을 그에게 보이리라", 'reference': "시편 91:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지존자의 은밀한 곳에 거주하는 자는 전능자의 그늘 아래에 머물리로다", 'reference': "시편 91:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 여호와를 향하여 말하기를 그는 나의 피난처요 나의 요새요 내가 의뢰하는 하나님이라 하리니", 'reference': "시편 91:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그가 너를 새 사냥꾼의 올무에서와 심한 전염병에서 건지시리로다", 'reference': "시편 91:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그의 깃으로 너를 덮으시리니 네가 그의 날개 아래에 피하리로다 그의 진실함은 방패와 손방패가 되시나니", 'reference': "시편 91:4", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너는 밤에 찾아오는 공포와 낮에 날아드는 화살과", 'reference': "시편 91:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "어둠 속에 퍼지는 전염병과 밝은 대낮에 닥쳐오는 재앙을 두려워하지 아니하리로다", 'reference': "시편 91:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "네가 말하기를 여호와는 나의 피난처시라 하고 지존자를 네 거처로 삼았으므로", 'reference': "시편 91:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "화가 네게 미치지 못하며 재앙이 네 장막에 가까이 오지 못하리니", 'reference': "시편 91:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그가 너를 위하여 그의 천사들을 명령하사 네 모든 길에서 너를 지키게 하심이라", 'reference': "시편 91:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그들이 그 손으로 너를 붙들어 발이 돌에 부딪치지 아니하게 하리로다", 'reference': "시편 91:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "아침에 주의 인자하심을 나타내시며 밤마다 주의 성실하심을 알게 하소서", 'reference': "시편 92:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주여 주께서 행하신 일로 나를 기쁘게 하셨으니 나는 주의 손이 행하신 일로 말미암아 높이 외치리이다", 'reference': "시편 92:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "의인은 종려나무 같이 번성하며 레바논의 백향목 같이 성장하리로다", 'reference': "시편 92:12", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그들은 여호와의 집에 심겼음이여 우리 하나님의 뜰 안에서 번성하리로다", 'reference': "시편 92:13", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 여호와께 새 노래로 노래하라 온 땅이여 여호와께 노래할지어다", 'reference': "시편 96:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께 노래하여 그의 이름을 송축하며 그의 구원을 날마다 전파할지어다", 'reference': "시편 96:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께 감사하라 그는 선하시며 그 인자하심이 영원함이로다", 'reference': "시편 100:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "감사함으로 그의 문에 들어가며 찬송함으로 그의 궁정에 들어가서 그에게 감사하며 그의 이름을 송축할지어다", 'reference': "시편 100:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와가 선하시니 그의 인자하심이 영원하고 그의 성실하심이 대대에 이르리로다", 'reference': "시편 100:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와는 모든 자에게 선하시며 그 지으신 모든 것에 자비를 베푸시는도다", 'reference': "시편 145:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와는 그를 부르는 모든 자 곧 진실하게 부르는 모든 자에게 가까이 하시는도다", 'reference': "시편 145:18", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와는 자기를 경외하는 자와 그의 인자하심을 바라는 자를 기뻐하시는도다", 'reference': "시편 147:11", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그가 상심한 자들을 고치시며 그들의 상처를 싸매시는도다", 'reference': "시편 147:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "호흡이 있는 자마다 여호와를 찬양할지어다 할렐루야", 'reference': "시편 150:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "할렐루야 그의 성소에서 하나님을 찬양하며 그의 권능의 궁창에서 그를 찬양할지어다", 'reference': "시편 150:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그의 능하신 행동을 찬양하며 그의 지극히 위대하심을 따라 찬양할지어다", 'reference': "시편 150:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와는 나의 빛이요 나의 구원이시니 내가 누구를 두려워하리요 여호와는 내 생명의 능력이시니 내가 누구를 무서워하리요", 'reference': "시편 27:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 산을 향하여 눈을 들리라 나의 도움이 어디서 올까 나의 도움은 천지를 지으신 여호와에게서로다", 'reference': "시편 121:1-2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "저녁에는 울음이 깃들일지라도 아침에는 기쁨이 오리로다", 'reference': "시편 30:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주께서 나의 슬픔을 변하여 춤이 되게 하시며 나의 베옷을 벗기고 기쁨으로 띠 띠우셨나이다", 'reference': "시편 30:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 여호와께 범죄하였나이다 하였더니 주께서 내 죄악을 사하셨나이다", 'reference': "시편 32:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주는 나의 숨는 곳이시니 환난에서 나를 보호하시고 구원의 노래로 나를 에워싸시리이다", 'reference': "시편 32:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 네 갈 길을 가르치고 지도하며 내 눈으로 너를 보호하리로다", 'reference': "시편 32:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와를 의지하는 자에게는 인자하심이 두르리로다", 'reference': "시편 32:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 여호와를 맛보아 그가 선하심을 알지어다 그에게 피하는 자는 복이 있도다", 'reference': "시편 34:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "젊은 사자도 궁핍하여 굶주릴 수 있으나 여호와를 찾는 자는 좋은 것에 부족함이 없으리로다", 'reference': "시편 34:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "의인이 외치매 여호와께서 들으시고 그들의 모든 환난에서 건지셨도다", 'reference': "시편 34:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 마음이 상한 자에게 가까이 하시고 충심으로 통회하는 자를 구원하시는도다", 'reference': "시편 34:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "의인은 고난이 많으나 여호와께서 그의 모든 고난에서 건지시는도다", 'reference': "시편 34:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와께서 그의 모든 뼈를 보호하심이여 그 중에서 하나도 꺾이지 아니하도다", 'reference': "시편 34:20", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와의 천사가 주를 경외하는 자를 둘러 진 치고 그들을 건지시는도다", 'reference': "시편 34:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 여호와를 항상 송축함이여 그를 송축함이 내 입에 끊이지 아니하리로다", 'reference': "시편 34:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "곤고한 자가 부르짖으매 여호와께서 들으시고 그의 모든 환난에서 구원하셨도다", 'reference': "시편 34:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와여 주의 인자하심이 하늘에 있고 주의 진실하심이 공중에 사무쳤으며", 'reference': "시편 36:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주의 공의는 하나님의 산들과 같고 주의 심판은 큰 깊음 같으니이다 여호와여 주는 사람과 짐승을 구하시나이다", 'reference': "시편 36:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님이여 주의 인자하심이 어찌 그리 보배로우신지요 사람들이 주의 날개 그늘 아래에 피하나이다", 'reference': "시편 36:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그들이 주의 집의 살진 것으로 풍족할 것이라 주께서 주의 즐거움의 강물을 그들에게 마시게 하시리이다", 'reference': "시편 36:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "대저 생명의 원천이 주께 있사오니 주의 빛 안에서 우리가 빛을 보리이다", 'reference': "시편 36:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주의 인자하심을 주를 아는 자들에게, 주의 공의를 마음이 정직한 자에게 계속 베푸소서", 'reference': "시편 36:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오직 나는 주께서 응답하실 것을 기다리나이다 내 주 하나님이여 주께서 응답하시리이다", 'reference': "시편 38:15", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와여 나를 버리지 마시며 나의 하나님이여 나를 멀리 하지 마소서", 'reference': "시편 38:21", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나의 도움이시며 나를 건지시는 이시여 속히 나에게 오소서", 'reference': "시편 38:22", 'image': 'assets/images/bg1.jpg'},
+    {'text': "저가 나를 사랑하였은즉 내가 그를 건지리라 그가 내 이름을 안즉 내가 그를 높이리라", 'reference': "시편 91:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 여호와께서 나에게 베푸신 모든 은혜를 무엇으로 보답할까", 'reference': "시편 116:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 구원의 잔을 들고 여호와의 이름을 부르리로다", 'reference': "시편 116:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 집을 세우지 아니하시면 세우는 자의 수고가 헛되며", 'reference': "시편 127:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와께서 성을 지키지 아니하시면 파수꾼의 깨어 있음이 헛되도다", 'reference': "시편 127:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 일찍이 일어나고 늦게 누우며 수고의 떡을 먹음이 헛되도다 그러므로 여호와께서 그의 사랑하시는 자에게는 잠을 주시는도다", 'reference': "시편 127:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와를 경외하며 그의 길을 걷는 자마다 복이 있도다", 'reference': "시편 128:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네가 네 손이 수고한 대로 먹을 것이라 네가 복되고 형통하리로다", 'reference': "시편 128:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와여 주께서 죄악을 감찰하실진대 주여 누가 서리이까", 'reference': "시편 130:3", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러나 사유하심이 주께 있음은 주를 경외하게 하심이니이다", 'reference': "시편 130:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나는 여호와를 기다리고 내 영혼은 기다리며 나는 그의 말씀을 바라는도다", 'reference': "시편 130:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "파수꾼이 아침을 기다림보다 내 영혼이 주를 더 기다리나니 참으로 파수꾼이 아침을 기다림보다 더하도다", 'reference': "시편 130:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이스라엘아 여호와를 바랄지어다 여호와께는 인자하심과 풍성한 속량이 있음이라", 'reference': "시편 130:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그가 이스라엘을 그의 모든 죄악에서 속량하시리로다", 'reference': "시편 130:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나 여호와가 말하노라 너희를 향한 나의 생각을 내가 아나니 평안이요 재앙이 아니니라 너희에게 미래와 희망을 주는 것이니라", 'reference': "시편 138:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와여 주께서 나를 살피셨으므로 나를 아시나이다", 'reference': "시편 139:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주께서 내가 앉고 일어섬을 아시고 멀리서도 나의 생각을 밝히 아시오며", 'reference': "시편 139:2", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나의 모든 길을 익히 아시오니", 'reference': "시편 139:3", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와여 내 혀의 말을 알지 못하시는 것이 하나도 없으시니이다", 'reference': "시편 139:4", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주께서 내 앞뒤를 둘러싸시고 내게 안수하셨나이다", 'reference': "시편 139:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이 지식이 내게 너무 기이하니 높아서 내가 능히 미치지 못하나이다", 'reference': "시편 139:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 주의 영을 떠나 어디로 가며 주의 앞에서 어디로 피하리이까", 'reference': "시편 139:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 하늘에 올라갈지라도 거기 계시며 스올에 내 자리를 펼지라도 거기 계시니이다", 'reference': "시편 139:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 새벽 날개를 치며 바다 끝에 가서 거주할지라도", 'reference': "시편 139:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "거기서도 주의 손이 나를 인도하시며 주의 오른손이 나를 붙드시리이다", 'reference': "시편 139:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 주께 감사하옴은 나를 지으심이 심히 기묘하심이라 주께서 하시는 일이 기이함을 내 영혼이 잘 아나이다", 'reference': "시편 139:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이여 나를 살피사 내 마음을 아시며 나를 시험하사 내 뜻을 아옵소서", 'reference': "시편 139:23", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내게 무슨 악한 행위가 있나 보시고 나를 영원한 길로 인도하소서", 'reference': "시편 139:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와여 내 기도를 들으시며 내 간구에 귀를 기울이소서", 'reference': "시편 143:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "아침에 나로 주의 인자한 말씀을 듣게 하소서 내가 주를 의뢰함이니이다", 'reference': "시편 143:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 행할 길을 알게 하소서 내가 내 영혼을 주께 드림이니이다", 'reference': "시편 143:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주의 뜻 행하기를 가르치소서 주는 나의 하나님이시니이다", 'reference': "시편 143:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주의 선한 영으로 나를 평탄한 땅에 인도하소서", 'reference': "시편 143:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와를 찬양하라 하늘에서 여호와를 찬양하며 높은 데서 그를 찬양할지어다", 'reference': "시편 148:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그의 모든 천사여 찬양하며 그의 모든 군대여 그를 찬양할지어다", 'reference': "시편 148:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "해와 달아 그를 찬양하며 밝은 별들아 다 그를 찬양할지어다", 'reference': "시편 148:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하늘의 하늘도 그를 찬양하며 하늘 위에 있는 물들도 그를 찬양할지어다", 'reference': "시편 148:4", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그것들이 여호와의 이름을 찬양함은 그가 명령하시매 지음을 받았음이로다", 'reference': "시편 148:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그가 또 그것들을 영원히 세우시고 폐하지 못할 명령을 정하셨도다", 'reference': "시편 148:6", 'image': 'assets/images/bg5.jpg'},
     
-    // 이사야
-    {
-      'text': "두려워하지 말라 내가 너와 함께 함이라\n놀라지 말라 나는 네 하나님이 됨이라\n내가 너를 굳세게 하리라 참으로 너를 도와주리라",
-      'reference': "이사야 41:10",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "보라 처녀가 잉태하여 아들을 낳을 것이요\n그의 이름을 임마누엘이라 하리라",
-      'reference': "이사야 7:14",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "이는 한 아기가 우리에게 났고\n한 아들을 우리에게 주신 바 되었는데\n그의 어깨에는 정사를 메었고 그의 이름은 기묘자라",
-      'reference': "이사야 9:6",
-      'image': 'assets/images/bg5.jpg'
-    },
-    {
-      'text': "그러나 그가 찔림은 우리의 허물 때문이요\n그가 상함은 우리의 죄악 때문이라\n그가 징계를 받으므로 우리는 평화를 누리고",
-      'reference': "이사야 53:5",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "여호와께서 이르시되 내 생각은 너희의 생각과 다르며\n내 길은 너희의 길과 다름이니라",
-      'reference': "이사야 55:8",
-      'image': 'assets/images/bg4.jpg'
-    },
-    {
-      'text': "하늘이 땅보다 높음 같이\n내 길은 너희의 길보다 높으며 내 생각은 너희의 생각보다 높으니라",
-      'reference': "이사야 55:9",
-      'image': 'assets/images/bg5.jpg'
-    },
+    // 잠언 (50개)
+    {'text': "여호와를 경외하는 것이 지식의 근본이거늘 미련한 자는 지혜와 훈계를 멸시하느니라", 'reference': "잠언 1:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내 아들아 나의 법을 잊지 말고 네 마음으로 나의 명령을 지키라", 'reference': "잠언 3:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그리하면 그것이 네 생명을 길게 하며 네게 평강을 더하리라", 'reference': "잠언 3:2", 'image': 'assets/images/bg3.jpg'},
+    {'text': "인자와 진리가 네게서 떠나지 말게 하고 그것을 네 목에 매며 네 마음판에 새기라", 'reference': "잠언 3:3", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그리하면 네가 하나님과 사람 앞에서 은총과 귀중히 여김을 받으리라", 'reference': "잠언 3:4", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너는 마음을 다하여 여호와를 신뢰하고 네 명철을 의지하지 말라", 'reference': "잠언 3:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너는 범사에 그를 인정하라 그리하면 네 길을 지도하시리라", 'reference': "잠언 3:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "스스로 지혜롭게 여기지 말지어다 여호와를 경외하며 악을 떠날지어다", 'reference': "잠언 3:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이것이 네 몸에 양약이 되어 네 뼈를 윤택하게 하리라", 'reference': "잠언 3:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내 아들아 여호와의 징계를 경히 여기지 말라 그의 꾸지람을 싫어하지 말라", 'reference': "잠언 3:11", 'image': 'assets/images/bg5.jpg'},
+    {'text': "대저 여호와께서 그 사랑하시는 자를 징계하시기를 마치 아비가 그 기뻐하는 아들을 징계함 같이 하시느니라", 'reference': "잠언 3:12", 'image': 'assets/images/bg1.jpg'},
+    {'text': "지혜를 얻은 자와 명철을 얻은 자는 복이 있나니", 'reference': "잠언 3:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "지혜는 진주보다 귀하니 네가 사모하는 모든 것으로도 이에 비교할 수 없도다", 'reference': "잠언 3:15", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그의 오른손에는 장수가 있고 그의 왼손에는 부귀가 있나니", 'reference': "잠언 3:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지혜는 생명나무라 지혜를 가진 자에게는 복이 있느니라", 'reference': "잠언 3:18", 'image': 'assets/images/bg5.jpg'},
+    {'text': "무릇 지킬 만한 것보다 더욱 네 마음을 지키라 생명의 근원이 이에서 남이니라", 'reference': "잠언 4:23", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네 눈은 바로 앞을 향하고 네 눈꺼풀은 네 앞을 곧바로 보게 하라", 'reference': "잠언 4:25", 'image': 'assets/images/bg2.jpg'},
+    {'text': "네 발이 행할 길을 평탄하게 하라 네 모든 길을 든든히 하라", 'reference': "잠언 4:26", 'image': 'assets/images/bg3.jpg'},
+    {'text': "게으른 자여 개미에게로 가서 그가 하는 것을 보고 지혜를 얻으라", 'reference': "잠언 6:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와를 경외하는 것은 악을 미워하는 것이라 나는 교만과 거만과 악한 행실과 패역한 입을 미워하느니라", 'reference': "잠언 8:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나를 사랑하는 자들이 나의 사랑을 입으며 나를 간절히 찾는 자가 나를 만날 것이니라", 'reference': "잠언 8:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와를 경외하는 것이 지혜의 근본이요 거룩하신 자를 아는 것이 명철이니라", 'reference': "잠언 9:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "의인의 입은 생명의 샘이라도 악인의 입은 독을 머금었느니라", 'reference': "잠언 10:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "미움은 다툼을 일으켜도 사랑은 모든 허물을 덮느니라", 'reference': "잠언 10:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "의인의 입술은 여러 사람을 교육하나 미련한 자는 지식이 없으므로 죽느니라", 'reference': "잠언 10:21", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와의 복은 사람을 부하게 하고 근심을 겸하여 주지 아니하시느니라", 'reference': "잠언 10:22", 'image': 'assets/images/bg1.jpg'},
+    {'text': "의인의 소망은 즐거움을 이루어도 악인의 소망은 끊어지느니라", 'reference': "잠언 10:28", 'image': 'assets/images/bg2.jpg'},
+    {'text': "교만이 오면 욕도 오거니와 겸손한 자에게는 지혜가 있느니라", 'reference': "잠언 11:2", 'image': 'assets/images/bg3.jpg'},
+    {'text': "의로운 자의 열매는 생명나무라 지혜로운 자는 사람을 얻느니라", 'reference': "잠언 11:30", 'image': 'assets/images/bg4.jpg'},
+    {'text': "거짓 입술은 여호와께 미움을 받아도 진실하게 행하는 자는 그의 기뻐하심을 받느니라", 'reference': "잠언 12:22", 'image': 'assets/images/bg5.jpg'},
+    {'text': "근심이 사람의 마음에 있으면 그것으로 번뇌하게 되나 선한 말은 그것을 즐겁게 하느니라", 'reference': "잠언 12:25", 'image': 'assets/images/bg1.jpg'},
+    {'text': "훈계를 지키는 자는 생명 길로 행하여도 징계를 버리는 자는 그릇 가느니라", 'reference': "잠언 10:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "소망이 더디 이루어지면 그것이 마음을 상하게 하거니와 소원이 이루어지는 것은 곧 생명나무니라", 'reference': "잠언 13:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "지혜로운 자의 교훈은 생명의 샘이니 사망의 그물에서 벗어나게 하느니라", 'reference': "잠언 13:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지혜 있는 자와 동행하면 지혜를 얻고 미련한 자와 사귀면 해를 받느니라", 'reference': "잠언 13:20", 'image': 'assets/images/bg5.jpg'},
+    {'text': "선인은 그 산업을 자손에게 끼쳐도 죄인의 재물은 의인을 위하여 쌓이느니라", 'reference': "잠언 13:22", 'image': 'assets/images/bg1.jpg'},
+    {'text': "온순한 대답은 분노를 쉬게 하여도 과격한 말은 노를 격동하느니라", 'reference': "잠언 15:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와의 눈은 어디서든지 악인과 선인을 감찰하시느니라", 'reference': "잠언 15:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "온순한 혀는 곧 생명나무이지만 패려한 혀는 마음을 상하게 하느니라", 'reference': "잠언 15:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "적은 소득이 공의를 겸하면 많은 소득이 불의를 겸한 것보다 나으니라", 'reference': "잠언 16:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "사람이 마음으로 자기의 길을 계획할지라도 그의 걸음을 인도하시는 이는 여호와시니라", 'reference': "잠언 16:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "교만은 패망의 선봉이요 거만한 마음은 넘어짐의 앞잡이니라", 'reference': "잠언 16:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "겸손한 자와 함께 하여 마음을 낮추는 것이 교만한 자와 함께 하여 탈취물을 나누는 것보다 나으니라", 'reference': "잠언 16:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "마음의 즐거움은 양약이라도 심령의 근심은 뼈를 마르게 하느니라", 'reference': "잠언 17:22", 'image': 'assets/images/bg4.jpg'},
+    {'text': "친구는 사랑이 끊이지 아니하고 형제는 위급한 때를 위하여 났느니라", 'reference': "잠언 17:17", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와의 이름은 견고한 망대라 의인은 그리로 달려가서 안전함을 얻느니라", 'reference': "잠언 18:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "죽고 사는 것이 혀의 권세에 달렸나니 혀를 쓰기 좋아하는 자는 혀의 열매를 먹으리라", 'reference': "잠언 18:21", 'image': 'assets/images/bg2.jpg'},
+    {'text': "아내를 얻는 자는 복을 얻고 여호와께 은총을 받은 자니라", 'reference': "잠언 18:22", 'image': 'assets/images/bg3.jpg'},
+    {'text': "가난하여도 성실하게 행하는 자는 입이 패역하고 미련한 자보다 나으니라", 'reference': "잠언 19:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "사람의 마음에는 많은 계획이 있어도 오직 여호와의 뜻만이 완전히 서리라", 'reference': "잠언 19:21", 'image': 'assets/images/bg5.jpg'},
     
-    // 신약 성경 - 마태복음
-    {
-      'text': "심령이 가난한 자는 복이 있나니\n천국이 그들의 것임이요",
-      'reference': "마태복음 5:3",
-      'image': 'assets/images/bg1.jpg'
-    },
-    {
-      'text': "애통하는 자는 복이 있나니\n그들이 위로를 받을 것임이요",
-      'reference': "마태복음 5:4",
-      'image': 'assets/images/bg2.jpg'
-    },
-    {
-      'text': "온유한 자는 복이 있나니\n그들이 땅을 기업으로 받을 것임이요",
-      'reference': "마태복음 5:5",
-      'image': 'assets/images/bg3.jpg'
-    },
-    {
-      'text': "의에 주리고 목마른 자는 복이 있나니\n그들이 배부를 것임이요",
-      'reference': "마태복음 5:6",
-      'image': 'assets/images/bg4.jpg'
-    }
+    // 이사야 (40개)
+    {'text': "두려워하지 말라 내가 너와 함께 함이라 놀라지 말라 나는 네 하나님이 됨이라 내가 너를 굳세게 하리라 참으로 너를 도와주리라", 'reference': "이사야 41:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "보라 처녀가 잉태하여 아들을 낳을 것이요 그의 이름을 임마누엘이라 하리라", 'reference': "이사야 7:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이는 한 아기가 우리에게 났고 한 아들을 우리에게 주신 바 되었는데 그의 어깨에는 정사를 메었고 그의 이름은 기묘자라 모사라 전능하신 하나님이라 영존하시는 아버지라 평강의 왕이라 할 것임이라", 'reference': "이사야 9:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러나 그가 찔림은 우리의 허물 때문이요 그가 상함은 우리의 죄악 때문이라 그가 징계를 받으므로 우리는 평화를 누리고 그가 채찍에 맞으므로 우리는 나음을 받았도다", 'reference': "이사야 53:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 이르시되 내 생각은 너희의 생각과 다르며 내 길은 너희의 길과 다르니라", 'reference': "이사야 55:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하늘이 땅보다 높음 같이 내 길은 너희의 길보다 높으며 내 생각은 너희의 생각보다 높으니라", 'reference': "이사야 55:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "오호라 목마른 자들아 물로 나아오라 돈 없는 자도 오라 너희는 와서 사 먹되 돈 없이, 값 없이 와서 포도주와 젖을 사라", 'reference': "이사야 55:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희는 여호와를 만날 만한 때에 찾으라 가까이 계실 때에 그를 부르라", 'reference': "이사야 55:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "악인은 그의 길을, 불의한 자는 그의 생각을 버리고 여호와께로 돌아오라 그리하면 그가 긍휼히 여기시리라", 'reference': "이사야 55:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 네 이름을 불렀나니 너는 내 것이라", 'reference': "이사야 43:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "네가 물 가운데로 지날 때에 내가 너와 함께 할 것이라 강을 건널 때에 물이 너를 침몰하지 못할 것이며", 'reference': "이사야 43:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네가 불 가운데로 지날 때에 타지도 아니할 것이요 불꽃이 너를 사르지도 못하리니", 'reference': "이사야 43:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "대저 나는 네 하나님 여호와 이스라엘의 거룩한 이요 네 구원자임이라", 'reference': "이사야 43:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 새 일을 행하리니 이제 나타낼 것이라 너희가 그것을 알지 못하겠느냐 반드시 내가 광야에 길을 사막에 강을 내리니", 'reference': "이사야 43:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "오직 여호와를 앙망하는 자는 새 힘을 얻으리니 독수리가 날개치며 올라감 같을 것이요 달음박질하여도 곤비하지 아니하겠고 걸어가도 피곤하지 아니하리로다", 'reference': "이사야 40:31", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너는 알지 못하였느냐 듣지 못하였느냐 영원하신 하나님 여호와 땅 끝까지 창조하신 이는 피곤하지 않으시며 곤비하지 않으시며 명철이 한이 없으시며", 'reference': "이사야 40:28", 'image': 'assets/images/bg1.jpg'},
+    {'text': "피곤한 자에게는 능력을 주시며 무능한 자에게는 힘을 더하시나니", 'reference': "이사야 40:29", 'image': 'assets/images/bg2.jpg'},
+    {'text': "소년이라도 피곤하여 곤비하며 장정이라도 넘어지며 자빠지되", 'reference': "이사야 40:30", 'image': 'assets/images/bg3.jpg'},
+    {'text': "풀은 마르고 꽃은 시드나 우리 하나님의 말씀은 영원히 서리라", 'reference': "이사야 40:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와께서 이같이 말씀하시되 이전 일을 기억하지 말며 옛적 일을 생각하지 말라", 'reference': "이사야 43:18", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나 곧 나는 여호와라 나 외에 구원자가 없느니라", 'reference': "이사야 43:11", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희 마음에 두려움을 품지 말며 놀라지 말라", 'reference': "이사야 44:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 너를 지명하여 부르매 너는 내 것이 되었느니라", 'reference': "이사야 43:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네가 내 눈에 보배롭고 존귀하며 내가 너를 사랑하였은즉 내가 네 대신 사람들을 내어 주며 백성들이 네 생명을 대신하리니", 'reference': "이사야 43:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나는 여호와라 나 외에 다른 이가 없나니 나 밖에 신이 없느니라", 'reference': "이사야 45:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "땅 끝의 모든 사람들아 내게로 돌이켜 구원을 받으라 나는 하나님이라 다른 이가 없음이니라", 'reference': "이사야 45:22", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 눈같이 희게 하리라 네 죄가 주홍 같을지라도 양털 같이 희게 되리라", 'reference': "이사야 1:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "순종하면 땅의 아름다운 소산을 먹을 것이요", 'reference': "이사야 1:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "여호와의 영이 내게 내리셨으니 이는 여호와께서 내게 기름을 부으사 가난한 자에게 아름다운 소식을 전하게 하려 하심이라", 'reference': "이사야 61:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나를 보내사 마음이 상한 자를 고치며 포로 된 자에게 자유를, 갇힌 자에게 놓임을 선포하며", 'reference': "이사야 61:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그들에게 재 대신 화관을, 슬픔 대신 기쁨의 기름을, 근심 대신 찬송의 옷을 주사 불리어 의의 나무라, 여호와께서 심으신 그의 영광을 나타낼 자라 할 것이며", 'reference': "이사야 61:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "전에 있던 것은 잊어버리고 새것들이 나오리니 내가 이제 너희에게 이르노라 알지 못하겠느냐", 'reference': "이사야 42:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "보라 내가 새 일을 행하리니 이제 나타낼 것이라", 'reference': "이사야 43:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주 여호와께서 나를 도우시므로 내가 부끄러움을 당하지 아니하였느니라", 'reference': "이사야 50:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그러므로 내 얼굴을 부싯돌 같이 굳게 하였으므로 내가 수치를 당하지 아니할 줄 아노라", 'reference': "이사야 50:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "우리는 다 양 같아서 그릇 행하여 각기 제 길로 갔거늘 여호와께서는 우리 모두의 죄악을 그에게 담당시키셨도다", 'reference': "이사야 53:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그가 곤욕을 당하여 괴로울 때에도 그의 입을 열지 아니하였음이여 마치 도수장으로 끌려가는 어린 양과 털 깎는 자 앞에서 잠잠한 양 같이 그의 입을 열지 아니하였도다", 'reference': "이사야 53:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와께서 그에게 상함을 받게 하시기를 원하사 질고를 당하게 하셨은즉 그의 영혼을 속건 제물로 드리기에 이르면 그가 씨를 보게 되며 그의 날은 길 것이요 여호와께서 기뻐하시는 뜻이 그의 손에서 형통하리로다", 'reference': "이사야 53:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이르시되 평강이라 평강이라 먼 데 있는 자에게나 가까운 데 있는 자에게나 내가 그를 고치리라", 'reference': "이사야 57:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주 여호와의 영이 내게 내리셨으니 이는 여호와께서 내게 기름을 부으사", 'reference': "이사야 61:1", 'image': 'assets/images/bg5.jpg'},
+    
+    // 예레미야 (25개)
+    {'text': "너를 지으려고 모태에서 만들기 전에 내가 너를 알았고 네가 태어나기 전에 내가 너를 구별하였고 너를 여러 나라의 선지자로 세웠노라", 'reference': "예레미야 1:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "두려워하지 말라 내가 너와 함께 하여 너를 구원하리라", 'reference': "예레미야 1:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희는 나를 부르며 와서 내게 기도하면 내가 너희들의 기도를 들을 것이요", 'reference': "예레미야 29:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희가 온 마음으로 나를 구하면 나를 찾을 것이요 나를 만나리라", 'reference': "예레미야 29:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나 여호와가 말하노라 너희를 향한 나의 생각을 내가 아나니 평안이요 재앙이 아니니라 너희에게 미래와 희망을 주는 것이니라", 'reference': "예레미야 29:11", 'image': 'assets/images/bg5.jpg'},
+    {'text': "여호와여 주는 위대하시니이다 능력이 크시니이다 하늘에도 땅에도 주와 비교할 이가 없나이다", 'reference': "예레미야 32:18", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나 여호와는 모든 육체의 하나님이라 내게 어찌 능하지 못한 일이 있겠느냐", 'reference': "예레미야 32:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너는 내게 부르짖으라 내가 네게 응답하겠고 네가 알지 못하는 크고 은밀한 일을 네게 보이리라", 'reference': "예레미야 33:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "보라 그들에게 건강과 치료를 주고 그들을 고쳐 주며 그들에게 풍부한 평화와 진리를 나타내리라", 'reference': "예레미야 33:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 그들의 죄악을 사하고 그들의 죄악을 다시는 기억하지 아니하리라", 'reference': "예레미야 31:34", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 그들에게 한 마음과 한 도를 주어 자기들과 그 후의 자손의 복을 위하여 항상 나를 경외하게 하고", 'reference': "예레미야 32:39", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 그들과 영원한 언약을 맺어 그들에게 복을 주기 위하여 그들을 떠나지 아니하리니 나를 경외함을 그들 마음속에 두어 나를 떠나지 않게 하리라", 'reference': "예레미야 32:40", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사람의 마음은 만물보다 거짓되고 심히 부패하였은즉 누가 능히 이를 알리요마는", 'reference': "예레미야 17:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나 여호와는 심장을 살피며 폐부를 시험하고 각각 그의 행위와 그의 행실대로 보응하나니", 'reference': "예레미야 17:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "여호와를 의뢰하며 여호와를 의지하는 그 사람은 복을 받을 것이라", 'reference': "예레미야 17:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그는 물 가에 심은 나무가 그 뿌리를 강변에 뻗치고 더위가 올지라도 두려워하지 아니하며 그 잎이 청청하며 가무는 해에도 걱정이 없고 결실이 그치지 아니함 같으리라", 'reference': "예레미야 17:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 오래 전에 네게 나타나 말하기를 내가 영원한 사랑으로 너를 사랑하는 까닭에 인자함으로 너를 이끌었다 하였노라", 'reference': "예레미야 31:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와께서 이와 같이 말씀하시니라 이것은 네 재난과 상처는 고칠 수 없다 하거늘 네 상처를 싸매는 자가 없으며 너를 낫게 할 약이 없도다", 'reference': "예레미야 30:12-13", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러나 내가 건강을 회복시키며 네 상처를 낫게 하리라", 'reference': "예레미야 30:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "보라 내가 뭇 나라 중에서 그들을 모으고 모든 지방에서 그들을 불러 모아 그들의 땅으로 돌아오게 하리라", 'reference': "예레미야 32:37", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주 여호와여 주께서 큰 능력과 펴신 팔로 천지를 지으셨사오니 주에게는 할 수 없는 일이 없으시니이다", 'reference': "예레미야 32:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 전에 그들에게 준 모든 죄악을 사하고 그들이 내게 범죄하여 반역한 모든 죄악을 용서하리니", 'reference': "예레미야 33:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와여 주께서 나를 인도하시매 내가 따랐나이다", 'reference': "예레미야 31:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 그들에게 나를 알게 하는 마음을 주리니 나는 여호와인 줄 그들이 알게 되리라", 'reference': "예레미야 24:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그들은 온 마음으로 내게 돌아오며 그들은 내 백성이 되고 나는 그들의 하나님이 되리라", 'reference': "예레미야 24:7", 'image': 'assets/images/bg5.jpg'},
+    
+    // 에스겔 (15개)
+    {'text': "또 새 영을 너희 속에 두고 새 마음을 너희에게 주되 너희 육신에서 굳은 마음을 제거하고 부드러운 마음을 줄 것이며", 'reference': "에스겔 36:26", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내 영을 너희 속에 두어 너희로 내 율례를 행하게 하리니 너희가 내 규례를 지켜 행할지라", 'reference': "에스겔 36:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 맹세한 것 같이 악인이 죽는 것을 기뻐하지 아니하고 악인이 그의 길에서 돌이켜 떠나 사는 것을 기뻐하노라", 'reference': "에스겔 33:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이스라엘 족속아 돌이키고 돌이키라 어찌하여 죽고자 하느냐", 'reference': "에스겔 33:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 내 큰 이름의 거룩함을 나타낼 것이라 이 이름이 이방인 중에서 더럽혀졌나니 곧 너희가 그들 중에서 더럽힌 것이라", 'reference': "에스겔 36:23", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 맑은 물을 너희에게 뿌려서 너희로 정결하게 하되 곧 너희 모든 더러운 것에서와 모든 우상을 섬김에서 너희를 정결하게 할 것이며", 'reference': "에스겔 36:25", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와의 영이 내게 내려 나를 데리고 여호와의 영에 의하여 골짜기 가운데로 나가시니 거기 뼈가 많더라", 'reference': "에스겔 37:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 너는 대언하여 그들에게 이르기를 주 여호와의 말씀에 내 백성들아 내가 너희 무덤을 열고 너희를 무덤에서 일으켜 이스라엘 땅으로 들어가게 하리라", 'reference': "에스겔 37:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 내 영을 너희 속에 두면 너희가 살리니 내가 또 너희를 너희 땅에 둘 것이라", 'reference': "에스겔 37:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 그들과 한 목자를 세워 먹이게 하리니 그가 곧 내 종 다윗이라 그가 그들을 먹이고 그들의 목자가 되리라", 'reference': "에스겔 34:23", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나 여호와는 그들의 하나님이 되고 내 종 다윗은 그들 가운데에서 왕이 되리라 나 여호와의 말이니라", 'reference': "에스겔 34:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그들이 내 백성이 되고 나는 그들의 하나님이 되리라", 'reference': "에스겔 37:23", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 종 다윗이 영원히 그들의 왕이 되리라 그들에게 한 목자가 있어 그가 그들을 인도하리니 그들이 내 규례를 따르며 내 율례를 지켜 행하리라", 'reference': "에스겔 37:24", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 그들과 평화의 언약을 맺으리니 그것은 그들과 맺은 영원한 언약이라", 'reference': "에스겔 37:26", 'image': 'assets/images/bg4.jpg'},
+    {'text': "또 내가 그들을 세우고 그들을 번성하게 하며 내 성소를 그들 가운데에 영원히 세우리니", 'reference': "에스겔 37:26", 'image': 'assets/images/bg5.jpg'},
+    
+    // 다니엘 (15개)
+    {'text': "우리가 섬기는 하나님이 계시다면 우리를 맹렬히 타는 풀무불 가운데에서 능히 건져내시겠고 왕의 손에서도 건져내시리이다", 'reference': "다니엘 3:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그렇게 하지 아니하실지라도 왕이여 우리가 왕의 신들을 섬기지도 아니하고 왕이 세우신 금 신상에게 절하지도 아니할 줄을 아옵소서", 'reference': "다니엘 3:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그 왕들의 시대에 하늘의 하나님이 한 나라를 세우시리니 이것은 영원히 망하지도 아니할 것이요 이 나라는 다른 백성에게 돌아가지도 아니할 것이요", 'reference': "다니엘 2:44", 'image': 'assets/images/bg3.jpg'},
+    {'text': "도리어 이 모든 나라를 쳐서 멸망시키고 영원히 설 것이라", 'reference': "다니엘 2:44", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그의 나라는 멸망하지 아니할 것이요 그의 권세는 끝까지 이르리로다", 'reference': "다니엘 6:26", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그는 살아 계시는 하나님이시요 영원히 변하지 않으시는 이시며 그의 나라는 멸망하지 아니할 것이요 그의 권세는 무궁하리라", 'reference': "다니엘 6:26", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그는 구원도 하시며 건져내기도 하시며 하늘에서든지 땅에서든지 이적과 기사를 행하시는 이시로다 그가 다니엘을 구원하여 사자의 입에서 벗어나게 하셨도다", 'reference': "다니엘 6:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 밤 환상 중에 보니 인자 같은 이가 하늘 구름을 타고 와서 옛적부터 항상 계신 이에게 나아가 그 앞으로 인도되매", 'reference': "다니엘 7:13", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그에게 권세와 영광과 나라를 주셨고 모든 백성과 나라들과 다른 언어를 말하는 모든 자들이 그를 섬기게 하였으니 그의 권세는 소멸되지 아니하는 영원한 권세요 그의 나라는 멸망하지 아니할 것이니라", 'reference': "다니엘 7:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "무릇 땅의 모든 사람들을 아무 것도 없는 것 같이 여기시며 하늘의 군대에게든지 땅의 사람에게든지 그는 자기 뜻대로 행하시나니 그의 손을 금하며 이르기를 네가 무엇을 하느냐고 할 자가 아무도 없도다", 'reference': "다니엘 4:35", 'image': 'assets/images/bg5.jpg'},
+    {'text': "지혜 있는 자는 궁창의 빛과 같이 빛날 것이요 많은 사람을 옳은 데로 돌아오게 한 자는 별과 같이 영원토록 빛나리라", 'reference': "다니엘 12:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "다니엘아 끝까지 가라 이는 이 말씀을 마치는 때까지 간직되고 봉함될 것임이라", 'reference': "다니엘 12:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 하나님이 그의 천사를 보내어 사자들의 입을 봉하셨으므로 사자들이 나를 상해하지 못하였사오니 이는 나의 무죄함이 그 앞에 밝히 드러났음이오며 또 왕이여 나는 왕에게도 해를 끼친 일이 없나이다", 'reference': "다니엘 6:22", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그런즉 다니엘이 그 나라에서 번영하였으니 다리오 왕 때와 바사 사람 고레스 왕 때더라", 'reference': "다니엘 6:28", 'image': 'assets/images/bg4.jpg'},
+    {'text': "오직 너 다니엘아 마지막 때까지 이 말을 간직하고 이 글을 봉함하라 많은 사람이 빨리 왕래하며 지식이 더하리라", 'reference': "다니엘 12:4", 'image': 'assets/images/bg5.jpg'},
+    
+    // 소선지서 (호세아, 요엘, 아모스, 미가, 나훔, 하박국, 스바냐, 학개, 스가랴, 말라기) (30개)
+    {'text': "내가 인애로 그들을 이끌었고 사랑의 줄로 그들을 이끌었노라 내가 그들에게 대하여 그 턱의 멍에를 벗기는 자 같이 하였고 그들 앞에 먹을 것을 주었노라", 'reference': "호세아 11:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 너희는 네 하나님께로 돌아와서 인애와 정의를 지키며 항상 네 하나님을 바랄지니라", 'reference': "호세아 12:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 사망아 네 전염병이 어디 있느냐 스올아 네 멸망이 어디 있느냐", 'reference': "호세아 13:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이제라도 너희는 금식하고 울며 애통하고 마음을 다하여 내게로 돌아오라", 'reference': "요엘 2:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희 옷을 찢지 말고 마음을 찢고 너희 하나님 여호와께로 돌아올지어다 그는 은혜로우시며 자비로우시며 노하기를 더디 하시며 인애가 크시사 뜻을 돌이켜 재앙을 내리지 아니하시나니", 'reference': "요엘 2:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그 후에 내가 내 영을 만민에게 부어 주리니 너희 자녀들이 장래 일을 말할 것이며 너희 늙은이는 꿈을 꾸며 너희 젊은이는 이상을 볼 것이며", 'reference': "요엘 2:28", 'image': 'assets/images/bg1.jpg'},
+    {'text': "누구든지 여호와의 이름을 부르는 자는 구원을 얻으리니", 'reference': "요엘 2:32", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사람아 주께서 선한 것이 무엇임을 네게 보이셨나니 여호와께서 네게 구하시는 것은 오직 정의를 행하며 인자를 사랑하며 겸손하게 네 하나님과 함께 행하는 것이 아니냐", 'reference': "미가 6:8", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주께서 다시 우리를 불쌍히 여기시고 우리의 죄악을 발로 밟으시며 우리의 모든 죄를 깊은 바다에 던지시리이다", 'reference': "미가 7:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나는 여호와를 우러러보며 나를 구원하시는 하나님을 바라보나니 나의 하나님이 나를 들으시리로다", 'reference': "미가 7:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그가 네게 화평을 베푸시리라", 'reference': "미가 5:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "여호와는 선하시도다 환난 날에 산성이시라 그는 자기에게 피하는 자들을 아시느니라", 'reference': "나훔 1:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "비록 무화과나무가 무성하지 못하며 포도나무에 열매가 없으며 감람나무에 소출이 없으며 밭에 먹을 것이 없으며 우리에 양이 없으며 외양간에 소가 없을지라도", 'reference': "하박국 3:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나는 여호와로 말미암아 즐거워하며 나의 구원의 하나님으로 말미암아 기뻐하리로다", 'reference': "하박국 3:18", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주 여호와는 나의 힘이시라 나의 발을 사슴과 같게 하시며 나를 나의 높은 곳에서 걸어 다니게 하시리로다", 'reference': "하박국 3:19", 'image': 'assets/images/bg5.jpg'},
+    {'text': "오직 의인은 그의 믿음으로 말미암아 살리라", 'reference': "하박국 2:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "물이 바다를 덮음 같이 여호와의 영광을 인정하는 것이 세상에 가득하리라", 'reference': "하박국 2:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "여호와는 그의 성전에 계시니 온 땅은 그 앞에서 잠잠할지니라", 'reference': "하박국 2:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네 하나님 여호와가 너의 가운데에 계시니 그는 구원을 베푸실 전능자이시라 그가 너로 말미암아 기쁨을 이기지 못하시며 너를 잠잠히 사랑하시며 너로 말미암아 즐거이 부르며 기뻐하시리라", 'reference': "스바냐 3:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그 때에 내가 너희를 이끌어 들이며 그 때에 내가 너희를 모으리니 내가 너희의 목전에서 너희 사로잡힘을 돌이킬 때에 너희가 천하 만민 중에서 명성과 칭찬을 받게 하리라", 'reference': "스바냐 3:20", 'image': 'assets/images/bg5.jpg'},
+    {'text': "만군의 여호와가 이르노라 이 백성이 이르기를 여호와의 전을 건축할 시기가 이르지 아니하였다 하느니라", 'reference': "학개 1:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "은도 내 것이요 금도 내 것이니라 만군의 여호와의 말이니라", 'reference': "학개 2:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이 성전의 나중 영광이 이전 영광보다 크리라 만군의 여호와의 말이니라 내가 이 곳에 평강을 주리라", 'reference': "학개 2:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이는 힘으로 되지 아니하며 능력으로 되지 아니하고 오직 나의 영으로 되느니라 만군의 여호와의 말씀이니라", 'reference': "스가랴 4:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "시온의 딸아 크게 기뻐할지어다 예루살렘의 딸아 즐거이 부를지어다 보라 네 왕이 네게 임하시나니 그는 공의로우시며 구원을 베푸시며 겸손하여서 나귀를 타시나니 나귀의 작은 것 곧 나귀 새끼니라", 'reference': "스가랴 9:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "보라 내가 아버지의 마음을 자녀에게로 돌이키게 하고 자녀들의 마음을 그들의 아버지에게로 돌이키게 하리라", 'reference': "말라기 4:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "만군의 여호와가 이르노라 나는 변하지 아니하나니 그러므로 야곱의 자손들아 너희가 소멸되지 아니하느니라", 'reference': "말라기 3:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "만군의 여호와가 이르노라 너희가 온전한 십일조를 창고에 들여 나의 집에 양식이 있게 하고 그것으로 나를 시험하여 내가 하늘 문을 열고 너희에게 복을 쌓을 곳이 없도록 붓지 아니하나 보라", 'reference': "말라기 3:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내 이름을 경외하는 너희에게는 공의로운 해가 떠올라서 치료하는 광선을 비추리니 너희가 나가서 외양간에서 나온 송아지 같이 뛰리라", 'reference': "말라기 4:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 전령을 보내리니 그가 내 앞에서 길을 준비할 것이요 또 너희가 구하는 바 주가 갑자기 그의 성전에 임하시리니", 'reference': "말라기 3:1", 'image': 'assets/images/bg5.jpg'},
+  ];
+    
+    // ========== 신약 성경 ==========
+    
+    // 마태복음 (50개)
+    {'text': "심령이 가난한 자는 복이 있나니 천국이 그들의 것임이요", 'reference': "마태복음 5:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "애통하는 자는 복이 있나니 그들이 위로를 받을 것임이요", 'reference': "마태복음 5:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "온유한 자는 복이 있나니 그들이 땅을 기업으로 받을 것임이요", 'reference': "마태복음 5:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "의에 주리고 목마른 자는 복이 있나니 그들이 배부를 것임이요", 'reference': "마태복음 5:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "긍휼히 여기는 자는 복이 있나니 그들이 긍휼히 여김을 받을 것임이요", 'reference': "마태복음 5:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "마음이 청결한 자는 복이 있나니 그들이 하나님을 볼 것임이요", 'reference': "마태복음 5:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "화평하게 하는 자는 복이 있나니 그들이 하나님의 아들이라 일컬음을 받을 것임이요", 'reference': "마태복음 5:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "의를 위하여 박해를 받은 자는 복이 있나니 천국이 그들의 것임이라", 'reference': "마태복음 5:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 세상의 소금이니 소금이 만일 그 맛을 잃으면 무엇으로 짜게 하리요", 'reference': "마태복음 5:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희는 세상의 빛이라 산 위에 있는 동네가 숨겨지지 못할 것이요", 'reference': "마태복음 5:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이같이 너희 빛이 사람 앞에 비치게 하여 그들로 너희 착한 행실을 보고 하늘에 계신 너희 아버지께 영광을 돌리게 하라", 'reference': "마태복음 5:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 먼저 그의 나라와 그의 의를 구하라 그리하면 이 모든 것을 너희에게 더하시리라", 'reference': "마태복음 6:33", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 내일 일을 위하여 염려하지 말라 내일 일은 내일이 염려할 것이요 한 날의 괴로움은 그 날로 족하니라", 'reference': "마태복음 6:34", 'image': 'assets/images/bg3.jpg'},
+    {'text': "구하라 그리하면 너희에게 주실 것이요 찾으라 그리하면 찾아낼 것이요 문을 두드리라 그리하면 너희에게 열릴 것이니", 'reference': "마태복음 7:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "구하는 이마다 받을 것이요 찾는 이는 찾아낼 것이요 두드리는 이에게는 열릴 것이니라", 'reference': "마태복음 7:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 무엇이든지 남에게 대접을 받고자 하는 대로 너희도 남을 대접하라 이것이 율법이요 선지자니라", 'reference': "마태복음 7:12", 'image': 'assets/images/bg1.jpg'},
+    {'text': "수고하고 무거운 짐 진 자들아 다 내게로 오라 내가 너희를 쉬게 하리라", 'reference': "마태복음 11:28", 'image': 'assets/images/bg2.jpg'},
+    {'text': "나는 마음이 온유하고 겸손하니 나의 멍에를 메고 내게 배우라 그리하면 너희 마음이 쉼을 얻으리니", 'reference': "마태복음 11:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이는 내 멍에는 쉽고 내 짐은 가벼움이라 하시니라", 'reference': "마태복음 11:30", 'image': 'assets/images/bg4.jpg'},
+    {'text': "진실로 너희에게 이르노니 너희가 돌이켜 어린 아이들과 같이 되지 아니하면 결단코 천국에 들어가지 못하리라", 'reference': "마태복음 18:3", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 누구든지 이 어린 아이와 같이 자기를 낮추는 사람이 천국에서 큰 자니라", 'reference': "마태복음 18:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "진실로 다시 너희에게 이르노니 너희 중의 두 사람이 땅에서 합심하여 무엇이든지 구하면 하늘에 계신 내 아버지께서 그들을 위하여 이루게 하시리라", 'reference': "마태복음 18:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "두세 사람이 내 이름으로 모인 곳에는 나도 그들 중에 있느니라", 'reference': "마태복음 18:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "사람이 만일 온 천하를 얻고도 제 목숨을 잃으면 무엇이 유익하리요 사람이 무엇을 주고 제 목숨과 바꾸겠느냐", 'reference': "마태복음 16:26", 'image': 'assets/images/bg4.jpg'},
+    {'text': "예수께서 이르시되 사람으로는 할 수 없으나 하나님으로서는 다 할 수 있느니라", 'reference': "마태복음 19:26", 'image': 'assets/images/bg5.jpg'},
+    {'text': "네 마음을 다하고 목숨을 다하고 뜻을 다하여 주 너의 하나님을 사랑하라", 'reference': "마태복음 22:37", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네 이웃을 네 자신 같이 사랑하라", 'reference': "마태복음 22:39", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하늘과 땅은 없어지겠으나 내 말은 없어지지 아니하리라", 'reference': "마태복음 24:35", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러므로 너희는 가서 모든 민족을 제자로 삼아 아버지와 아들과 성령의 이름으로 세례를 베풀고", 'reference': "마태복음 28:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라", 'reference': "마태복음 28:20", 'image': 'assets/images/bg5.jpg'},
+    
+    // 마가복음 (20개)
+    {'text': "때가 찼고 하나님의 나라가 가까이 왔으니 회개하고 복음을 믿으라", 'reference': "마가복음 1:15", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나를 따라오라 내가 너희로 사람을 낚는 어부가 되게 하리라", 'reference': "마가복음 1:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "건강한 자에게는 의사가 쓸 데 없고 병든 자에게라야 쓸 데 있느니라 나는 의인을 부르러 온 것이 아니요 죄인을 부르러 왔노라", 'reference': "마가복음 2:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "믿는 자에게는 능히 하지 못할 일이 없느니라", 'reference': "마가복음 9:23", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 믿나이다 나의 믿음 없는 것을 도와 주소서", 'reference': "마가복음 9:24", 'image': 'assets/images/bg5.jpg'},
+    {'text': "무엇이든지 기도하고 구하는 것은 받은 줄로 믿으라 그리하면 너희에게 그대로 되리라", 'reference': "마가복음 11:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "서서 기도할 때에 아무에게나 혐의가 있거든 용서하라 그래야 하늘에 계신 너희 아버지도 너희 허물을 사하여 주시리라", 'reference': "마가복음 11:25", 'image': 'assets/images/bg2.jpg'},
+    {'text': "인자가 온 것은 섬김을 받으려 함이 아니라 도리어 섬기려 하고 자기 목숨을 많은 사람의 대속물로 주려 함이니라", 'reference': "마가복음 10:45", 'image': 'assets/images/bg3.jpg'},
+    {'text': "어린 아이들이 내게 오는 것을 용납하고 금하지 말라 하나님의 나라가 이런 자의 것이니라", 'reference': "마가복음 10:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 진실로 너희에게 이르노니 누구든지 하나님의 나라를 어린 아이와 같이 받들지 않는 자는 결단코 그 곳에 들어가지 못하리라", 'reference': "마가복음 10:15", 'image': 'assets/images/bg5.jpg'},
+    {'text': "사람이 무엇을 주고 자기 목숨과 바꾸겠느냐", 'reference': "마가복음 8:37", 'image': 'assets/images/bg1.jpg'},
+    {'text': "누구든지 나와 내 말을 부끄러워하면 인자도 아버지의 영광으로 거룩한 천사들과 함께 올 때에 그 사람을 부끄러워하리라", 'reference': "마가복음 8:38", 'image': 'assets/images/bg2.jpg'},
+    {'text': "온 천하를 얻고도 제 목숨을 잃으면 무엇이 유익하리요", 'reference': "마가복음 8:36", 'image': 'assets/images/bg3.jpg'},
+    {'text': "누구든지 나를 따라오려거든 자기를 부인하고 자기 십자가를 지고 나를 따를 것이니라", 'reference': "마가복음 8:34", 'image': 'assets/images/bg4.jpg'},
+    {'text': "자기 목숨을 구원하고자 하면 잃을 것이요 나와 복음을 위하여 자기 목숨을 잃으면 구원하리라", 'reference': "마가복음 8:35", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님께는 다 가능하니라", 'reference': "마가복음 10:27", 'image': 'assets/images/bg1.jpg'},
+    {'text': "믿음이 없는 세대여 내가 얼마나 너희와 함께 있으며 얼마나 너희에게 참으리요", 'reference': "마가복음 9:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "기도 외에 다른 것으로는 이런 종류가 나갈 수 없느니라", 'reference': "마가복음 9:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희에게 소금이 있으니 서로 화목하라", 'reference': "마가복음 9:50", 'image': 'assets/images/bg4.jpg'},
+    {'text': "믿고 세례를 받는 사람은 구원을 얻을 것이요 믿지 않는 사람은 정죄를 받으리라", 'reference': "마가복음 16:16", 'image': 'assets/images/bg5.jpg'},
+    
+    // 누가복음 (30개)
+    {'text': "두려워하지 말라 마리아여 네가 하나님께 은혜를 입었느니라", 'reference': "누가복음 1:30", 'image': 'assets/images/bg1.jpg'},
+    {'text': "대저 하나님의 모든 말씀은 능하지 못하심이 없느니라", 'reference': "누가복음 1:37", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 영혼이 주를 찬양하며 내 마음이 하나님 내 구주를 기뻐하였음은", 'reference': "누가복음 1:46-47", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오늘 다윗의 동네에 너희를 위하여 구주가 나셨으니 곧 그리스도 주시니라", 'reference': "누가복음 2:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지극히 높은 곳에서는 하나님께 영광이요 땅에서는 하나님이 기뻐하신 사람들 중에 평화로다", 'reference': "누가복음 2:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "인자가 온 것은 잃어버린 자를 찾아 구원하려 함이니라", 'reference': "누가복음 19:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "아버지여 저들을 사하여 주옵소서 자기들이 하는 것을 알지 못함이니이다", 'reference': "누가복음 23:34", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희는 위로부터 능력으로 입혀질 때까지 이 성에 머물라", 'reference': "누가복음 24:49", 'image': 'assets/images/bg3.jpg'},
+    {'text': "사람이 떡으로만 살 것이 아니라", 'reference': "누가복음 4:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주의 성령이 내게 임하셨으니 이는 가난한 자에게 복음을 전하게 하시려고 내게 기름을 부으시고", 'reference': "누가복음 4:18", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희 원수를 사랑하며 너희를 미워하는 자를 선대하며", 'reference': "누가복음 6:27", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희를 저주하는 자를 위하여 축복하며 너희를 모욕하는 자를 위하여 기도하라", 'reference': "누가복음 6:28", 'image': 'assets/images/bg2.jpg'},
+    {'text': "비판하지 말라 그리하면 너희가 비판을 받지 않을 것이요 정죄하지 말라 그리하면 너희가 정죄를 받지 않을 것이요", 'reference': "누가복음 6:37", 'image': 'assets/images/bg3.jpg'},
+    {'text': "용서하라 그리하면 너희가 용서를 받을 것이요", 'reference': "누가복음 6:37", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주라 그리하면 너희에게 줄 것이니 곧 후히 되어 누르고 흔들어 넘치도록 하여 너희에게 안겨 주리라", 'reference': "누가복음 6:38", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 헤아리는 그 헤아림으로 너희도 헤아림을 도로 받을 것이니라", 'reference': "누가복음 6:38", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나를 불러 주여 주여 하면서도 어찌하여 나의 말하는 것을 행하지 아니하느냐", 'reference': "누가복음 6:46", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 말을 듣고 행하는 자는 땅을 깊이 파고 주춧돌 위에 집을 세운 사람과 같으니", 'reference': "누가복음 6:47-48", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네 믿음이 너를 구원하였으니 평안히 가라", 'reference': "누가복음 7:50", 'image': 'assets/images/bg4.jpg'},
+    {'text': "들을 귀 있는 자는 들을지어다", 'reference': "누가복음 8:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "좋은 땅에 있다는 것은 착하고 좋은 마음으로 말씀을 듣고 지키어 인내로 결실하는 자니라", 'reference': "누가복음 8:15", 'image': 'assets/images/bg1.jpg'},
+    {'text': "아버지께서 너희에게 그 나라를 주시기로 기뻐하시느니라", 'reference': "누가복음 12:32", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희 보물 있는 곳에는 너희 마음도 있으리라", 'reference': "누가복음 12:34", 'image': 'assets/images/bg3.jpg'},
+    {'text': "누구든지 자기를 높이는 자는 낮아지고 자기를 낮추는 자는 높아지리라", 'reference': "누가복음 14:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 너희에게 말하노니 이와 같이 죄인 한 사람이 회개하면 하늘에서 기뻐하기를 회개할 것 없는 의인 아흔아홉으로 말미암아 기뻐하는 것보다 더하리라", 'reference': "누가복음 15:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이 내 아들은 죽었다가 다시 살아났으며 내가 잃었다가 다시 얻었노라 하니 그들이 즐거워하더라", 'reference': "누가복음 15:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희 중의 하나가 종을 두어 밭을 갈게 하거나 양을 먹이게 하였는데", 'reference': "누가복음 17:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님의 나라는 볼 수 있게 임하는 것이 아니요 또 여기 있다 저기 있다고도 못하리니", 'reference': "누가복음 17:20-21", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님의 나라는 너희 안에 있느니라", 'reference': "누가복음 17:21", 'image': 'assets/images/bg4.jpg'},
+    {'text': "항상 기도하고 낙심하지 말아야 할 것을 비유로 말씀하시니라", 'reference': "누가복음 18:1", 'image': 'assets/images/bg5.jpg'},
+    
+    // 요한복음 (50개)
+    {'text': "태초에 말씀이 계시니라 이 말씀이 하나님과 함께 계셨으니 이 말씀은 곧 하나님이시니라", 'reference': "요한복음 1:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그 안에 생명이 있었으니 이 생명은 사람들의 빛이라", 'reference': "요한복음 1:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "빛이 어둠에 비치되 어둠이 깨닫지 못하더라", 'reference': "요한복음 1:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "말씀이 육신이 되어 우리 가운데 거하시매 우리가 그의 영광을 보니 아버지의 독생자의 영광이요 은혜와 진리가 충만하더라", 'reference': "요한복음 1:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "영접하는 자 곧 그 이름을 믿는 자들에게는 하나님의 자녀가 되는 권세를 주셨으니", 'reference': "요한복음 1:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라", 'reference': "요한복음 3:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이 그 아들을 세상에 보내신 것은 세상을 심판하려 하심이 아니요 그로 말미암아 세상이 구원을 받게 하려 하심이라", 'reference': "요한복음 3:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그를 믿는 자는 심판을 받지 아니하는 것이요", 'reference': "요한복음 3:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 주는 물을 마시는 자는 영원히 목마르지 아니하리니 내가 주는 물은 그 속에서 영생하도록 솟아나는 샘물이 되리라", 'reference': "요한복음 4:14", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님은 영이시니 예배하는 자가 영과 진리로 예배할지니라", 'reference': "요한복음 4:24", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내 아버지께서 이제까지 일하시니 나도 일한다", 'reference': "요한복음 5:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "아들이 아버지께서 하시는 일을 보지 않고는 아무것도 스스로 할 수 없나니 아버지께서 행하시는 그것을 아들도 그와 같이 행하느니라", 'reference': "요한복음 5:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내 말을 듣고 또 나 보내신 이를 믿는 자는 영생을 얻었고 심판에 이르지 아니하나니 사망에서 생명으로 옮겼느니라", 'reference': "요한복음 5:24", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나는 생명의 떡이니 내게 오는 자는 결코 주리지 아니할 것이요 나를 믿는 자는 영원히 목마르지 아니하리라", 'reference': "요한복음 6:35", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내게 오는 자는 내가 결코 내쫓지 아니하리라", 'reference': "요한복음 6:37", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나를 보내신 아버지의 뜻은 내게 주신 자 중에서 내가 하나도 잃어버리지 아니하고 마지막 날에 다시 살리는 이것이니라", 'reference': "요한복음 6:39", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나는 세상의 빛이니 나를 따르는 자는 어둠에 다니지 아니하고 생명의 빛을 얻으리라", 'reference': "요한복음 8:12", 'image': 'assets/images/bg2.jpg'},
+    {'text': "진리를 알지니 진리가 너희를 자유롭게 하리라", 'reference': "요한복음 8:32", 'image': 'assets/images/bg3.jpg'},
+    {'text': "아들이 너희를 자유롭게 하면 너희가 참으로 자유로우리라", 'reference': "요한복음 8:36", 'image': 'assets/images/bg4.jpg'},
+    {'text': "도둑이 오는 것은 도둑질하고 죽이고 멸망시키려는 것뿐이요 내가 온 것은 양으로 생명을 얻게 하고 더 풍성히 얻게 하려는 것이라", 'reference': "요한복음 10:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "나는 선한 목자라 선한 목자는 양들을 위하여 목숨을 버리거니와", 'reference': "요한복음 10:11", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내 양은 내 음성을 들으며 나는 그들을 알며 그들은 나를 따르느니라", 'reference': "요한복음 10:27", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 그들에게 영생을 주노니 영원히 멸망하지 아니할 것이요 또 그들을 내 손에서 빼앗을 자가 없느니라", 'reference': "요한복음 10:28", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나는 부활이요 생명이니 나를 믿는 자는 죽어도 살겠고", 'reference': "요한복음 11:25", 'image': 'assets/images/bg4.jpg'},
+    {'text': "무릇 살아서 나를 믿는 자는 영원히 죽지 아니하리니 이것을 네가 믿느냐", 'reference': "요한복음 11:26", 'image': 'assets/images/bg5.jpg'},
+    {'text': "한 알의 밀이 땅에 떨어져 죽지 아니하면 한 알 그대로 있고 죽으면 많은 열매를 맺느니라", 'reference': "요한복음 12:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "자기의 생명을 사랑하는 자는 잃어버릴 것이요 이 세상에서 자기의 생명을 미워하는 자는 영생하도록 보전하리라", 'reference': "요한복음 12:25", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 곧 길이요 진리요 생명이니 나로 말미암지 않고는 아버지께로 올 자가 없느니라", 'reference': "요한복음 14:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내가 아버지 안에 있고 아버지께서 내 안에 계신 것을 네가 믿지 아니하느냐", 'reference': "요한복음 14:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "진실로 진실로 너희에게 이르노니 나를 믿는 자는 내가 하는 일을 그도 할 것이요 또한 그보다 큰 일도 하리니 이는 내가 아버지께로 감이라", 'reference': "요한복음 14:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 내 이름으로 무엇이든지 내게 구하면 내가 행하리라", 'reference': "요한복음 14:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 나를 사랑하면 나의 계명을 지키리라", 'reference': "요한복음 14:15", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 아버지께 구하겠으니 그가 또 다른 보혜사를 너희에게 주사 영원토록 너희와 함께 있게 하시리니", 'reference': "요한복음 14:16", 'image': 'assets/images/bg3.jpg'},
+    {'text': "평안을 너희에게 끼치노니 곧 나의 평안을 너희에게 주노라 내가 너희에게 주는 것은 세상이 주는 것과 같지 아니하니라 너희는 마음에 근심하지도 말고 두려워하지도 말라", 'reference': "요한복음 14:27", 'image': 'assets/images/bg4.jpg'},
+    {'text': "나는 포도나무요 너희는 가지라 그가 내 안에, 내가 그 안에 거하면 사람이 열매를 많이 맺나니 나를 떠나서는 너희가 아무것도 할 수 없음이라", 'reference': "요한복음 15:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 내 안에 거하고 내 말이 너희 안에 거하면 무엇이든지 원하는 대로 구하라 그리하면 이루리라", 'reference': "요한복음 15:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 열매를 많이 맺으면 내 아버지께서 영광을 받으실 것이요 너희는 내 제자가 되리라", 'reference': "요한복음 15:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "아버지께서 나를 사랑하신 것 같이 나도 너희를 사랑하였으니 나의 사랑 안에 거하라", 'reference': "요한복음 15:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "내 계명을 지키면 내 사랑 안에 거하리니 이는 내가 아버지의 계명을 지켜 그의 사랑 안에 거하는 것 같으니라", 'reference': "요한복음 15:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희가 서로 사랑하면 이로써 모든 사람이 너희가 내 제자인 줄 알리라", 'reference': "요한복음 13:35", 'image': 'assets/images/bg5.jpg'},
+    {'text': "새 계명을 너희에게 주노니 서로 사랑하라 내가 너희를 사랑한 것 같이 너희도 서로 사랑하라", 'reference': "요한복음 13:34", 'image': 'assets/images/bg1.jpg'},
+    {'text': "사람이 친구를 위하여 자기 목숨을 버리면 이보다 더 큰 사랑이 없나니", 'reference': "요한복음 15:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희가 나를 택한 것이 아니요 내가 너희를 택하여 세웠나니 이는 너희로 가서 열매를 맺게 하고 또 너희 열매가 항상 있게 하여", 'reference': "요한복음 15:16", 'image': 'assets/images/bg3.jpg'},
+    {'text': "세상에서는 너희가 환난을 당하나 담대하라 내가 세상을 이기었노라", 'reference': "요한복음 16:33", 'image': 'assets/images/bg4.jpg'},
+    {'text': "영생은 곧 유일하신 참 하나님과 그가 보내신 자 예수 그리스도를 아는 것이니이다", 'reference': "요한복음 17:3", 'image': 'assets/images/bg5.jpg'},
+    {'text': "아버지께서 내 안에, 내가 아버지 안에 있는 것 같이 그들도 다 하나가 되어 우리 안에 있게 하사", 'reference': "요한복음 17:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "다 이루었다", 'reference': "요한복음 19:30", 'image': 'assets/images/bg2.jpg'},
+    {'text': "보지 못하고 믿는 자들은 복되도다", 'reference': "요한복음 20:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오직 이것을 기록함은 너희로 예수께서 하나님의 아들 그리스도이심을 믿게 하려 함이요 또 너희로 믿고 그 이름을 힘입어 생명을 얻게 하려 함이니라", 'reference': "요한복음 20:31", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네가 나를 사랑하느냐 내 양을 먹이라", 'reference': "요한복음 21:17", 'image': 'assets/images/bg5.jpg'},
+    
+    // 사도행전 (20개)
+    {'text': "오직 성령이 너희에게 임하시면 너희가 권능을 받고 예루살렘과 온 유대와 사마리아와 땅 끝까지 이르러 내 증인이 되리라", 'reference': "사도행전 1:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 회개하여 각각 예수 그리스도의 이름으로 세례를 받고 죄 사함을 받으라 그리하면 성령의 선물을 받으리니", 'reference': "사도행전 2:38", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이 약속은 너희와 너희 자녀와 모든 먼 데 사람 곧 주 우리 하나님이 얼마든지 부르시는 자들에게 하신 것이라", 'reference': "사도행전 2:39", 'image': 'assets/images/bg3.jpg'},
+    {'text': "다른 이로써는 구원을 받을 수 없나니 천하 사람 중에 구원을 받을 만한 다른 이름을 우리에게 주신 일이 없음이라", 'reference': "사도행전 4:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "사람보다 하나님께 순종하는 것이 마땅하니라", 'reference': "사도행전 5:29", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주 예수를 믿으라 그리하면 너와 네 집이 구원을 받으리라", 'reference': "사도행전 16:31", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이에 그 사람과 온 가족이 즉시 세례를 받으니라", 'reference': "사도행전 16:33", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그는 우리 각 사람에게서 멀리 계시지 아니하도다", 'reference': "사도행전 17:27", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 그를 힘입어 살며 기동하며 존재하느니라", 'reference': "사도행전 17:28", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주는 것이 받는 것보다 복이 있다", 'reference': "사도행전 20:35", 'image': 'assets/images/bg5.jpg'},
+    {'text': "내가 달려갈 길과 주 예수께 받은 사명 곧 하나님의 은혜의 복음을 증언하는 일을 마치려 함에는 나의 생명조차 조금도 귀한 것으로 여기지 아니하노라", 'reference': "사도행전 20:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러나 이 일에 힘입어 오늘까지 서서 높고 낮은 사람 앞에서 증언하되", 'reference': "사도행전 26:22", 'image': 'assets/images/bg2.jpg'},
+    {'text': "바울이 이르되 말이 적으나 많으나 당신뿐만 아니라 오늘 내 말을 듣는 모든 사람도 다 이렇게 결박된 것 외에는 나와 같이 되기를 하나님께 원하노이다", 'reference': "사도행전 26:29", 'image': 'assets/images/bg3.jpg'},
+    {'text': "두려워하지 말고 침묵하지 말라", 'reference': "사도행전 18:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 너와 함께 있으매 어떤 사람도 너를 대적하여 해롭게 할 자가 없을 것이니 이는 이 성중에 내 백성이 많음이라", 'reference': "사도행전 18:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "믿음이 없이는 하나님을 기쁘시게 하지 못하나니", 'reference': "사도행전 6:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "스데반이 성령이 충만하여 하늘을 우러러 주목하여 하나님의 영광과 및 예수께서 하나님 우편에 서신 것을 보고", 'reference': "사도행전 7:55", 'image': 'assets/images/bg2.jpg'},
+    {'text': "보라 하늘이 열리고 인자가 하나님 우편에 서신 것을 보노라", 'reference': "사도행전 7:56", 'image': 'assets/images/bg3.jpg'},
+    {'text': "주 예수여 내 영혼을 받으시옵소서", 'reference': "사도행전 7:59", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주여 이 죄를 그들에게 돌리지 마옵소서", 'reference': "사도행전 7:60", 'image': 'assets/images/bg5.jpg'},
+    
+    // 로마서 (40개)
+    {'text': "내가 복음을 부끄러워하지 아니하노니 이 복음은 모든 믿는 자에게 구원을 주시는 하나님의 능력이 됨이라", 'reference': "로마서 1:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "복음에는 하나님의 의가 나타나서 믿음으로 믿음에 이르게 하나니 기록된 바 오직 의인은 믿음으로 말미암아 살리라 함과 같으니라", 'reference': "로마서 1:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "모든 사람이 죄를 범하였으매 하나님의 영광에 이르지 못하더니", 'reference': "로마서 3:23", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그리스도 예수 안에 있는 속량으로 말미암아 하나님의 은혜로 값 없이 의롭다 하심을 얻은 자 되었느니라", 'reference': "로마서 3:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그러므로 우리가 믿음으로 의롭다 하심을 받았으니 우리 주 예수 그리스도로 말미암아 하나님과 화평을 누리자", 'reference': "로마서 5:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그로 말미암아 우리가 믿음으로 서 있는 이 은혜에 들어감을 얻었으며 하나님의 영광을 바라고 즐거워하느니라", 'reference': "로마서 5:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "다만 이뿐 아니라 우리가 환난 중에도 즐거워하나니 이는 환난은 인내를, 인내는 연단을, 연단은 소망을 이루는 줄 앎이로다", 'reference': "로마서 5:3-4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "소망이 우리를 부끄럽게 하지 아니함은 우리에게 주신 성령으로 말미암아 하나님의 사랑이 우리 마음에 부은 바 됨이니", 'reference': "로마서 5:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 아직 죄인 되었을 때에 그리스도께서 우리를 위하여 죽으심으로 하나님께서 우리에 대한 자기의 사랑을 확증하셨느니라", 'reference': "로마서 5:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "죄의 삯은 사망이요 하나님의 은사는 그리스도 예수 우리 주 안에 있는 영생이니라", 'reference': "로마서 6:23", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 이제 그리스도 예수 안에 있는 자에게는 결코 정죄함이 없나니", 'reference': "로마서 8:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이는 그리스도 예수 안에 있는 생명의 성령의 법이 죄와 사망의 법에서 너를 해방하였음이라", 'reference': "로마서 8:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "육신의 생각은 사망이요 영의 생각은 생명과 평안이니라", 'reference': "로마서 8:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 다시 무서워하는 종의 영을 받지 아니하고 양자의 영을 받았으므로 우리가 아빠 아버지라고 부르짖느니라", 'reference': "로마서 8:15", 'image': 'assets/images/bg4.jpg'},
+    {'text': "성령이 친히 우리의 영과 더불어 우리가 하나님의 자녀인 것을 증언하시나니", 'reference': "로마서 8:16", 'image': 'assets/images/bg5.jpg'},
+    {'text': "생각하건대 현재의 고난은 장차 우리에게 나타날 영광과 비교할 수 없도다", 'reference': "로마서 8:18", 'image': 'assets/images/bg1.jpg'},
+    {'text': "우리가 알거니와 하나님을 사랑하는 자 곧 그의 뜻대로 부르심을 입은 자들에게는 모든 것이 합력하여 선을 이루느니라", 'reference': "로마서 8:28", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이 우리를 위하시면 누가 우리를 대적하리요", 'reference': "로마서 8:31", 'image': 'assets/images/bg3.jpg'},
+    {'text': "자기 아들을 아끼지 아니하시고 우리 모든 사람을 위하여 내주신 이가 어찌 그 아들과 함께 모든 것을 우리에게 주시지 아니하겠느냐", 'reference': "로마서 8:32", 'image': 'assets/images/bg4.jpg'},
+    {'text': "누가 하나님께서 택하신 자들을 고발하리요 의롭다 하신 이는 하나님이시니", 'reference': "로마서 8:33", 'image': 'assets/images/bg5.jpg'},
+    {'text': "누가 우리를 그리스도의 사랑에서 끊으리요 환난이나 곤고나 박해나 기근이나 적신이나 위험이나 칼이랴", 'reference': "로마서 8:35", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러나 이 모든 일에 우리를 사랑하시는 이로 말미암아 우리가 넉넉히 이기느니라", 'reference': "로마서 8:37", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 확신하노니 사망이나 생명이나 천사들이나 권세자들이나 현재 일이나 장래 일이나 능력이나", 'reference': "로마서 8:38", 'image': 'assets/images/bg3.jpg'},
+    {'text': "높음이나 깊음이나 다른 어떤 피조물이라도 우리를 우리 주 그리스도 예수 안에 있는 하나님의 사랑에서 끊을 수 없으리라", 'reference': "로마서 8:39", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네가 만일 네 입으로 예수를 주로 시인하며 또 하나님께서 그를 죽은 자 가운데서 살리신 것을 네 마음에 믿으면 구원을 받으리라", 'reference': "로마서 10:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "사람이 마음으로 믿어 의에 이르고 입으로 시인하여 구원에 이르느니라", 'reference': "로마서 10:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "누구든지 주의 이름을 부르는 자는 구원을 받으리라", 'reference': "로마서 10:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 형제들아 내가 하나님의 모든 자비하심으로 너희를 권하노니 너희 몸을 하나님이 기뻐하시는 거룩한 산 제물로 드리라 이는 너희가 드릴 영적 예배니라", 'reference': "로마서 12:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 이 세대를 본받지 말고 오직 마음을 새롭게 함으로 변화를 받아 하나님의 선하시고 기뻐하시고 온전하신 뜻이 무엇인지 분별하도록 하라", 'reference': "로마서 12:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "사랑에는 거짓이 없나니 악을 미워하고 선에 속하라", 'reference': "로마서 12:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "형제를 사랑하여 서로 우애하고 존경하기를 서로 먼저 하며", 'reference': "로마서 12:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "부지런하여 게으르지 말고 열심을 품고 주를 섬기라", 'reference': "로마서 12:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "소망 중에 즐거워하며 환난 중에 참으며 기도에 항상 힘쓰라", 'reference': "로마서 12:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "즐거워하는 자들과 함께 즐거워하고 우는 자들과 함께 울라", 'reference': "로마서 12:15", 'image': 'assets/images/bg4.jpg'},
+    {'text': "악에게 지지 말고 선으로 악을 이기라", 'reference': "로마서 12:21", 'image': 'assets/images/bg5.jpg'},
+    {'text': "피차 사랑의 빚 외에는 아무에게든지 아무 빚도 지지 말라 남을 사랑하는 자는 율법을 다 이루었느니라", 'reference': "로마서 13:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "밤이 깊고 낮이 가까웠으니 그러므로 우리가 어둠의 일을 벗고 빛의 갑옷을 입자", 'reference': "로마서 13:12", 'image': 'assets/images/bg2.jpg'},
+    {'text': "오직 주 예수 그리스도로 옷 입고 정욕을 위하여 육신의 일을 도모하지 말라", 'reference': "로마서 13:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리 중에 누구든지 자기를 위하여 사는 자가 없고 자기를 위하여 죽는 자도 없도다", 'reference': "로마서 14:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "우리가 살아도 주를 위하여 살고 죽어도 주를 위하여 죽나니 그러므로 사나 죽으나 우리가 주의 것이로다", 'reference': "로마서 14:8", 'image': 'assets/images/bg5.jpg'},
+    
+    // 고린도전서 (30개)
+    {'text': "십자가의 도가 멸망하는 자들에게는 미련한 것이요 구원을 받는 우리에게는 하나님의 능력이라", 'reference': "고린도전서 1:18", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님의 미련한 것이 사람보다 지혜 있고 하나님의 약한 것이 사람보다 강하니라", 'reference': "고린도전서 1:25", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님께서 세상의 미련한 것들을 택하사 지혜 있는 자들을 부끄럽게 하려 하시고", 'reference': "고린도전서 1:27", 'image': 'assets/images/bg3.jpg'},
+    {'text': "세상의 약한 것들을 택하사 강한 것들을 부끄럽게 하려 하시며", 'reference': "고린도전서 1:27", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희는 하나님으로부터 나서 그리스도 예수 안에 있고 예수는 하나님으로부터 나와서 우리에게 지혜와 의로움과 거룩함과 구원함이 되셨으니", 'reference': "고린도전서 1:30", 'image': 'assets/images/bg5.jpg'},
+    {'text': "하나님이 자기를 사랑하는 자들을 위하여 예비하신 모든 것은 눈으로 보지 못하고 귀로 듣지 못하고 사람의 마음으로 생각하지도 못하였다 하였느니라", 'reference': "고린도전서 2:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희는 너희가 하나님의 성전인 것과 하나님의 성령이 너희 안에 계시는 것을 알지 못하느냐", 'reference': "고린도전서 3:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "만물이 다 너희 것임이라 바울이나 아볼로나 게바나 세계나 생명이나 사망이나 지금 것이나 장래 것이나 다 너희의 것이요", 'reference': "고린도전서 3:21-22", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 그리스도의 것이요 그리스도는 하나님의 것이니라", 'reference': "고린도전서 3:23", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내가 심었고 아볼로가 물을 주었으되 오직 하나님께서 자라나게 하셨나니", 'reference': "고린도전서 3:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그런즉 심는 이나 물 주는 이는 아무 것도 아니로되 오직 자라게 하시는 이는 하나님뿐이니라", 'reference': "고린도전서 3:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희 몸은 너희가 하나님께로부터 받은 바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희 자신의 것이 아니라", 'reference': "고린도전서 6:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "값으로 산 것이 되었으니 그런즉 너희 몸으로 하나님께 영광을 돌리라", 'reference': "고린도전서 6:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "사람이 감당할 시험 밖에는 너희가 당한 것이 없나니 오직 하나님은 미쁘사 너희가 감당하지 못할 시험 당함을 허락하지 아니하시고", 'reference': "고린도전서 10:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "시험 당할 즈음에 또한 피할 길을 내사 너희로 능히 감당하게 하시느니라", 'reference': "고린도전서 10:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그런즉 너희가 먹든지 마시든지 무엇을 하든지 다 하나님의 영광을 위하여 하라", 'reference': "고린도전서 10:31", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 그리스도를 본받는 자가 된 것 같이 너희는 나를 본받는 자가 되라", 'reference': "고린도전서 11:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내가 사람의 방언과 천사의 말을 할지라도 사랑이 없으면 소리 나는 구리와 울리는 꽹과리가 되고", 'reference': "고린도전서 13:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "사랑은 오래 참고 사랑은 온유하며 시기하지 아니하며 사랑은 자랑하지 아니하며 교만하지 아니하며", 'reference': "고린도전서 13:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "무례히 행하지 아니하며 자기의 유익을 구하지 아니하며 성내지 아니하며 악한 것을 생각하지 아니하며", 'reference': "고린도전서 13:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "불의를 기뻐하지 아니하며 진리와 함께 기뻐하고", 'reference': "고린도전서 13:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "모든 것을 참으며 모든 것을 믿으며 모든 것을 바라며 모든 것을 견디느니라", 'reference': "고린도전서 13:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사랑은 언제까지나 떨어지지 아니하되 예언도 폐하고 방언도 그치고 지식도 폐하리라", 'reference': "고린도전서 13:8", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그런즉 믿음 소망 사랑 이 세 가지는 항상 있을 것인데 그 중의 제일은 사랑이라", 'reference': "고린도전서 13:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그리스도께서 다시 살아나시지 아니하셨으면 너희의 믿음도 헛되고 너희가 여전히 죄 가운데 있을 것이요", 'reference': "고린도전서 15:17", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러나 이제 그리스도께서 죽은 자 가운데서 다시 살아나사 잠자는 자들의 첫 열매가 되셨도다", 'reference': "고린도전서 15:20", 'image': 'assets/images/bg1.jpg'},
+    {'text': "사망아 너의 승리가 어디 있느냐 사망아 네가 쏘는 것이 어디 있느냐", 'reference': "고린도전서 15:55", 'image': 'assets/images/bg2.jpg'},
+    {'text': "우리 주 예수 그리스도로 말미암아 우리에게 승리를 주시는 하나님께 감사하노니", 'reference': "고린도전서 15:57", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러므로 내 사랑하는 형제들아 견실하며 흔들리지 말고 항상 주의 일에 더욱 힘쓰는 자들이 되라", 'reference': "고린도전서 15:58", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이는 너희 수고가 주 안에서 헛되지 않은 줄 앎이라", 'reference': "고린도전서 15:58", 'image': 'assets/images/bg5.jpg'},
+    
+    // 고린도후서 (20개)
+    {'text': "찬송하리로다 그는 우리 주 예수 그리스도의 하나님이시요 자비의 아버지시요 모든 위로의 하나님이시며", 'reference': "고린도후서 1:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "우리의 모든 환난 중에서 우리를 위로하사 우리로 하여금 하나님께 받는 위로로써 모든 환난 중에 있는 자들을 능히 위로하게 하시는 이시로다", 'reference': "고린도후서 1:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님의 약속은 얼마든지 그리스도 안에서 예가 되니 그런즉 그로 말미암아 우리가 아멘 하여 하나님께 영광을 돌리게 되느니라", 'reference': "고린도후서 1:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리를 너희와 함께 그리스도 안에서 굳건하게 하시고 우리에게 기름을 부으신 이는 하나님이시니", 'reference': "고린도후서 1:21", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주의 영이 계신 곳에는 자유가 있느니라", 'reference': "고린도후서 3:17", 'image': 'assets/images/bg5.jpg'},
+    {'text': "우리가 다 수건을 벗은 얼굴로 거울을 보는 것 같이 주의 영광을 보매 그와 같은 형상으로 변화하여 영광에서 영광에 이르니", 'reference': "고린도후서 3:18", 'image': 'assets/images/bg1.jpg'},
+    {'text': "곧 주의 영으로 말미암음이니라", 'reference': "고린도후서 3:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "어둠에서 빛이 비치라 하시던 그 하나님께서 예수 그리스도의 얼굴에 있는 하나님의 영광을 아는 빛을 우리 마음에 비추셨느니라", 'reference': "고린도후서 4:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 이 보배를 질그릇에 가졌으니 이는 심히 큰 능력은 하나님께 있고 우리에게 있지 아니함을 알게 하려 함이라", 'reference': "고린도후서 4:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "우리가 사방으로 우겨쌈을 당하여도 싸이지 아니하며 답답한 일을 당하여도 낙심하지 아니하며", 'reference': "고린도후서 4:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "박해를 받아도 버린 바 되지 아니하며 거꾸러뜨림을 당하여도 망하지 아니하고", 'reference': "고린도후서 4:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 우리가 낙심하지 아니하노니 우리의 겉사람은 낡아지나 우리의 속사람은 날로 새로워지도다", 'reference': "고린도후서 4:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "우리가 주목하는 것은 보이는 것이 아니요 보이지 않는 것이니 보이는 것은 잠깐이요 보이지 않는 것은 영원함이라", 'reference': "고린도후서 4:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그런즉 누구든지 그리스도 안에 있으면 새로운 피조물이라 이전 것은 지나갔으니 보라 새 것이 되었도다", 'reference': "고린도후서 5:17", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님께서 죄를 알지도 못하신 이를 우리를 대신하여 죄로 삼으신 것은 우리로 하여금 그 안에서 하나님의 의가 되게 하려 하심이라", 'reference': "고린도후서 5:21", 'image': 'assets/images/bg5.jpg'},
+    {'text': "보라 지금은 은혜 받을 만한 때요 보라 지금은 구원의 날이로다", 'reference': "고린도후서 6:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "슬퍼하는 자 같으나 항상 기뻐하고 가난한 자 같으나 많은 사람을 부요하게 하고 아무 것도 없는 자 같으나 모든 것을 가진 자로다", 'reference': "고린도후서 6:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "각각 그 마음에 정한 대로 할 것이요 인색함으로나 억지로 하지 말지니 하나님은 즐겨 내는 자를 사랑하시느니라", 'reference': "고린도후서 9:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님이 능히 모든 은혜를 너희에게 넘치게 하시나니 이는 너희로 모든 일에 항상 모든 것을 넉넉히 가져 모든 착한 일을 넘치게 하게 하려 하심이라", 'reference': "고린도후서 9:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "내게 이르시기를 내 은혜가 네게 족하도다 이는 내 능력이 약한 데서 온전하여짐이라 하셨도다 그러므로 도리어 크게 기뻐함으로 나의 여러 약한 것들에 대하여 자랑하리니 이는 그리스도의 능력이 내게 머물게 하려 함이라", 'reference': "고린도후서 12:9", 'image': 'assets/images/bg5.jpg'},
+    
+    // 갈라디아서 (15개)
+    {'text': "내가 그리스도와 함께 십자가에 못 박혔나니 그런즉 이제는 내가 사는 것이 아니요 오직 내 안에 그리스도께서 사시는 것이라", 'reference': "갈라디아서 2:20", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이제 내가 육체 가운데 사는 것은 나를 사랑하사 나를 위하여 자기 자신을 버리신 하나님의 아들을 믿는 믿음 안에서 사는 것이라", 'reference': "갈라디아서 2:20", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그리스도께서 우리를 자유롭게 하려고 자유를 주셨으니 그러므로 굳건하게 서서 다시는 종의 멍에를 메지 말라", 'reference': "갈라디아서 5:1", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오직 사랑으로써 서로 종 노릇 하라", 'reference': "갈라디아서 5:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "온 율법은 네 이웃 사랑하기를 네 자신 같이 하라 하신 한 말씀에서 이루어졌나니", 'reference': "갈라디아서 5:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 성령을 따라 행하면 육체의 욕심을 이루지 아니하리라", 'reference': "갈라디아서 5:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "오직 성령의 열매는 사랑과 희락과 화평과 오래 참음과 자비와 양선과 충성과", 'reference': "갈라디아서 5:22", 'image': 'assets/images/bg2.jpg'},
+    {'text': "온유와 절제니 이같은 것을 금지할 법이 없느니라", 'reference': "갈라디아서 5:23", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그리스도 예수의 사람들은 육체와 함께 그 정욕과 탐심을 십자가에 못 박았느니라", 'reference': "갈라디아서 5:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "만일 우리가 성령으로 살면 또한 성령으로 행할지니", 'reference': "갈라디아서 5:25", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 서로 짐을 지라 그리하여 그리스도의 법을 성취하라", 'reference': "갈라디아서 6:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "스스로 속이지 말라 하나님은 업신여김을 받지 아니하시나니 사람이 무엇으로 심든지 그대로 거두리라", 'reference': "갈라디아서 6:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "자기의 육체를 위하여 심는 자는 육체로부터 썩어질 것을 거두고 성령을 위하여 심는 자는 성령으로부터 영생을 거두리라", 'reference': "갈라디아서 6:8", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 선을 행하되 낙심하지 말지니 포기하지 아니하면 때가 이르매 거두리라", 'reference': "갈라디아서 6:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그러므로 우리는 기회 있는 대로 모든 이에게 착한 일을 하되 더욱 믿음의 가정들에게 할지니라", 'reference': "갈라디아서 6:10", 'image': 'assets/images/bg5.jpg'},
+    
+    // 에베소서 (25개)
+    {'text': "찬송하리로다 하나님 곧 우리 주 예수 그리스도의 아버지께서 그리스도 안에서 하늘에 속한 모든 신령한 복을 우리에게 주시되", 'reference': "에베소서 1:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "곧 창세 전에 그리스도 안에서 우리를 택하사 우리로 사랑 안에서 그 앞에 거룩하고 흠이 없게 하시려고", 'reference': "에베소서 1:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그 기쁘신 뜻대로 우리를 예정하사 예수 그리스도로 말미암아 자기의 아들들이 되게 하셨으니", 'reference': "에베소서 1:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리는 그리스도 안에서 그의 은혜의 풍성함을 따라 그의 피로 말미암아 속량 곧 죄 사함을 받았느니라", 'reference': "에베소서 1:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희는 그 안에서 또한 믿어 약속의 성령으로 인치심을 받았으니", 'reference': "에베소서 1:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너희가 그 은혜에 의하여 믿음으로 말미암아 구원을 받았으니 이것은 너희에게서 난 것이 아니요 하나님의 선물이라", 'reference': "에베소서 2:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "행위에서 난 것이 아니니 이는 누구든지 자랑하지 못하게 함이라", 'reference': "에베소서 2:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "우리는 그가 만드신 바라 그리스도 예수 안에서 선한 일을 위하여 지으심을 받은 자니 이 일은 하나님이 전에 예비하사 우리로 그 가운데서 행하게 하려 하심이니라", 'reference': "에베소서 2:10", 'image': 'assets/images/bg3.jpg'},
+    {'text': "이제는 전에 멀리 있던 너희가 그리스도 예수 안에서 그리스도의 피로 가까워졌느니라", 'reference': "에베소서 2:13", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그는 우리의 화평이신지라 둘로 하나를 만드사 원수 된 것 곧 중간에 막힌 담을 자기 육체로 허시고", 'reference': "에베소서 2:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이로써 너희가 더 이상 외인도 아니요 나그네도 아니요 오직 성도들과 동일한 시민이요 하나님의 권속이라", 'reference': "에베소서 2:19", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이 사랑은 지식에 넘치는 그리스도의 사랑을 알아 그 안에서 하나님의 모든 충만하신 것으로 너희에게 충만하게 하시기를 구하노라", 'reference': "에베소서 3:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "우리 가운데서 역사하시는 능력대로 우리가 구하거나 생각하는 모든 것에 더 넘치도록 능히 하실 이에게", 'reference': "에베소서 3:20", 'image': 'assets/images/bg3.jpg'},
+    {'text': "교회 안에서와 그리스도 예수 안에서 영광이 대대로 영원무궁하기를 원하노라 아멘", 'reference': "에베소서 3:21", 'image': 'assets/images/bg4.jpg'},
+    {'text': "모든 겸손과 온유로 하고 오래 참음으로 사랑 가운데서 서로 용납하고", 'reference': "에베소서 4:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "평안의 매는 줄로 성령이 하나 되게 하신 것을 힘써 지키라", 'reference': "에베소서 4:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "몸이 하나요 성령도 한 분이시니 이와 같이 너희가 부르심의 한 소망 안에서 부르심을 받았느니라", 'reference': "에베소서 4:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주도 한 분이시요 믿음도 하나요 세례도 하나요", 'reference': "에베소서 4:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님도 한 분이시니 곧 만유의 아버지시라 만유 위에 계시고 만유를 통일하시고 만유 가운데 계시도다", 'reference': "에베소서 4:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그러므로 이르시기를 그가 높은 곳으로 올라가실 때에 사로잡힌 자를 사로잡고 사람들에게 선물을 주셨다 하였도다", 'reference': "에베소서 4:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 너희는 하나님을 본받는 자가 되고 사랑 가운데서 행하라 그리스도께서 너희를 사랑하신 것 같이", 'reference': "에베소서 5:1-2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 전에는 어둠이더니 이제는 주 안에서 빛이라 빛의 자녀들처럼 행하라", 'reference': "에베소서 5:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "술 취하지 말라 이는 방탕한 것이니 오직 성령으로 충만함을 받으라", 'reference': "에베소서 5:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "끝으로 너희가 주 안에서와 그 힘의 능력으로 강건하여지고", 'reference': "에베소서 6:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님의 전신 갑주를 입으라 이는 마귀의 간계를 능히 대적하려 함이라", 'reference': "에베소서 6:11", 'image': 'assets/images/bg5.jpg'},
+    
+    // 빌립보서 (20개)
+    {'text': "너희 안에서 착한 일을 시작하신 이가 그리스도 예수의 날까지 이루실 줄을 우리는 확신하노라", 'reference': "빌립보서 1:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내게 사는 것이 그리스도니 죽는 것도 유익함이라", 'reference': "빌립보서 1:21", 'image': 'assets/images/bg2.jpg'},
+    {'text': "아무 일에든지 다툼이나 허영으로 하지 말고 오직 겸손한 마음으로 각각 자기보다 남을 낫게 여기고", 'reference': "빌립보서 2:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "각각 자기 일을 돌볼뿐더러 또한 각각 다른 사람들의 일을 돌보아 나의 기쁨을 충만하게 하라", 'reference': "빌립보서 2:4", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희 안에 이 마음을 품으라 곧 그리스도 예수의 마음이니", 'reference': "빌립보서 2:5", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 하나님이 그를 지극히 높여 모든 이름 위에 뛰어난 이름을 주사", 'reference': "빌립보서 2:9", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하늘에 있는 자들과 땅에 있는 자들과 땅 아래에 있는 자들로 모든 무릎을 예수의 이름에 꿇게 하시고", 'reference': "빌립보서 2:10", 'image': 'assets/images/bg2.jpg'},
+    {'text': "모든 입으로 예수 그리스도를 주라 시인하여 하나님 아버지께 영광을 돌리게 하셨느니라", 'reference': "빌립보서 2:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "두렵고 떨림으로 너희 구원을 이루라", 'reference': "빌립보서 2:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희 안에서 행하시는 이는 하나님이시니 자기의 기쁘신 뜻을 위하여 너희에게 소원을 두고 행하게 하시나니", 'reference': "빌립보서 2:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "모든 일을 원망과 시비가 없이 하라", 'reference': "빌립보서 2:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "주 안에서 항상 기뻐하라 내가 다시 말하노니 기뻐하라", 'reference': "빌립보서 4:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희 관용을 모든 사람에게 알게 하라 주께서 가까우시니라", 'reference': "빌립보서 4:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "아무 것도 염려하지 말고 다만 모든 일에 기도와 간구로 너희 구할 것을 감사함으로 하나님께 아뢰라", 'reference': "빌립보서 4:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그리하면 모든 지각에 뛰어난 하나님의 평강이 그리스도 예수 안에서 너희 마음과 생각을 지키시리라", 'reference': "빌립보서 4:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "끝으로 형제들아 무엇이든지 참되며 무엇이든지 경건하며 무엇이든지 옳으며 무엇이든지 정결하며 무엇이든지 사랑받을 만하며 무엇이든지 칭찬받을 만하며 무슨 덕이 있든지 무슨 기림이 있든지 이것들을 생각하라", 'reference': "빌립보서 4:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내가 비천에 처할 줄도 알고 풍부에 처할 줄도 알아 모든 일 곧 배부름과 배고픔과 풍부와 궁핍에도 처할 줄 아는 일체의 비결을 배웠노라", 'reference': "빌립보서 4:12", 'image': 'assets/images/bg2.jpg'},
+    {'text': "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라", 'reference': "빌립보서 4:13", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나의 하나님이 그리스도 예수 안에서 영광 가운데 그 풍성한 대로 너희 모든 쓸 것을 채우시리라", 'reference': "빌립보서 4:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "우리 하나님 곧 아버지께 세세 무궁하도록 영광을 돌릴지어다 아멘", 'reference': "빌립보서 4:20", 'image': 'assets/images/bg5.jpg'},
+    
+    // 골로새서 (15개)
+    {'text': "그는 보이지 아니하는 하나님의 형상이시요 모든 피조물보다 먼저 나신 이시니", 'reference': "골로새서 1:15", 'image': 'assets/images/bg1.jpg'},
+    {'text': "만물이 그에게서 창조되되 하늘과 땅에서 보이는 것들과 보이지 않는 것들과 혹은 왕권들이나 주권들이나 통치자들이나 권세들이나 만물이 다 그로 말미암고 그를 위하여 창조되었고", 'reference': "골로새서 1:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "또한 그가 만물보다 먼저 계시고 만물이 그 안에 함께 섰느니라", 'reference': "골로새서 1:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그는 몸인 교회의 머리시라 그가 근본이시요 죽은 자들 가운데서 먼저 나신 이시니 이는 친히 만물의 으뜸이 되려 하심이요", 'reference': "골로새서 1:18", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이 비밀은 만세와 만대로부터 감추어졌던 것인데 이제는 그의 성도들에게 나타났고", 'reference': "골로새서 1:26", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이 비밀은 너희 안에 계신 그리스도시니 곧 영광의 소망이니라", 'reference': "골로새서 1:27", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 너희가 그리스도 예수를 주로 받았으니 그 안에서 행하되", 'reference': "골로새서 2:6", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그 안에서 뿌리를 박으며 세움을 받아 교훈을 받은 대로 믿음에 굳게 서서 감사함을 넘치게 하라", 'reference': "골로새서 2:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러므로 너희가 그리스도와 함께 다시 살리심을 받았으면 위의 것을 찾으라 거기는 그리스도께서 하나님 우편에 앉아 계시느니라", 'reference': "골로새서 3:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "위의 것을 생각하고 땅의 것을 생각하지 말라", 'reference': "골로새서 3:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이는 너희가 죽었고 너희 생명이 그리스도와 함께 하나님 안에 감추어졌음이라", 'reference': "골로새서 3:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그리스도는 우리의 생명이시니 그가 나타나실 그 때에 너희도 그와 함께 영광 중에 나타나리라", 'reference': "골로새서 3:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "무엇을 하든지 말에나 일에나 다 주 예수의 이름으로 하고 그를 힘입어 하나님 아버지께 감사하라", 'reference': "골로새서 3:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "무슨 일을 하든지 마음을 다하여 주께 하듯 하고 사람에게 하듯 하지 말라", 'reference': "골로새서 3:23", 'image': 'assets/images/bg4.jpg'},
+    {'text': "기도를 계속하고 기도에 감사함으로 깨어 있으라", 'reference': "골로새서 4:2", 'image': 'assets/images/bg5.jpg'},
+    
+    // 데살로니가전서 (10개)
+    {'text': "항상 기뻐하라", 'reference': "데살로니가전서 5:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "쉬지 말고 기도하라", 'reference': "데살로니가전서 5:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "범사에 감사하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라", 'reference': "데살로니가전서 5:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "성령을 소멸하지 말며", 'reference': "데살로니가전서 5:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "예언을 멸시하지 말고", 'reference': "데살로니가전서 5:20", 'image': 'assets/images/bg5.jpg'},
+    {'text': "범사에 헤아려 좋은 것을 취하고", 'reference': "데살로니가전서 5:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "악은 어떤 모양이라도 버리라", 'reference': "데살로니가전서 5:22", 'image': 'assets/images/bg2.jpg'},
+    {'text': "평강의 하나님이 친히 너희를 온전히 거룩하게 하시고 또 너희의 온 영과 혼과 몸이 우리 주 예수 그리스도께서 강림하실 때에 흠 없게 보전되기를 원하노라", 'reference': "데살로니가전서 5:23", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희를 부르시는 이는 미쁘시니 그가 또한 이루시리라", 'reference': "데살로니가전서 5:24", 'image': 'assets/images/bg4.jpg'},
+    {'text': "형제들아 우리를 위하여 기도하라", 'reference': "데살로니가전서 5:25", 'image': 'assets/images/bg5.jpg'},
+    
+    // 디모데전서 (10개)
+    {'text': "미쁘다 이 말이여 그리스도 예수께서 죄인을 구원하시려고 세상에 임하셨다 하였도다 죄인 중에 내가 괴수니라", 'reference': "디모데전서 1:15", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님은 한 분이시요 또 하나님과 사람 사이에 중보자도 한 분이시니 곧 사람이신 그리스도 예수라", 'reference': "디모데전서 2:5", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그가 모든 사람을 위하여 자기를 대속물로 주셨으니 기약이 이르면 증거할 것이라", 'reference': "디모데전서 2:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "경건에 이르기를 연습하라 육체의 연습은 약간의 유익이 있으나 경건은 범사에 유익하니 금생과 내생에 약속이 있느니라", 'reference': "디모데전서 4:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "누구든지 네 연소함을 업신여기지 못하게 하고 오직 말과 행실과 사랑과 믿음과 정절에 있어서 믿는 자에게 본이 되어", 'reference': "디모데전서 4:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "돈을 사랑함이 일만 악의 뿌리가 되나니 이것을 탐내는 자들은 미혹을 받아 믿음에서 떠나 많은 근심으로써 자기를 찔렀도다", 'reference': "디모데전서 6:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "오직 너 하나님의 사람아 이것들을 피하고 의와 경건과 믿음과 사랑과 인내와 온유를 따르며", 'reference': "디모데전서 6:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "믿음의 선한 싸움을 싸우라 영생을 취하라 이를 위하여 네가 부르심을 받았고 많은 증인 앞에서 선한 증언을 하였도다", 'reference': "디모데전서 6:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "오직 죽지 아니하시고 가까이 가지 못할 빛에 거하시고 어떤 사람도 보지 못하였고 또 볼 수 없는 이시니 그에게 존귀와 영원한 능력을 돌릴지어다 아멘", 'reference': "디모데전서 6:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네게 맡긴 것을 지키라", 'reference': "디모데전서 6:20", 'image': 'assets/images/bg5.jpg'},
+    
+    // 디모데후서 (10개)
+    {'text': "하나님이 우리에게 주신 것은 두려워하는 마음이 아니요 오직 능력과 사랑과 절제하는 마음이니", 'reference': "디모데후서 1:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 네가 우리 주의 증거와 또는 주를 위하여 갇힌 나를 부끄러워하지 말고 오직 하나님의 능력을 따라 복음과 함께 고난을 받으라", 'reference': "디모데후서 1:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이 우리를 구원하사 거룩하신 소명으로 부르심은 우리의 행위대로 하심이 아니요 오직 자기의 뜻과 영원 전부터 그리스도 예수 안에서 우리에게 주신 은혜대로 하심이라", 'reference': "디모데후서 1:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너는 그리스도 예수 안에 있는 은혜 가운데서 강하고", 'reference': "디모데후서 2:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "네가 진리의 말씀을 옳게 분별하며 부끄러울 것이 없는 일꾼으로 인정된 자로 자신을 하나님 앞에 드리기를 힘쓰라", 'reference': "디모데후서 2:15", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주의 종은 다투지 아니하고 모든 사람에게 온유하며 가르치기를 잘하며 참으며", 'reference': "디모데후서 2:24", 'image': 'assets/images/bg1.jpg'},
+    {'text': "모든 성경은 하나님의 감동으로 된 것으로 교훈과 책망과 바르게 함과 의로 교육하기에 유익하니", 'reference': "디모데후서 3:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이는 하나님의 사람으로 온전하게 하며 모든 선한 일을 행할 능력을 갖추게 하려 함이라", 'reference': "디모데후서 3:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나는 선한 싸움을 싸우고 나의 달려갈 길을 마치고 믿음을 지켰으니", 'reference': "디모데후서 4:7", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이제 후로는 나를 위하여 의의 면류관이 예비되었으므로 주 곧 의로우신 재판장이 그 날에 내게 주실 것이며 내게만 아니라 주의 나타나심을 사모하는 모든 자에게도니라", 'reference': "디모데후서 4:8", 'image': 'assets/images/bg5.jpg'},
+    
+    // 히브리서 (20개)
+    {'text': "옛적에 선지자들을 통하여 여러 부분과 여러 모양으로 우리 조상들에게 말씀하신 하나님이", 'reference': "히브리서 1:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이 모든 날 마지막에는 아들을 통하여 우리에게 말씀하셨으니 이 아들을 만유의 상속자로 세우시고 또 그로 말미암아 모든 세계를 지으셨느니라", 'reference': "히브리서 1:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이는 하나님의 영광의 광채시요 그 본체의 형상이시라 그의 능력의 말씀으로 만물을 붙드시며 죄를 정결하게 하는 일을 하시고 높은 곳에서 지극히 크신 이의 우편에 앉으셨느니라", 'reference': "히브리서 1:3", 'image': 'assets/images/bg3.jpg'},
+    {'text': "믿음은 바라는 것들의 실상이요 보이지 않는 것들의 증거니", 'reference': "히브리서 11:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "믿음이 없이는 하나님을 기쁘시게 하지 못하나니 하나님께 나아가는 자는 반드시 그가 계신 것과 또한 그가 자기를 찾는 자들에게 상 주시는 이심을 믿어야 할지니라", 'reference': "히브리서 11:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 우리에게 구름 같이 둘러싼 허다한 증인들이 있으니 모든 무거운 것과 얽매이기 쉬운 죄를 벗어 버리고 인내로써 우리 앞에 당한 경주를 하며", 'reference': "히브리서 12:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "믿음의 주요 또 온전하게 하시는 이인 예수를 바라보자 그는 그 앞에 있는 기쁨을 위하여 십자가를 참으사 부끄러움을 개의치 아니하시더니 하나님 보좌 우편에 앉으셨느니라", 'reference': "히브리서 12:2", 'image': 'assets/images/bg2.jpg'},
+    {'text': "주께서 그 사랑하시는 자를 징계하시고 그가 받아들이시는 아들마다 채찍질하심이라 하였으니", 'reference': "히브리서 12:6", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그러므로 피곤한 손과 연약한 무릎을 일으켜 세우고", 'reference': "히브리서 12:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "너희 발을 위하여 곧은 길을 만들어 저는 다리로 하여금 어그러지지 않고 고침을 받게 하라", 'reference': "히브리서 12:13", 'image': 'assets/images/bg5.jpg'},
+    {'text': "모든 사람과 더불어 화평함과 거룩함을 따르라 이것이 없이는 아무도 주를 보지 못하리라", 'reference': "히브리서 12:14", 'image': 'assets/images/bg1.jpg'},
+    {'text': "예수 그리스도는 어제나 오늘이나 영원토록 동일하시니라", 'reference': "히브리서 13:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 우리는 예수로 말미암아 항상 찬송의 제사를 하나님께 드리자 이는 그 이름을 증언하는 입술의 열매니라", 'reference': "히브리서 13:15", 'image': 'assets/images/bg3.jpg'},
+    {'text': "선을 행함과 서로 나누어 주기를 잊지 말라 하나님은 이같은 제사를 기뻐하시느니라", 'reference': "히브리서 13:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "우리에게는 이 세상에 영구한 도성이 없으므로 장차 올 것을 찾나니", 'reference': "히브리서 13:14", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그러므로 우리가 긍휼하심을 받고 때를 따라 돕는 은혜를 얻기 위하여 은혜의 보좌 앞에 담대히 나아갈 것이니라", 'reference': "히브리서 4:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 우리에게 큰 대제사장이 계시니 승천하신 이 곧 하나님의 아들 예수시라 우리가 믿는 도리를 굳게 잡을지어다", 'reference': "히브리서 4:14", 'image': 'assets/images/bg2.jpg'},
+    {'text': "우리에게 있는 대제사장은 우리의 연약함을 동정하지 못하실 이가 아니요 모든 일에 우리와 똑같이 시험을 받으신 이로되 죄는 없으시니라", 'reference': "히브리서 4:15", 'image': 'assets/images/bg3.jpg'},
+    {'text': "하나님의 말씀은 살았고 운동력이 있어 좌우에 날선 어떤 검보다도 예리하여 혼과 영과 및 관절과 골수를 찔러 쪼개기까지 하며 또 마음의 생각과 뜻을 판단하나니", 'reference': "히브리서 4:12", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지어진 것이 하나도 그 앞에 나타나지 않음이 없고 우리의 결산을 받으실 이의 눈앞에 만물이 벌거벗은 것 같이 드러나느니라", 'reference': "히브리서 4:13", 'image': 'assets/images/bg5.jpg'},
+    
+    // 야고보서 (15개)
+    {'text': "내 형제들아 너희가 여러 가지 시험을 당하거든 온전히 기쁘게 여기라", 'reference': "야고보서 1:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "이는 너희 믿음의 시련이 인내를 만들어 내는 줄 너희가 앎이라", 'reference': "야고보서 1:3", 'image': 'assets/images/bg2.jpg'},
+    {'text': "인내를 온전히 이루라 이는 너희로 온전하고 구비하여 조금도 부족함이 없게 하려 함이라", 'reference': "야고보서 1:4", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희 중에 누구든지 지혜가 부족하거든 모든 사람에게 후히 주시고 꾸짖지 아니하시는 하나님께 구하라 그리하면 주시리라", 'reference': "야고보서 1:5", 'image': 'assets/images/bg4.jpg'},
+    {'text': "오직 믿음으로 구하고 조금도 의심하지 말라 의심하는 자는 마치 바람에 밀려 요동하는 바다 물결 같으니", 'reference': "야고보서 1:6", 'image': 'assets/images/bg5.jpg'},
+    {'text': "시험을 참는 자는 복이 있나니 이는 시련을 견디어 낸 자가 주께서 자기를 사랑하는 자들에게 약속하신 생명의 면류관을 얻을 것이기 때문이라", 'reference': "야고보서 1:12", 'image': 'assets/images/bg1.jpg'},
+    {'text': "내 사랑하는 형제들아 너희가 알지니 사람마다 듣기는 속히 하고 말하기는 더디 하며 성내기도 더디 하라", 'reference': "야고보서 1:19", 'image': 'assets/images/bg2.jpg'},
+    {'text': "그러므로 모든 더러운 것과 넘치는 악을 내버리고 너희 영혼을 능히 구원할 바 마음에 심어진 말씀을 온유함으로 받으라", 'reference': "야고보서 1:21", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희는 말씀을 행하는 자가 되고 듣기만 하여 자신을 속이는 자가 되지 말라", 'reference': "야고보서 1:22", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님을 가까이하라 그리하면 너희를 가까이하시리라 죄인들아 손을 깨끗이 하라 두 마음을 품은 자들아 마음을 성결하게 하라", 'reference': "야고보서 4:8", 'image': 'assets/images/bg5.jpg'},
+    {'text': "주 앞에서 낮추라 그리하면 주께서 너희를 높이시리라", 'reference': "야고보서 4:10", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러므로 선을 행할 줄 알고도 행하지 아니하면 죄니라", 'reference': "야고보서 4:17", 'image': 'assets/images/bg2.jpg'},
+    {'text': "형제들아 주께서 강림하시기까지 길이 참으라 보라 농부가 땅에서 나는 귀한 열매를 바라고 길이 참아 이른 비와 늦은 비를 기다리나니", 'reference': "야고보서 5:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "의인의 간구는 역사하는 힘이 큼이니라", 'reference': "야고보서 5:16", 'image': 'assets/images/bg4.jpg'},
+    {'text': "서로 죄를 고백하며 병이 낫기를 위하여 서로 기도하라 의인의 간구는 역사하는 힘이 큼이니라", 'reference': "야고보서 5:16", 'image': 'assets/images/bg5.jpg'},
+    
+    // 베드로전서 (15개)
+    {'text': "찬송하리로다 우리 주 예수 그리스도의 아버지 하나님이 그 많으신 긍휼대로 예수 그리스도를 죽은 자 가운데서 부활하게 하심으로 말미암아 우리를 거듭나게 하사 산 소망이 있게 하시며", 'reference': "베드로전서 1:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "썩지 않고 더럽지 않고 쇠하지 아니하는 유업을 잇게 하시나니 곧 너희를 위하여 하늘에 간직하신 것이라", 'reference': "베드로전서 1:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희 믿음의 확실함은 불로 연단하여도 없어질 금보다 더 귀하여 예수 그리스도께서 나타나실 때에 칭찬과 영광과 존귀를 얻게 하려 함이라", 'reference': "베드로전서 1:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "예수를 너희가 보지 못하였으나 사랑하는도다 이제도 보지 못하나 믿고 말할 수 없는 영광스러운 즐거움으로 기뻐하니", 'reference': "베드로전서 1:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "믿음의 결국 곧 영혼의 구원을 받음이라", 'reference': "베드로전서 1:9", 'image': 'assets/images/bg5.jpg'},
+    {'text': "기록되었으되 내가 거룩하니 너희도 거룩할지어다 하셨느니라", 'reference': "베드로전서 1:16", 'image': 'assets/images/bg1.jpg'},
+    {'text': "너희가 알거니와 너희 조상이 물려 준 헛된 행실에서 대속함을 받은 것은 은이나 금 같이 없어질 것으로 된 것이 아니요", 'reference': "베드로전서 1:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "오직 흠 없고 점 없는 어린 양 같은 그리스도의 보배로운 피로 된 것이니라", 'reference': "베드로전서 1:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "너희가 거듭난 것은 썩어질 씨로 된 것이 아니요 썩지 아니할 씨로 된 것이니 살아 있고 항상 있는 하나님의 말씀으로 되었느니라", 'reference': "베드로전서 1:23", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그러므로 모든 악독과 모든 거짓과 외식과 시기와 모든 비방하는 말을 버리고", 'reference': "베드로전서 2:1", 'image': 'assets/images/bg5.jpg'},
+    {'text': "갓난 아기들 같이 순전하고 신령한 젖을 사모하라 이는 그로 말미암아 너희로 구원에 이르도록 자라게 하려 함이라", 'reference': "베드로전서 2:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그러나 너희는 택하신 족속이요 왕 같은 제사장들이요 거룩한 나라요 그의 소유가 된 백성이니 이는 너희를 어둠에서 불러 내어 그의 기이한 빛에 들어가게 하신 이의 아름다운 덕을 선포하게 하려 하심이라", 'reference': "베드로전서 2:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "너희의 모든 염려를 주께 맡기라 이는 그가 너희를 돌보심이라", 'reference': "베드로전서 5:7", 'image': 'assets/images/bg3.jpg'},
+    {'text': "근신하라 깨어라 너희 대적 마귀가 우는 사자 같이 두루 다니며 삼킬 자를 찾나니", 'reference': "베드로전서 5:8", 'image': 'assets/images/bg4.jpg'},
+    {'text': "믿음을 굳건하게 하여 그를 대적하라 이는 세상에 있는 너희 형제들도 동일한 고난을 당하는 줄을 앎이라", 'reference': "베드로전서 5:9", 'image': 'assets/images/bg5.jpg'},
+    
+    // 요한일서 (15개)
+    {'text': "우리가 그에게서 듣고 너희에게 전하는 소식은 이것이니 곧 하나님은 빛이시라 그에게는 어둠이 조금도 없으시다는 것이니라", 'reference': "요한일서 1:5", 'image': 'assets/images/bg1.jpg'},
+    {'text': "만일 우리가 빛 가운데 행하면 그가 빛 가운데 계신 것 같이 우리가 서로 사귐이 있고 그 아들 예수의 피가 우리를 모든 죄에서 깨끗하게 하실 것이요", 'reference': "요한일서 1:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "만일 우리가 우리 죄를 자백하면 그는 미쁘시고 의로우사 우리 죄를 사하시며 우리를 모든 불의에서 깨끗하게 하실 것이요", 'reference': "요한일서 1:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나의 자녀들아 내가 이것을 너희에게 씀은 너희로 죄를 범하지 않게 하려 함이라 만일 누가 죄를 범하여도 아버지 앞에서 우리에게 대언자가 있으니 곧 의로우신 예수 그리스도시라", 'reference': "요한일서 2:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "그는 우리 죄를 위한 화목 제물이니 우리만 위할 뿐 아니요 온 세상의 죄를 위하심이라", 'reference': "요한일서 2:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이 세상도, 그 정욕도 지나가되 오직 하나님의 뜻을 행하는 자는 영원히 거하느니라", 'reference': "요한일서 2:17", 'image': 'assets/images/bg1.jpg'},
+    {'text': "보라 아버지께서 어떠한 사랑을 우리에게 베푸사 하나님의 자녀라 일컬음을 받게 하셨는가 우리가 그러하도다", 'reference': "요한일서 3:1", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사랑하는 자들아 우리가 지금은 하나님의 자녀라 장래에 어떻게 될지는 아직 나타나지 아니하였으나 그가 나타나시면 우리가 그와 같을 줄을 아는 것은 그의 참모습 그대로 볼 것이기 때문이니", 'reference': "요한일서 3:2", 'image': 'assets/images/bg3.jpg'},
+    {'text': "자녀들아 우리가 말과 혀로만 사랑하지 말고 행함과 진실함으로 하자", 'reference': "요한일서 3:18", 'image': 'assets/images/bg4.jpg'},
+    {'text': "사랑하는 자들아 우리가 서로 사랑하자 사랑은 하나님께 속한 것이니 사랑하는 자마다 하나님으로부터 나서 하나님을 알고", 'reference': "요한일서 4:7", 'image': 'assets/images/bg5.jpg'},
+    {'text': "사랑하지 아니하는 자는 하나님을 알지 못하나니 이는 하나님은 사랑이심이라", 'reference': "요한일서 4:8", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님이 자기의 독생자를 세상에 보내심은 그로 말미암아 우리를 살리려 하심이니 사랑은 여기 있는 것이라", 'reference': "요한일서 4:9", 'image': 'assets/images/bg2.jpg'},
+    {'text': "사랑 안에 두려움이 없고 온전한 사랑이 두려움을 내쫓나니 두려움에는 형벌이 있음이라 두려워하는 자는 사랑 안에서 온전히 이루지 못하였느니라", 'reference': "요한일서 4:18", 'image': 'assets/images/bg3.jpg'},
+    {'text': "우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라", 'reference': "요한일서 4:19", 'image': 'assets/images/bg4.jpg'},
+    {'text': "무릇 하나님께로부터 난 자는 세상을 이기느니라 세상을 이기는 승리는 이것이니 우리의 믿음이니라", 'reference': "요한일서 5:4", 'image': 'assets/images/bg5.jpg'},
+    
+    // 요한계시록 (20개)
+    {'text': "볼지어다 그가 구름을 타고 오시리라 각 사람의 눈이 그를 보겠고 그를 찌른 자들도 볼 것이요 땅에 있는 모든 족속이 그로 말미암아 애곡하리니 그러하리라 아멘", 'reference': "요한계시록 1:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "나는 알파와 오메가라 이제도 있고 전에도 있었고 장차 올 자요 전능한 자라", 'reference': "요한계시록 1:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "두려워하지 말라 나는 처음이요 마지막이니", 'reference': "요한계시록 1:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "곧 살아 있는 자라 내가 전에 죽었었노라 볼지어다 이제 세세토록 살아 있어 사망과 음부의 열쇠를 가졌노니", 'reference': "요한계시록 1:18", 'image': 'assets/images/bg4.jpg'},
+    {'text': "볼지어다 내가 문 밖에 서서 두드리노니 누구든지 내 음성을 듣고 문을 열면 내가 그에게로 들어가 그와 더불어 먹고 그는 나와 더불어 먹으리라", 'reference': "요한계시록 3:20", 'image': 'assets/images/bg5.jpg'},
+    {'text': "이기는 자는 내가 내 보좌에 함께 앉게 하여 주기를 내가 이기고 아버지 보좌에 함께 앉은 것과 같이 하리라", 'reference': "요한계시록 3:21", 'image': 'assets/images/bg1.jpg'},
+    {'text': "우리 주 하나님이여 영광과 존귀와 권능을 받으시는 것이 합당하오니 주께서 만물을 지으신지라 만물이 주의 뜻대로 있었고 또 지으심을 받았나이다", 'reference': "요한계시록 4:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "죽임을 당하신 어린 양은 능력과 부와 지혜와 힘과 존귀와 영광과 찬송을 받으시기에 합당하도다", 'reference': "요한계시록 5:12", 'image': 'assets/images/bg3.jpg'},
+    {'text': "그 후에 내가 보니 각 나라와 족속과 백성과 방언에서 아무도 능히 셀 수 없는 큰 무리가 나와 흰 옷을 입고 손에 종려 가지를 들고 보좌 앞과 어린 양 앞에 서서", 'reference': "요한계시록 7:9", 'image': 'assets/images/bg4.jpg'},
+    {'text': "큰 소리로 외쳐 이르되 구원하심이 보좌에 앉으신 우리 하나님과 어린 양에게 있도다 하니", 'reference': "요한계시록 7:10", 'image': 'assets/images/bg5.jpg'},
+    {'text': "그들이 밤낮 하나님의 보좌 앞에서 하나님을 섬기매 보좌에 앉으신 이가 그들 위에 장막을 치시리니", 'reference': "요한계시록 7:15", 'image': 'assets/images/bg1.jpg'},
+    {'text': "그들이 다시는 주리지도 않고 목마르지도 아니하며 해나 아무 뜨거운 기운에 상하지도 아니하리니", 'reference': "요한계시록 7:16", 'image': 'assets/images/bg2.jpg'},
+    {'text': "이는 보좌 가운데에 계신 어린 양이 그들의 목자가 되사 생명수 샘으로 인도하시고 하나님께서 그들의 눈에서 모든 눈물을 씻어 주실 것임이라", 'reference': "요한계시록 7:17", 'image': 'assets/images/bg3.jpg'},
+    {'text': "또 내가 보매 새 하늘과 새 땅이 있으니 처음 하늘과 처음 땅이 없어졌고 바다도 다시 있지 않더라", 'reference': "요한계시록 21:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "또 내가 보매 거룩한 성 새 예루살렘이 하나님께로부터 하늘에서 내려오니 그 준비한 것이 신부가 남편을 위하여 단장한 것 같더라", 'reference': "요한계시록 21:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "보라 하나님의 장막이 사람들과 함께 있으매 하나님이 그들과 함께 계시리니 그들은 하나님의 백성이 되고 하나님은 친히 그들과 함께 계셔서", 'reference': "요한계시록 21:3", 'image': 'assets/images/bg1.jpg'},
+    {'text': "모든 눈물을 그 눈에서 닦아 주시니 다시는 사망이 없고 애통하는 것이나 곡하는 것이나 아픈 것이 다시 있지 아니하리니 처음 것들이 다 지나갔음이러라", 'reference': "요한계시록 21:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "보좌에 앉으신 이가 이르시되 보라 내가 만물을 새롭게 하노라 하시고 또 이르시되 이 말은 신실하고 참되니 기록하라 하시고", 'reference': "요한계시록 21:5", 'image': 'assets/images/bg3.jpg'},
+    {'text': "또 내게 말씀하시되 이루었도다 나는 알파와 오메가요 처음과 마지막이라 내가 생명수 샘물을 목마른 자에게 값없이 주리니", 'reference': "요한계시록 21:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "이기는 자는 이것들을 상속으로 받으리라 나는 그의 하나님이 되고 그는 내 아들이 되리라", 'reference': "요한계시록 21:7", 'image': 'assets/images/bg5.jpg'},
+    
+    // 추가 말씀 (잠언, 전도서, 아가서)
+    {'text': "지혜가 제일이니 지혜를 얻으라 네가 얻은 모든 것을 가지고 명철을 얻을지니라", 'reference': "잠언 4:7", 'image': 'assets/images/bg1.jpg'},
+    {'text': "의인의 길은 돋는 햇살 같아서 크게 빛나 한낮의 광명에 이르거니와", 'reference': "잠언 4:18", 'image': 'assets/images/bg2.jpg'},
+    {'text': "악인의 길은 어둠 같아서 그가 걸려 넘어지는 것을 알지 못하느니라", 'reference': "잠언 4:19", 'image': 'assets/images/bg3.jpg'},
+    {'text': "네 샘이 복되게 하라 네 젊을 때의 아내와 함께 즐거워하라", 'reference': "잠언 5:18", 'image': 'assets/images/bg4.jpg'},
+    {'text': "하나님 여호와께서 사람을 지으시되 처음부터 남자와 여자로 지으시고", 'reference': "잠언 5:19", 'image': 'assets/images/bg5.jpg'},
+    {'text': "선을 행하는 의인은 세상에 없느니라", 'reference': "전도서 7:20", 'image': 'assets/images/bg1.jpg'},
+    {'text': "하나님의 행사를 처음부터 끝까지 능히 알 수 없느니라", 'reference': "전도서 3:11", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님이 모든 것을 지으시되 때를 따라 아름답게 하셨고 또 사람들에게 영원을 사모하는 마음을 주셨느니라", 'reference': "전도서 3:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "모든 일에 기한이 있고 천하 만사가 다 때가 있나니", 'reference': "전도서 3:1", 'image': 'assets/images/bg4.jpg'},
+    {'text': "날 때가 있고 죽을 때가 있으며 심을 때가 있고 심은 것을 뽑을 때가 있으며", 'reference': "전도서 3:2", 'image': 'assets/images/bg5.jpg'},
+    {'text': "울 때가 있고 웃을 때가 있으며 슬퍼할 때가 있고 춤출 때가 있으며", 'reference': "전도서 3:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "사랑할 때가 있고 미워할 때가 있으며 전쟁할 때가 있고 평화할 때가 있느니라", 'reference': "전도서 3:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "두 사람이 한 사람보다 나음은 그들이 수고함으로 좋은 상을 얻을 것임이라", 'reference': "전도서 4:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "혹시 그가 넘어지면 둘이 그 친구를 붙들어 일으키려니와 홀로 있어 넘어지고 붙들어 일으킬 자가 없는 자에게는 화가 있으리라", 'reference': "전도서 4:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "한 사람이면 패하겠거니와 두 사람이면 맞설 수 있나니 세 겹 줄은 쉽게 끊어지지 아니하느니라", 'reference': "전도서 4:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "너는 하나님 앞에 함부로 입을 열지 말며 급한 마음으로 말하지 말라 하나님은 하늘에 계시고 너는 땅에 있으니 마땅히 말을 적게 할 것이라", 'reference': "전도서 5:2", 'image': 'assets/images/bg1.jpg'},
+    {'text': "네가 하나님께 서원하였거든 갚기를 더디 하지 말라 그는 우매한 자들을 기뻐하지 아니하시나니 서원한 것을 갚으라", 'reference': "전도서 5:4", 'image': 'assets/images/bg2.jpg'},
+    {'text': "말이 많으면 결국 말의 뜻을 모를 것이니 사람에게 무슨 유익이 있으랴", 'reference': "전도서 6:11", 'image': 'assets/images/bg3.jpg'},
+    {'text': "슬퍼하는 자의 집에 가는 것이 잔치하는 집에 가는 것보다 나으니 모든 사람의 끝이 이와 같이 됨이라 산 자가 이것을 그의 마음에 둘지어다", 'reference': "전도서 7:2", 'image': 'assets/images/bg4.jpg'},
+    {'text': "근심이 웃음보다 나음은 얼굴에 근심함으로 마음이 좋아짐이라", 'reference': "전도서 7:3", 'image': 'assets/images/bg5.jpg'},
+    {'text': "지혜자의 마음은 슬퍼하는 집에 있으되 우매한 자의 마음은 즐거워하는 집에 있느니라", 'reference': "전도서 7:4", 'image': 'assets/images/bg1.jpg'},
+    {'text': "일의 끝이 시작보다 낫고 참는 마음이 교만한 마음보다 나으니", 'reference': "전도서 7:8", 'image': 'assets/images/bg2.jpg'},
+    {'text': "급한 마음으로 노하지 말라 노함은 우매한 자들의 품에 머무름이니라", 'reference': "전도서 7:9", 'image': 'assets/images/bg3.jpg'},
+    {'text': "지혜는 유산처럼 아름답고 햇빛을 보는 자에게 유익이 되도다", 'reference': "전도서 7:11", 'image': 'assets/images/bg4.jpg'},
+    {'text': "지혜가 그늘이 됨이 돈이 그늘이 됨 같으나 지식이 뛰어난 것은 지혜가 그의 임자의 생명을 보존함이니라", 'reference': "전도서 7:12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "네 청춘의 날들을 기억하라 곧 곤고한 날이 이르기 전에, 나는 아무 낙이 없다고 할 해들이 가까워지기 전에", 'reference': "전도서 12:1", 'image': 'assets/images/bg1.jpg'},
+    {'text': "일의 결국을 다 들었으니 하나님을 경외하고 그의 명령들을 지킬지어다 이것이 모든 사람의 본분이니라", 'reference': "전도서 12:13", 'image': 'assets/images/bg2.jpg'},
+    {'text': "하나님은 모든 행위와 모든 은밀한 일을 선악을 막론하고 심판하시리라", 'reference': "전도서 12:14", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나의 사랑하는 자야 일어나서 함께 가자", 'reference': "아가 2:10", 'image': 'assets/images/bg4.jpg'},
+    {'text': "겨울도 지나고 비도 그쳤고 지면에는 꽃이 피고 새가 노래할 때가 이르렀는데", 'reference': "아가 2:11-12", 'image': 'assets/images/bg5.jpg'},
+    {'text': "대저 사랑은 죽음 같이 강하고 질투는 스올 같이 잔혹하며 불같이 일어나니 그 기세가 여호와의 불과 같으니라", 'reference': "아가 8:6", 'image': 'assets/images/bg1.jpg'},
+    {'text': "많은 물도 이 사랑을 끄지 못하겠고 홍수라도 삼키지 못하나니 사람이 그의 온 가산을 다 주고 사랑과 바꾸려 할지라도 오히려 멸시를 받으리라", 'reference': "아가 8:7", 'image': 'assets/images/bg2.jpg'},
+    {'text': "나의 사랑하는 자는 내게 속하였고 나는 그에게 속하였도다 그가 백합화 가운데에서 양 떼를 먹이는도다", 'reference': "아가 2:16", 'image': 'assets/images/bg3.jpg'},
+    {'text': "나를 도장 같이 마음에 품고 도장 같이 팔에 두라", 'reference': "아가 8:6", 'image': 'assets/images/bg4.jpg'},
+    {'text': "주 예수의 은혜가 모든 자들에게 있을지어다 아멘", 'reference': "요한계시록 22:21", 'image': 'assets/images/bg5.jpg'},
   ];
   
   /// 날짜 기반으로 말씀을 가져오는 메서드
