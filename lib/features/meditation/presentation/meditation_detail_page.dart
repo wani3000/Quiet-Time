@@ -774,6 +774,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: Colors.transparent,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
