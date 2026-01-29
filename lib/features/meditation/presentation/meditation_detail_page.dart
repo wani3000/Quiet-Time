@@ -778,7 +778,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 24,
               height: 24,
               child: icon,
