@@ -41,7 +41,12 @@ class ToastUtils {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        margin: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 16,
+          bottom: 140, // 네비게이션 바 높이(80px) + margin(24px*2) + 여유공간(12px) = 140px
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         elevation: 1000, // 최상위에 표시되도록 높은 elevation 설정
         duration: const Duration(seconds: 2),

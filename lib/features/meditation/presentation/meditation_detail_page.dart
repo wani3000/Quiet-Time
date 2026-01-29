@@ -451,18 +451,18 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       ? '${parsedDate.year}년 ${parsedDate.month}월 ${parsedDate.day}일'
       : widget.date;
 
-    return GestureDetector(
-      // 좌→우 스와이프로 뒤로가기
-      onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity != null && details.primaryVelocity! > 300) {
-          _navigateBack();
-        }
-      },
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Body only (슬라이드 애니메이션 대상)
-          Scaffold(
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Body only (슬라이드 애니메이션 대상)
+        GestureDetector(
+          // 좌→우 스와이프로 뒤로가기
+          onHorizontalDragEnd: (details) {
+            if (details.primaryVelocity != null && details.primaryVelocity! > 300) {
+              _navigateBack();
+            }
+          },
+          child: Scaffold(
             backgroundColor: Colors.white,
             extendBody: true,
             appBar: AppBar(
@@ -701,15 +701,15 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
               ),
             ),
           ),
-          // 플로팅 액션 버튼: 고정 (애니메이션 없음)
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: _buildNavBarOverlay(),
-          ),
-        ],
-      ),
+        ),
+        // 플로팅 액션 버튼: 고정 (애니메이션과 완전히 분리)
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: _buildNavBarOverlay(),
+        ),
+      ],
     );
   }
 
