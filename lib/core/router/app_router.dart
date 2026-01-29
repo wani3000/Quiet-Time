@@ -149,55 +149,40 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
     }
   }
 
-  Widget _buildCustomBottomNavigationBar({
-    double contentOpacity = 1,
-    double contentOffsetY = 0,
-    double counterDx = 0,
-  }) {
-    final content = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildNavItem(
-          index: 0,
-          iconPath: _currentIndex == 0 ? 'assets/images/ic_home_black.svg' : 'assets/images/ic_home_gray.svg',
-          label: '홈',
-          isSelected: _currentIndex == 0,
-        ),
-        _buildNavItem(
-          index: 1,
-          iconPath: _currentIndex == 1 ? 'assets/images/ic_pray_black.svg' : 'assets/images/ic_pray_gray.svg',
-          label: '묵상',
-          isSelected: _currentIndex == 1,
-        ),
-      ],
-    );
-
-    return Transform.translate(
-      offset: Offset(counterDx, 0),
+  Widget _buildCustomBottomNavigationBar() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: const Color(0xFFF1F3F5), width: 1),
+        borderRadius: BorderRadius.circular(200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFFF1F3F5), width: 1),
-          borderRadius: BorderRadius.circular(200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
+        height: 80,
+        padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildNavItem(
+              index: 0,
+              iconPath: _currentIndex == 0 ? 'assets/images/ic_home_black.svg' : 'assets/images/ic_home_gray.svg',
+              label: '홈',
+              isSelected: _currentIndex == 0,
+            ),
+            _buildNavItem(
+              index: 1,
+              iconPath: _currentIndex == 1 ? 'assets/images/ic_pray_black.svg' : 'assets/images/ic_pray_gray.svg',
+              label: '묵상',
+              isSelected: _currentIndex == 1,
             ),
           ],
-        ),
-        child: Container(
-          height: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
-          child: Transform.translate(
-            offset: Offset(0, contentOffsetY),
-            child: Opacity(
-              opacity: contentOpacity,
-              child: content,
-            ),
-          ),
         ),
       ),
     );
@@ -220,25 +205,45 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: SvgPicture.asset(
-                iconPath,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: SizedBox(
+                key: ValueKey(iconPath),
                 width: 24,
                 height: 24,
-                fit: BoxFit.contain,
-                colorFilter: null, // SVG 자체 색상 사용
+                child: SvgPicture.asset(
+                  iconPath,
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.contain,
+                  colorFilter: null, // SVG 자체 색상 사용
+                ),
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Pretendard',
-                color: isSelected ? const Color(0xFF212529) : const Color(0xFFADB5BD),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: Text(
+                label,
+                key: ValueKey('$label-$isSelected'),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Pretendard',
+                  color: isSelected ? const Color(0xFF212529) : const Color(0xFFADB5BD),
+                ),
               ),
             ),
           ],
@@ -257,9 +262,6 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
       });
     }
 
-    final secondary = ModalRoute.of(context)?.secondaryAnimation ?? const AlwaysStoppedAnimation<double>(0);
-    final screenWidth = MediaQuery.sizeOf(context).width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
@@ -274,17 +276,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: AnimatedBuilder(
-              animation: secondary,
-              builder: (context, _) {
-                final t = secondary.value;
-                return _buildCustomBottomNavigationBar(
-                  contentOpacity: 1,
-                  contentOffsetY: 0,
-                  counterDx: t * screenWidth,
-                );
-              },
-            ),
+            child: _buildCustomBottomNavigationBar(),
           ),
         ],
       ),

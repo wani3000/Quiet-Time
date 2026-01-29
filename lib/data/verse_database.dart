@@ -3,8 +3,6 @@ import '../services/unsplash_service.dart';
 /// 1000개의 성경 말씀 데이터베이스
 /// 전체 성경에서 선별된 말씀들
 class VerseDatabase {
-  static String _img(int n) => 'assets/images/bg${(n % 5) + 1}.jpg';
-  
   static const List<Map<String, String>> verses = [
     // ========== 구약 성경 ==========
     
@@ -592,7 +590,6 @@ class VerseDatabase {
     {'text': "만군의 여호와가 이르노라 너희가 온전한 십일조를 창고에 들여 나의 집에 양식이 있게 하고 그것으로 나를 시험하여 내가 하늘 문을 열고 너희에게 복을 쌓을 곳이 없도록 붓지 아니하나 보라", 'reference': "말라기 3:10", 'image': 'assets/images/bg3.jpg'},
     {'text': "내 이름을 경외하는 너희에게는 공의로운 해가 떠올라서 치료하는 광선을 비추리니 너희가 나가서 외양간에서 나온 송아지 같이 뛰리라", 'reference': "말라기 4:2", 'image': 'assets/images/bg4.jpg'},
     {'text': "내가 전령을 보내리니 그가 내 앞에서 길을 준비할 것이요 또 너희가 구하는 바 주가 갑자기 그의 성전에 임하시리니", 'reference': "말라기 3:1", 'image': 'assets/images/bg5.jpg'},
-  ];
     
     // ========== 신약 성경 ==========
     

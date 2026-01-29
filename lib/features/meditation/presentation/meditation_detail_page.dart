@@ -451,9 +451,6 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       ? '${parsedDate.year}년 ${parsedDate.month}월 ${parsedDate.day}일'
       : widget.date;
 
-    final routeAnimation = ModalRoute.of(context)?.animation ?? const AlwaysStoppedAnimation(1.0);
-    final screenWidth = MediaQuery.sizeOf(context).width;
-
     return GestureDetector(
       // 좌→우 스와이프로 뒤로가기
       onHorizontalDragEnd: (details) {
@@ -704,42 +701,23 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
               ),
             ),
           ),
-          // 네비 바: 페이지 슬라이드와 무관하게 고정, 아이콘/라벨만 아래→위 디졸브
+          // 플로팅 액션 버튼: 고정 (애니메이션 없음)
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: _buildNavBarOverlay(routeAnimation, screenWidth),
+            child: _buildNavBarOverlay(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavBarOverlay(Animation<double> routeAnimation, double screenWidth) {
-    return AnimatedBuilder(
-      animation: routeAnimation,
-      builder: (context, _) {
-        final t = routeAnimation.value;
-        final opacity = Curves.easeOut.transform(t);
-        final slideUpDy = 12 * (1 - t); // 아래→위 디졸브 (px)
-        final counterDx = -(1 - t) * screenWidth;
-
-        return Transform.translate(
-          offset: Offset(counterDx, 0),
-          child: _buildFloatingActionButtons(
-            contentOpacity: opacity,
-            contentOffsetY: slideUpDy,
-          ),
-        );
-      },
-    );
+  Widget _buildNavBarOverlay() {
+    return _buildFloatingActionButtons();
   }
 
-  Widget _buildFloatingActionButtons({
-    double contentOpacity = 1,
-    double contentOffsetY = 0,
-  }) {
+  Widget _buildFloatingActionButtons() {
     final content = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -778,17 +756,11 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           ),
         ],
       ),
-      child: Container(
-        height: 80,
-        padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
-        child: Transform.translate(
-          offset: Offset(0, contentOffsetY),
-          child: Opacity(
-            opacity: contentOpacity,
-            child: content,
-          ),
+        child: Container(
+          height: 80,
+          padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+          child: content,
         ),
-      ),
     );
   }
 

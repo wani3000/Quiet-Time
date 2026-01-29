@@ -19,8 +19,12 @@ class ToastUtils {
 
   /// 토스트 표시 (공통)
   static void _showToast(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
+    // 최상위 ScaffoldMessenger 찾기
+    final scaffoldMessenger = ScaffoldMessenger.maybeOf(context) ?? 
+        ScaffoldMessenger.of(context);
+    
+    scaffoldMessenger.hideCurrentSnackBar();
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(
           message,
@@ -32,14 +36,14 @@ class ToastUtils {
           ),
           textAlign: TextAlign.center,
         ),
-        backgroundColor: const Color(0xFF1A1A1A).withOpacity(0.7),
+        backgroundColor: const Color(0xFF1A1A1A).withValues(alpha: 0.8),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        elevation: 0,
+        elevation: 1000, // 최상위에 표시되도록 높은 elevation 설정
         duration: const Duration(seconds: 2),
       ),
     );

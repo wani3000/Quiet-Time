@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/colors.dart';
@@ -27,6 +28,11 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
     _scrollController = ScrollController(initialScrollOffset: _savedScrollOffset);
     // 스크롤 위치 변경 시 저장
     _scrollController.addListener(_saveScrollPosition);
+    
+    // 테스트 환경에서만 샘플 묵상 데이터 생성
+    if (kDebugMode) {
+      MemoService.generateTestMemos();
+    }
   }
 
   void _saveScrollPosition() {
