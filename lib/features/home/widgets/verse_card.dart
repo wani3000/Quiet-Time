@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -90,6 +91,47 @@ class VerseCardState extends State<VerseCard> {
     return await VerseDatabase.getVerseByDate(targetDate);
   }
 
+  // 카드 이미지를 PNG 바이트로 캡처 (border radius 없는 깨끗한 이미지)
+  Future<Uint8List> captureCardImage() async {
+    final downloadWidget = _buildDownloadCard();
+
+    final downloadKey = GlobalKey();
+    final downloadBoundary = RepaintBoundary(
+      key: downloadKey,
+      child: downloadWidget,
+    );
+
+    final overlay = Overlay.of(context);
+    late OverlayEntry overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        left: -10000,
+        top: -10000,
+        child: downloadBoundary,
+      ),
+    );
+
+    overlay.insert(overlayEntry);
+
+    // 렌더링 대기 시간 확보
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    final boundary = downloadKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary == null) {
+      overlayEntry.remove();
+      throw Exception('Unable to capture download widget');
+    }
+
+    final image = await boundary.toImage(pixelRatio: 3.0);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final pngBytes = byteData!.buffer.asUint8List();
+
+    overlayEntry.remove();
+
+    return pngBytes;
+  }
+
   // Public method for external access
   Future<void> saveCard() async {
     if (_isSaving) return;
@@ -99,40 +141,7 @@ class VerseCardState extends State<VerseCard> {
     });
 
     try {
-      final downloadWidget = _buildDownloadCard();
-
-      final downloadKey = GlobalKey();
-      final downloadBoundary = RepaintBoundary(
-        key: downloadKey,
-        child: downloadWidget,
-      );
-
-      final overlay = Overlay.of(context);
-      late OverlayEntry overlayEntry;
-
-      overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          left: -10000,
-          top: -10000,
-          child: downloadBoundary,
-        ),
-      );
-
-      overlay.insert(overlayEntry);
-
-      // 렌더링 대기 시간 확보
-      await Future.delayed(const Duration(milliseconds: 200));
-
-      final boundary = downloadKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-      if (boundary == null) {
-        throw Exception('Unable to capture download widget');
-      }
-
-      final image = await boundary.toImage(pixelRatio: 3.0);
-      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      final pngBytes = byteData!.buffer.asUint8List();
-
-      overlayEntry.remove();
+      final pngBytes = await captureCardImage();
 
       final success = await ImageSaver.saveToGallery(pngBytes);
 
@@ -202,11 +211,11 @@ class VerseCardState extends State<VerseCard> {
                         width: cardWidth,
                         height: cardHeight,
                         fit: BoxFit.cover,
-                        placeholder: Container(
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
+                        placeholder: OptimizedImage(
+                          imagePath: _cachedVerseData!['image']!,
+                          width: cardWidth,
+                          height: cardHeight,
+                          fit: BoxFit.cover,
                         ),
                         errorWidget: OptimizedImage(
                           imagePath: _cachedVerseData!['image']!,
@@ -356,11 +365,11 @@ class VerseCardState extends State<VerseCard> {
                                   width: cardWidth,
                                   height: cardHeight,
                                   fit: BoxFit.cover,
-                                  placeholder: Container(
-                                    color: Colors.grey[200],
-                                    child: const Center(
-                                      child: CircularProgressIndicator(strokeWidth: 2),
-                                    ),
+                                  placeholder: OptimizedImage(
+                                    imagePath: verseData['image']!,
+                                    width: cardWidth,
+                                    height: cardHeight,
+                                    fit: BoxFit.cover,
                                   ),
                                   errorWidget: OptimizedImage(
                                     imagePath: verseData['image']!,

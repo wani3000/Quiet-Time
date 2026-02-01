@@ -1,15 +1,12 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/colors.dart';
-import '../../../core/utils/image_saver.dart';
 import '../../../core/utils/toast_utils.dart';
 import '../../../data/verse_database.dart';
 import '../../../services/memo_service.dart';
@@ -35,7 +32,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   bool _isDownloading = false;
   bool _isLoadingNote = true;
   bool _isSavingNote = false;
-  final GlobalKey _cardKey = GlobalKey();
+  final GlobalKey<VerseCardState> _verseCardKey = GlobalKey<VerseCardState>();
 
   @override
   void initState() {
@@ -105,26 +102,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     });
 
     try {
-      // Wait a bit to ensure RepaintBoundary is ready
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-      if (boundary == null) {
-        throw Exception('RepaintBoundary not found');
-      }
-
-      final image = await boundary.toImage(pixelRatio: 3.0);
-      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      final pngBytes = byteData?.buffer.asUint8List();
-
-      if (pngBytes == null) {
-        throw Exception('Failed to generate image bytes');
-      }
-
-      final success = await ImageSaver.saveToGallery(pngBytes);
-      if (mounted) {
-        ToastUtils.show(context, success ? '말씀카드를 갤러리에 다운로드 했어요!' : '다운로드에 실패했어요');
-      }
+      await _verseCardKey.currentState?.saveCard();
     } catch (e) {
       if (mounted) {
         ToastUtils.showError(context, '다운로드에 실패했어요');
@@ -370,17 +348,8 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     } else {
       // iOS/Android 앱에서는 이미지와 함께 공유
       try {
-        // 말씀 카드 이미지 생성
-        final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-        if (boundary == null) {
-          // 이미지 생성 실패 시 텍스트만 공유
-          await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
-          return;
-        }
-
-        final image = await boundary.toImage(pixelRatio: 3.0);
-        final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-        final pngBytes = byteData?.buffer.asUint8List();
+        // 말씀 카드 이미지 생성 (border radius 없는 깨끗한 이미지)
+        final pngBytes = await _verseCardKey.currentState?.captureCardImage();
 
         if (pngBytes == null) {
           await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
@@ -498,14 +467,12 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
             // Verse Card Thumbnail
-            RepaintBoundary(
-              key: _cardKey,
-              child: VerseCard(
-                isThumbnail: false,
-                showActions: false,
-                date: widget.date,
-                isSquare: false, // 홈과 동일한 5:4 비율 사용
-              ),
+            VerseCard(
+              key: _verseCardKey,
+              isThumbnail: false,
+              showActions: false,
+              date: widget.date,
+              isSquare: false, // 홈과 동일한 5:4 비율 사용
             ),
 
             const SizedBox(height: 24),
