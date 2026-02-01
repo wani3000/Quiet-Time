@@ -1,11 +1,12 @@
 import '../services/unsplash_service.dart';
+import '../services/config_service.dart';
 
 /// 1000개의 성경 말씀 데이터베이스
 /// 전체 성경에서 선별된 말씀들
 class VerseDatabase {
   static const List<Map<String, String>> verses = [
     // ========== 구약 성경 ==========
-    
+
     // 창세기 (20개)
     {'text': "태초에 하나님이 천지를 창조하시니라", 'reference': "창세기 1:1", 'image': 'assets/images/bg1.jpg'},
     {'text': "하나님이 이르시되 빛이 있으라 하시니 빛이 있었고", 'reference': "창세기 1:3", 'image': 'assets/images/bg2.jpg'},
@@ -27,7 +28,7 @@ class VerseDatabase {
     {'text': "네가 나와 함께 하시며 내가 가는 이 길에서 나를 지키시고 먹을 양식과 입을 옷을 주시어", 'reference': "창세기 28:20", 'image': 'assets/images/bg3.jpg'},
     {'text': "하나님이 요셉과 함께 하시므로 그가 형통한 자가 되어", 'reference': "창세기 39:2", 'image': 'assets/images/bg4.jpg'},
     {'text': "여호와께서 요셉과 함께 하시고 그에게 인자를 더하사 간수장으로 요셉을 호의로 대하게 하시매", 'reference': "창세기 39:21", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 출애굽기 (15개)
     {'text': "나는 스스로 있는 자니라", 'reference': "출애굽기 3:14", 'image': 'assets/images/bg1.jpg'},
     {'text': "너는 나 외에는 다른 신들을 네게 두지 말라", 'reference': "출애굽기 20:3", 'image': 'assets/images/bg2.jpg'},
@@ -44,7 +45,7 @@ class VerseDatabase {
     {'text': "도둑질하지 말라", 'reference': "출애굽기 20:15", 'image': 'assets/images/bg3.jpg'},
     {'text': "네 이웃에 대하여 거짓 증거하지 말라", 'reference': "출애굽기 20:16", 'image': 'assets/images/bg4.jpg'},
     {'text': "네 이웃의 집을 탐내지 말라 네 이웃의 아내나 그의 남종이나 그의 여종이나 그의 소나 그의 나귀나 무릇 네 이웃의 소유를 탐내지 말라", 'reference': "출애굽기 20:17", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 레위기 (8개)
     {'text': "너희는 거룩하라 나 여호와 너희 하나님이 거룩함이니라", 'reference': "레위기 19:2", 'image': 'assets/images/bg1.jpg'},
     {'text': "네 이웃 사랑하기를 네 자신과 같이 사랑하라 나는 여호와니라", 'reference': "레위기 19:18", 'image': 'assets/images/bg2.jpg'},
@@ -54,7 +55,7 @@ class VerseDatabase {
     {'text': "원수를 갚지 말며 동포를 원망하지 말며 네 이웃 사랑하기를 네 자신과 같이 사랑하라", 'reference': "레위기 19:18", 'image': 'assets/images/bg1.jpg'},
     {'text': "너희가 만일 내 규례를 준행하며 내 계명을 지켜 행하면 내가 너희에게 철따라 비를 주리니", 'reference': "레위기 26:3-4", 'image': 'assets/images/bg2.jpg'},
     {'text': "내가 너희 중에 행하여 너희 하나님이 되고 너희는 내 백성이 되리라", 'reference': "레위기 26:12", 'image': 'assets/images/bg3.jpg'},
-    
+
     // 민수기 (8개)
     {'text': "여호와는 네게 복을 주시고 너를 지키시기를 원하며", 'reference': "민수기 6:24", 'image': 'assets/images/bg4.jpg'},
     {'text': "여호와는 그의 얼굴을 네게 비추사 은혜 베푸시기를 원하며", 'reference': "민수기 6:25", 'image': 'assets/images/bg5.jpg'},
@@ -64,7 +65,7 @@ class VerseDatabase {
     {'text': "야곱의 장막이 어찌 그리 아름다운가 이스라엘의 거처가 어찌 그리 아름다운가", 'reference': "민수기 24:5", 'image': 'assets/images/bg4.jpg'},
     {'text': "한 별이 야곱에게서 나오며 한 규가 이스라엘에게서 일어나서", 'reference': "민수기 24:17", 'image': 'assets/images/bg5.jpg'},
     {'text': "여호와께서 말씀하신 것은 반드시 행하실 것이니라", 'reference': "민수기 23:19", 'image': 'assets/images/bg1.jpg'},
-    
+
     // 신명기 (15개)
     {'text': "이스라엘아 들으라 우리 하나님 여호와는 오직 유일한 여호와이시니", 'reference': "신명기 6:4", 'image': 'assets/images/bg2.jpg'},
     {'text': "너는 마음을 다하고 뜻을 다하고 힘을 다하여 네 하나님 여호와를 사랑하라", 'reference': "신명기 6:5", 'image': 'assets/images/bg3.jpg'},
@@ -81,7 +82,7 @@ class VerseDatabase {
     {'text': "네가 누워도 두렵지 않고 누우면 네 잠이 달리라", 'reference': "신명기 33:25", 'image': 'assets/images/bg4.jpg'},
     {'text': "네 문빗장은 철과 놋이 될 것이요 네가 사는 날을 따라서 능력이 있으리로다", 'reference': "신명기 33:25", 'image': 'assets/images/bg5.jpg'},
     {'text': "그가 이르시되 내 얼굴이 친히 가리라 내가 너를 쉬게 하리라", 'reference': "신명기 31:8", 'image': 'assets/images/bg1.jpg'},
-    
+
     // 여호수아 (12개)
     {'text': "내가 네게 명령한 것이 아니냐 강하고 담대하라 두려워하지 말며 놀라지 말라 네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라", 'reference': "여호수아 1:9", 'image': 'assets/images/bg2.jpg'},
     {'text': "오직 너는 마음을 다하고 뜻을 다하여 모세의 종이 네게 명령한 율법을 지켜 행하라", 'reference': "여호수아 1:7", 'image': 'assets/images/bg3.jpg'},
@@ -95,14 +96,14 @@ class VerseDatabase {
     {'text': "우리 하나님 여호와를 섬기고 그의 목소리를 청종하리라", 'reference': "여호수아 24:24", 'image': 'assets/images/bg1.jpg'},
     {'text': "여호와께서 너희 원수들 앞에서 너희를 위하여 싸우시리니", 'reference': "여호수아 23:10", 'image': 'assets/images/bg2.jpg'},
     {'text': "한 사람이 천 명을 쫓으리니 이는 너희의 하나님 여호와 그가 너희를 위하여 싸우심이니라", 'reference': "여호수아 23:10", 'image': 'assets/images/bg3.jpg'},
-    
+
     // 룻기 (5개)
     {'text': "어머니께서 가시는 곳에 나도 가고 어머니께서 머무시는 곳에서 나도 머물겠나이다", 'reference': "룻기 1:16", 'image': 'assets/images/bg4.jpg'},
     {'text': "어머니의 백성이 나의 백성이 되고 어머니의 하나님이 나의 하나님이 되시리니", 'reference': "룻기 1:16", 'image': 'assets/images/bg5.jpg'},
     {'text': "여호와께서 네 행위에 보답하시기를 원하며 네가 피난처로 그 날개 아래로 온 이스라엘의 하나님 여호와께 온전한 상급을 받기를 원하노라", 'reference': "룻기 2:12", 'image': 'assets/images/bg1.jpg'},
     {'text': "내 딸아 두려워하지 말라 네 말대로 네게 다 행하리라", 'reference': "룻기 3:11", 'image': 'assets/images/bg2.jpg'},
     {'text': "그가 너를 후대하여 네 노년에 의탁할 자가 되리로다", 'reference': "룻기 4:15", 'image': 'assets/images/bg3.jpg'},
-    
+
     // 사무엘상 (12개)
     {'text': "사람은 외모를 보거니와 나 여호와는 중심을 보느니라", 'reference': "사무엘상 16:7", 'image': 'assets/images/bg4.jpg'},
     {'text': "여호와의 구원하심이 칼과 창에 있지 아니함을 이 무리로 알게 하리라", 'reference': "사무엘상 17:47", 'image': 'assets/images/bg5.jpg'},
@@ -116,7 +117,7 @@ class VerseDatabase {
     {'text': "여호와를 경외하고 그를 섬기며 그의 목소리를 청종하라", 'reference': "사무엘상 12:14", 'image': 'assets/images/bg3.jpg'},
     {'text': "다만 여호와를 경외하여 진실한 마음으로 섬기라 그가 너희를 위하여 큰 일 행하심을 생각하라", 'reference': "사무엘상 12:24", 'image': 'assets/images/bg4.jpg'},
     {'text': "여호와께서는 자기 큰 이름을 위하여 그의 백성을 버리지 아니하시리니", 'reference': "사무엘상 12:22", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 사무엘하 (8개)
     {'text': "여호와는 나의 반석이시요 나의 요새시요 나를 건지시는 자시요", 'reference': "사무엘하 22:2", 'image': 'assets/images/bg1.jpg'},
     {'text': "주의 인자하심이 하늘에 있고 주의 진실하심이 공중에 사무쳤으며", 'reference': "사무엘하 22:51", 'image': 'assets/images/bg2.jpg'},
@@ -126,7 +127,7 @@ class VerseDatabase {
     {'text': "주께서 나를 원수들에게서 건지시고 나를 대적하는 자들 위에 높이셨으며 나를 포악한 자에게서 빼어내셨나이다", 'reference': "사무엘하 22:49", 'image': 'assets/images/bg1.jpg'},
     {'text': "여호와여 주는 나의 등불이시니 여호와께서 나의 어둠을 밝히시리이다", 'reference': "사무엘하 22:29", 'image': 'assets/images/bg2.jpg'},
     {'text': "주를 의지하고 달리면 적군을 칠 수 있고 나의 하나님을 의지하면 성벽을 뛰어넘을 수 있나이다", 'reference': "사무엘하 22:30", 'image': 'assets/images/bg3.jpg'},
-    
+
     // 열왕기상 (8개)
     {'text': "네 하나님 여호와 앞에서 행하되 마음을 온전히 하고 정직하게 행하여", 'reference': "열왕기상 9:4", 'image': 'assets/images/bg4.jpg'},
     {'text': "여호와는 하나님이시요 다른 이가 없다 하셨나이다", 'reference': "열왕기상 8:60", 'image': 'assets/images/bg5.jpg'},
@@ -136,14 +137,14 @@ class VerseDatabase {
     {'text': "우리를 떠나지 마시고 버리지 마시며 우리 마음을 주께로 기울게 하사", 'reference': "열왕기상 8:58", 'image': 'assets/images/bg4.jpg'},
     {'text': "그의 모든 도를 행하게 하시고 그가 우리 조상들에게 명령하신 계명과 법도와 규례를 지키게 하시옵소서", 'reference': "열왕기상 8:58", 'image': 'assets/images/bg5.jpg'},
     {'text': "이스라엘 하나님 여호와를 송축할지로다", 'reference': "열왕기상 1:48", 'image': 'assets/images/bg1.jpg'},
-    
+
     // 열왕기하 (5개)
     {'text': "여호와 앞에서 행하되 마음을 다하며 뜻을 다하며 힘을 다하여", 'reference': "열왕기하 23:25", 'image': 'assets/images/bg2.jpg'},
     {'text': "두려워하지 말라 우리와 함께 한 자가 그들과 함께 한 자보다 많으니라", 'reference': "열왕기하 6:16", 'image': 'assets/images/bg3.jpg'},
     {'text': "여호와여 원하건대 그의 눈을 열어서 보게 하옵소서", 'reference': "열왕기하 6:17", 'image': 'assets/images/bg4.jpg'},
     {'text': "이 때에 네가 잠잠하면 유대인은 다른 데로 말미암아 놓임과 구원을 얻으려니와", 'reference': "열왕기하 4:14", 'image': 'assets/images/bg5.jpg'},
     {'text': "여호와의 눈은 온 세상을 두루 살피사 자기를 향한 마음이 온전한 자들에게 능력을 나타내시나니", 'reference': "열왕기하 16:9", 'image': 'assets/images/bg1.jpg'},
-    
+
     // 역대상 (10개)
     {'text': "여호와를 찾으라 그와 그의 능력을 찾을지어다 그의 얼굴을 항상 구할지어다", 'reference': "역대상 16:11", 'image': 'assets/images/bg2.jpg'},
     {'text': "여호와께 감사하며 그의 이름을 불러 아뢰며 그의 행사를 만민 중에 알게 할지어다", 'reference': "역대상 16:8", 'image': 'assets/images/bg3.jpg'},
@@ -155,7 +156,7 @@ class VerseDatabase {
     {'text': "만민의 모든 신들은 헛것이나 여호와께서는 하늘을 지으셨음이로다", 'reference': "역대상 16:26", 'image': 'assets/images/bg4.jpg'},
     {'text': "존귀와 위엄이 그 앞에 있으며 능력과 즐거움이 그의 처소에 있도다", 'reference': "역대상 16:27", 'image': 'assets/images/bg5.jpg'},
     {'text': "만민의 족속들아 영광과 권능을 여호와께 돌릴지어다 여호와께 돌릴지어다", 'reference': "역대상 16:28", 'image': 'assets/images/bg1.jpg'},
-    
+
     // 역대하 (8개)
     {'text': "내가 하늘을 닫고 비를 내리지 아니하거나 혹은 메뚜기에게 토지를 먹게 하거나 전염병이 내 백성 가운데에 유행하게 할 때에", 'reference': "역대하 7:13", 'image': 'assets/images/bg2.jpg'},
     {'text': "내 이름으로 일컫는 내 백성이 그들의 악한 길에서 떠나 스스로 낮추고 기도하여 내 얼굴을 찾으면 내가 하늘에서 듣고 그들의 죄를 사하고 그들의 땅을 고칠지라", 'reference': "역대하 7:14", 'image': 'assets/images/bg3.jpg'},
@@ -165,14 +166,14 @@ class VerseDatabase {
     {'text': "여호와를 믿으라 그리하면 견고하리라 그의 선지자를 믿으라 그리하면 형통하리라", 'reference': "역대하 20:20", 'image': 'assets/images/bg2.jpg'},
     {'text': "여호와께 감사하라 그의 인자하심이 영원함이로다", 'reference': "역대하 20:21", 'image': 'assets/images/bg3.jpg'},
     {'text': "하나님 여호와는 당신의 백성에게 위로와 평안을 주시는 분이시니", 'reference': "역대하 30:9", 'image': 'assets/images/bg4.jpg'},
-    
+
     // 에스라 (5개)
     {'text': "우리 하나님의 손이 자기를 찾는 모든 자에게는 선을 베푸시고", 'reference': "에스라 8:22", 'image': 'assets/images/bg5.jpg'},
     {'text': "하나님 여호와여 주의 율법을 지키게 하시고 주의 계명을 배우게 하소서", 'reference': "에스라 7:10", 'image': 'assets/images/bg1.jpg'},
     {'text': "이스라엘의 하나님 여호와를 찬송하라", 'reference': "에스라 7:27", 'image': 'assets/images/bg2.jpg'},
     {'text': "하나님의 손이 선하게 나를 도우셨으므로", 'reference': "에스라 7:28", 'image': 'assets/images/bg3.jpg'},
     {'text': "여호와 하나님의 율법대로 행하고 가르치기를 결심하였더니", 'reference': "에스라 7:10", 'image': 'assets/images/bg4.jpg'},
-    
+
     // 느헤미야 (6개)
     {'text': "너희는 가서 살진 것을 먹고 단 것을 마시되 준비하지 못한 자에게는 나누어 주라 이 날은 우리 주의 성일이니 근심하지 말라 여호와로 말미암아 기뻐하는 것이 너희의 힘이니라", 'reference': "느헤미야 8:10", 'image': 'assets/images/bg5.jpg'},
     {'text': "오직 하늘의 하나님이 우리를 형통하게 하시리니 우리는 그의 종들이라 일어나서 건축하려니와", 'reference': "느헤미야 2:20", 'image': 'assets/images/bg1.jpg'},
@@ -180,14 +181,14 @@ class VerseDatabase {
     {'text': "주는 생명을 주시는 분이시니 모든 것을 보존하시나이다", 'reference': "느헤미야 9:6", 'image': 'assets/images/bg3.jpg'},
     {'text': "주만 홀로 여호와시니이다 하늘과 하늘들의 하늘과 일월 성신과 땅과 땅 위의 만물과 바다와 그 가운데 모든 것을 지으시고 다 보존하시오니", 'reference': "느헤미야 9:6", 'image': 'assets/images/bg4.jpg'},
     {'text': "주께서 크고 두려운 하나님이시니 언약을 지키시며 인자를 베푸시나이다", 'reference': "느헤미야 9:32", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 에스더 (5개)
     {'text': "네가 왕후의 자리를 얻은 것이 이 때를 위함이 아닌지 누가 알겠느냐", 'reference': "에스더 4:14", 'image': 'assets/images/bg1.jpg'},
     {'text': "죽으면 죽으리이다", 'reference': "에스더 4:16", 'image': 'assets/images/bg2.jpg'},
     {'text': "내 민족 유다인을 위하여 내 생명을 내어놓나이다", 'reference': "에스더 7:3", 'image': 'assets/images/bg3.jpg'},
     {'text': "유대인들에게 빛과 기쁨과 즐거움과 영광이 있었으니", 'reference': "에스더 8:16", 'image': 'assets/images/bg4.jpg'},
     {'text': "슬픔이 기쁨으로 바뀌고 애곡하던 날이 길한 날로 바뀌었으니", 'reference': "에스더 9:22", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 욥기 (15개)
     {'text': "주신 이도 여호와시요 거두신 이도 여호와시오니 여호와의 이름이 찬송을 받으실지니이다", 'reference': "욥기 1:21", 'image': 'assets/images/bg1.jpg'},
     {'text': "그가 나를 죽이실지라도 나는 그를 의뢰하겠고", 'reference': "욥기 13:15", 'image': 'assets/images/bg2.jpg'},
@@ -204,7 +205,7 @@ class VerseDatabase {
     {'text': "하나님은 온전한 자를 버리지 아니하시고 행악자의 손을 붙들지 아니하시므로", 'reference': "욥기 8:20", 'image': 'assets/images/bg3.jpg'},
     {'text': "여호와께서 주시고 여호와께서 거두어 가시니 여호와의 이름이 찬송을 받으실지니이다", 'reference': "욥기 1:21", 'image': 'assets/images/bg4.jpg'},
     {'text': "그가 큰 일을 행하시니 헤아릴 수 없고 기이한 일을 행하시니 그 수를 셀 수 없도다", 'reference': "욥기 5:9", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 시편 (100개)
     {'text': "복 있는 사람은 악인들의 꾀를 따르지 아니하며 죄인들의 길에 서지 아니하며", 'reference': "시편 1:1", 'image': 'assets/images/bg1.jpg'},
     {'text': "오직 여호와의 율법을 즐거워하여 그의 율법을 주야로 묵상하는도다", 'reference': "시편 1:2", 'image': 'assets/images/bg2.jpg'},
@@ -305,7 +306,7 @@ class VerseDatabase {
     {'text': "나는 곤고하고 슬프오니 하나님이여 주의 구원으로 나를 높이소서", 'reference': "시편 69:29", 'image': 'assets/images/bg2.jpg'},
     {'text': "내가 노래로 하나님의 이름을 찬송하며 감사함으로 하나님을 위대하시다 하리니", 'reference': "시편 69:30", 'image': 'assets/images/bg3.jpg'},
     {'text': "여호와여 나를 건지소서 여호와여 속히 나를 도우소서", 'reference': "시편 70:1", 'image': 'assets/images/bg4.jpg'},
-    
+
     // 시편 추가 (71-150편에서 선별)
     {'text': "주여 내가 주께 피하오니 나를 영원히 부끄럽게 하지 마소서", 'reference': "시편 71:1", 'image': 'assets/images/bg5.jpg'},
     {'text': "주는 내 소망이시요 주 여호와여 주는 어릴 때부터 내가 신뢰한 이시라", 'reference': "시편 71:5", 'image': 'assets/images/bg1.jpg'},
@@ -403,7 +404,7 @@ class VerseDatabase {
     {'text': "하늘의 하늘도 그를 찬양하며 하늘 위에 있는 물들도 그를 찬양할지어다", 'reference': "시편 148:4", 'image': 'assets/images/bg3.jpg'},
     {'text': "그것들이 여호와의 이름을 찬양함은 그가 명령하시매 지음을 받았음이로다", 'reference': "시편 148:5", 'image': 'assets/images/bg4.jpg'},
     {'text': "그가 또 그것들을 영원히 세우시고 폐하지 못할 명령을 정하셨도다", 'reference': "시편 148:6", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 잠언 (50개)
     {'text': "여호와를 경외하는 것이 지식의 근본이거늘 미련한 자는 지혜와 훈계를 멸시하느니라", 'reference': "잠언 1:7", 'image': 'assets/images/bg1.jpg'},
     {'text': "내 아들아 나의 법을 잊지 말고 네 마음으로 나의 명령을 지키라", 'reference': "잠언 3:1", 'image': 'assets/images/bg2.jpg'},
@@ -455,7 +456,7 @@ class VerseDatabase {
     {'text': "아내를 얻는 자는 복을 얻고 여호와께 은총을 받은 자니라", 'reference': "잠언 18:22", 'image': 'assets/images/bg3.jpg'},
     {'text': "가난하여도 성실하게 행하는 자는 입이 패역하고 미련한 자보다 나으니라", 'reference': "잠언 19:1", 'image': 'assets/images/bg4.jpg'},
     {'text': "사람의 마음에는 많은 계획이 있어도 오직 여호와의 뜻만이 완전히 서리라", 'reference': "잠언 19:21", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 이사야 (40개)
     {'text': "두려워하지 말라 내가 너와 함께 함이라 놀라지 말라 나는 네 하나님이 됨이라 내가 너를 굳세게 하리라 참으로 너를 도와주리라", 'reference': "이사야 41:10", 'image': 'assets/images/bg1.jpg'},
     {'text': "보라 처녀가 잉태하여 아들을 낳을 것이요 그의 이름을 임마누엘이라 하리라", 'reference': "이사야 7:14", 'image': 'assets/images/bg2.jpg'},
@@ -497,7 +498,7 @@ class VerseDatabase {
     {'text': "여호와께서 그에게 상함을 받게 하시기를 원하사 질고를 당하게 하셨은즉 그의 영혼을 속건 제물로 드리기에 이르면 그가 씨를 보게 되며 그의 날은 길 것이요 여호와께서 기뻐하시는 뜻이 그의 손에서 형통하리로다", 'reference': "이사야 53:10", 'image': 'assets/images/bg3.jpg'},
     {'text': "이르시되 평강이라 평강이라 먼 데 있는 자에게나 가까운 데 있는 자에게나 내가 그를 고치리라", 'reference': "이사야 57:19", 'image': 'assets/images/bg4.jpg'},
     {'text': "주 여호와의 영이 내게 내리셨으니 이는 여호와께서 내게 기름을 부으사", 'reference': "이사야 61:1", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 예레미야 (25개)
     {'text': "너를 지으려고 모태에서 만들기 전에 내가 너를 알았고 네가 태어나기 전에 내가 너를 구별하였고 너를 여러 나라의 선지자로 세웠노라", 'reference': "예레미야 1:5", 'image': 'assets/images/bg1.jpg'},
     {'text': "두려워하지 말라 내가 너와 함께 하여 너를 구원하리라", 'reference': "예레미야 1:8", 'image': 'assets/images/bg2.jpg'},
@@ -524,7 +525,7 @@ class VerseDatabase {
     {'text': "여호와여 주께서 나를 인도하시매 내가 따랐나이다", 'reference': "예레미야 31:18", 'image': 'assets/images/bg3.jpg'},
     {'text': "내가 그들에게 나를 알게 하는 마음을 주리니 나는 여호와인 줄 그들이 알게 되리라", 'reference': "예레미야 24:7", 'image': 'assets/images/bg4.jpg'},
     {'text': "그들은 온 마음으로 내게 돌아오며 그들은 내 백성이 되고 나는 그들의 하나님이 되리라", 'reference': "예레미야 24:7", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 에스겔 (15개)
     {'text': "또 새 영을 너희 속에 두고 새 마음을 너희에게 주되 너희 육신에서 굳은 마음을 제거하고 부드러운 마음을 줄 것이며", 'reference': "에스겔 36:26", 'image': 'assets/images/bg1.jpg'},
     {'text': "내 영을 너희 속에 두어 너희로 내 율례를 행하게 하리니 너희가 내 규례를 지켜 행할지라", 'reference': "에스겔 36:27", 'image': 'assets/images/bg2.jpg'},
@@ -541,7 +542,7 @@ class VerseDatabase {
     {'text': "내 종 다윗이 영원히 그들의 왕이 되리라 그들에게 한 목자가 있어 그가 그들을 인도하리니 그들이 내 규례를 따르며 내 율례를 지켜 행하리라", 'reference': "에스겔 37:24", 'image': 'assets/images/bg3.jpg'},
     {'text': "내가 그들과 평화의 언약을 맺으리니 그것은 그들과 맺은 영원한 언약이라", 'reference': "에스겔 37:26", 'image': 'assets/images/bg4.jpg'},
     {'text': "또 내가 그들을 세우고 그들을 번성하게 하며 내 성소를 그들 가운데에 영원히 세우리니", 'reference': "에스겔 37:26", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 다니엘 (15개)
     {'text': "우리가 섬기는 하나님이 계시다면 우리를 맹렬히 타는 풀무불 가운데에서 능히 건져내시겠고 왕의 손에서도 건져내시리이다", 'reference': "다니엘 3:17", 'image': 'assets/images/bg1.jpg'},
     {'text': "그렇게 하지 아니하실지라도 왕이여 우리가 왕의 신들을 섬기지도 아니하고 왕이 세우신 금 신상에게 절하지도 아니할 줄을 아옵소서", 'reference': "다니엘 3:18", 'image': 'assets/images/bg2.jpg'},
@@ -558,7 +559,7 @@ class VerseDatabase {
     {'text': "내 하나님이 그의 천사를 보내어 사자들의 입을 봉하셨으므로 사자들이 나를 상해하지 못하였사오니 이는 나의 무죄함이 그 앞에 밝히 드러났음이오며 또 왕이여 나는 왕에게도 해를 끼친 일이 없나이다", 'reference': "다니엘 6:22", 'image': 'assets/images/bg3.jpg'},
     {'text': "그런즉 다니엘이 그 나라에서 번영하였으니 다리오 왕 때와 바사 사람 고레스 왕 때더라", 'reference': "다니엘 6:28", 'image': 'assets/images/bg4.jpg'},
     {'text': "오직 너 다니엘아 마지막 때까지 이 말을 간직하고 이 글을 봉함하라 많은 사람이 빨리 왕래하며 지식이 더하리라", 'reference': "다니엘 12:4", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 소선지서 (호세아, 요엘, 아모스, 미가, 나훔, 하박국, 스바냐, 학개, 스가랴, 말라기) (30개)
     {'text': "내가 인애로 그들을 이끌었고 사랑의 줄로 그들을 이끌었노라 내가 그들에게 대하여 그 턱의 멍에를 벗기는 자 같이 하였고 그들 앞에 먹을 것을 주었노라", 'reference': "호세아 11:4", 'image': 'assets/images/bg1.jpg'},
     {'text': "그러므로 너희는 네 하나님께로 돌아와서 인애와 정의를 지키며 항상 네 하나님을 바랄지니라", 'reference': "호세아 12:6", 'image': 'assets/images/bg2.jpg'},
@@ -590,9 +591,9 @@ class VerseDatabase {
     {'text': "만군의 여호와가 이르노라 너희가 온전한 십일조를 창고에 들여 나의 집에 양식이 있게 하고 그것으로 나를 시험하여 내가 하늘 문을 열고 너희에게 복을 쌓을 곳이 없도록 붓지 아니하나 보라", 'reference': "말라기 3:10", 'image': 'assets/images/bg3.jpg'},
     {'text': "내 이름을 경외하는 너희에게는 공의로운 해가 떠올라서 치료하는 광선을 비추리니 너희가 나가서 외양간에서 나온 송아지 같이 뛰리라", 'reference': "말라기 4:2", 'image': 'assets/images/bg4.jpg'},
     {'text': "내가 전령을 보내리니 그가 내 앞에서 길을 준비할 것이요 또 너희가 구하는 바 주가 갑자기 그의 성전에 임하시리니", 'reference': "말라기 3:1", 'image': 'assets/images/bg5.jpg'},
-    
+
     // ========== 신약 성경 ==========
-    
+
     // 마태복음 (50개)
     {'text': "심령이 가난한 자는 복이 있나니 천국이 그들의 것임이요", 'reference': "마태복음 5:3", 'image': 'assets/images/bg1.jpg'},
     {'text': "애통하는 자는 복이 있나니 그들이 위로를 받을 것임이요", 'reference': "마태복음 5:4", 'image': 'assets/images/bg2.jpg'},
@@ -624,7 +625,7 @@ class VerseDatabase {
     {'text': "하늘과 땅은 없어지겠으나 내 말은 없어지지 아니하리라", 'reference': "마태복음 24:35", 'image': 'assets/images/bg3.jpg'},
     {'text': "그러므로 너희는 가서 모든 민족을 제자로 삼아 아버지와 아들과 성령의 이름으로 세례를 베풀고", 'reference': "마태복음 28:19", 'image': 'assets/images/bg4.jpg'},
     {'text': "볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라", 'reference': "마태복음 28:20", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 마가복음 (20개)
     {'text': "때가 찼고 하나님의 나라가 가까이 왔으니 회개하고 복음을 믿으라", 'reference': "마가복음 1:15", 'image': 'assets/images/bg1.jpg'},
     {'text': "나를 따라오라 내가 너희로 사람을 낚는 어부가 되게 하리라", 'reference': "마가복음 1:17", 'image': 'assets/images/bg2.jpg'},
@@ -646,7 +647,7 @@ class VerseDatabase {
     {'text': "기도 외에 다른 것으로는 이런 종류가 나갈 수 없느니라", 'reference': "마가복음 9:29", 'image': 'assets/images/bg3.jpg'},
     {'text': "너희에게 소금이 있으니 서로 화목하라", 'reference': "마가복음 9:50", 'image': 'assets/images/bg4.jpg'},
     {'text': "믿고 세례를 받는 사람은 구원을 얻을 것이요 믿지 않는 사람은 정죄를 받으리라", 'reference': "마가복음 16:16", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 누가복음 (30개)
     {'text': "두려워하지 말라 마리아여 네가 하나님께 은혜를 입었느니라", 'reference': "누가복음 1:30", 'image': 'assets/images/bg1.jpg'},
     {'text': "대저 하나님의 모든 말씀은 능하지 못하심이 없느니라", 'reference': "누가복음 1:37", 'image': 'assets/images/bg2.jpg'},
@@ -678,7 +679,7 @@ class VerseDatabase {
     {'text': "하나님의 나라는 볼 수 있게 임하는 것이 아니요 또 여기 있다 저기 있다고도 못하리니", 'reference': "누가복음 17:20-21", 'image': 'assets/images/bg3.jpg'},
     {'text': "하나님의 나라는 너희 안에 있느니라", 'reference': "누가복음 17:21", 'image': 'assets/images/bg4.jpg'},
     {'text': "항상 기도하고 낙심하지 말아야 할 것을 비유로 말씀하시니라", 'reference': "누가복음 18:1", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 요한복음 (50개)
     {'text': "태초에 말씀이 계시니라 이 말씀이 하나님과 함께 계셨으니 이 말씀은 곧 하나님이시니라", 'reference': "요한복음 1:1", 'image': 'assets/images/bg1.jpg'},
     {'text': "그 안에 생명이 있었으니 이 생명은 사람들의 빛이라", 'reference': "요한복음 1:4", 'image': 'assets/images/bg2.jpg'},
@@ -730,7 +731,7 @@ class VerseDatabase {
     {'text': "보지 못하고 믿는 자들은 복되도다", 'reference': "요한복음 20:29", 'image': 'assets/images/bg3.jpg'},
     {'text': "오직 이것을 기록함은 너희로 예수께서 하나님의 아들 그리스도이심을 믿게 하려 함이요 또 너희로 믿고 그 이름을 힘입어 생명을 얻게 하려 함이니라", 'reference': "요한복음 20:31", 'image': 'assets/images/bg4.jpg'},
     {'text': "네가 나를 사랑하느냐 내 양을 먹이라", 'reference': "요한복음 21:17", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 사도행전 (20개)
     {'text': "오직 성령이 너희에게 임하시면 너희가 권능을 받고 예루살렘과 온 유대와 사마리아와 땅 끝까지 이르러 내 증인이 되리라", 'reference': "사도행전 1:8", 'image': 'assets/images/bg1.jpg'},
     {'text': "너희가 회개하여 각각 예수 그리스도의 이름으로 세례를 받고 죄 사함을 받으라 그리하면 성령의 선물을 받으리니", 'reference': "사도행전 2:38", 'image': 'assets/images/bg2.jpg'},
@@ -752,7 +753,7 @@ class VerseDatabase {
     {'text': "보라 하늘이 열리고 인자가 하나님 우편에 서신 것을 보노라", 'reference': "사도행전 7:56", 'image': 'assets/images/bg3.jpg'},
     {'text': "주 예수여 내 영혼을 받으시옵소서", 'reference': "사도행전 7:59", 'image': 'assets/images/bg4.jpg'},
     {'text': "주여 이 죄를 그들에게 돌리지 마옵소서", 'reference': "사도행전 7:60", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 로마서 (40개)
     {'text': "내가 복음을 부끄러워하지 아니하노니 이 복음은 모든 믿는 자에게 구원을 주시는 하나님의 능력이 됨이라", 'reference': "로마서 1:16", 'image': 'assets/images/bg1.jpg'},
     {'text': "복음에는 하나님의 의가 나타나서 믿음으로 믿음에 이르게 하나니 기록된 바 오직 의인은 믿음으로 말미암아 살리라 함과 같으니라", 'reference': "로마서 1:17", 'image': 'assets/images/bg2.jpg'},
@@ -794,7 +795,7 @@ class VerseDatabase {
     {'text': "오직 주 예수 그리스도로 옷 입고 정욕을 위하여 육신의 일을 도모하지 말라", 'reference': "로마서 13:14", 'image': 'assets/images/bg3.jpg'},
     {'text': "우리 중에 누구든지 자기를 위하여 사는 자가 없고 자기를 위하여 죽는 자도 없도다", 'reference': "로마서 14:7", 'image': 'assets/images/bg4.jpg'},
     {'text': "우리가 살아도 주를 위하여 살고 죽어도 주를 위하여 죽나니 그러므로 사나 죽으나 우리가 주의 것이로다", 'reference': "로마서 14:8", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 고린도전서 (30개)
     {'text': "십자가의 도가 멸망하는 자들에게는 미련한 것이요 구원을 받는 우리에게는 하나님의 능력이라", 'reference': "고린도전서 1:18", 'image': 'assets/images/bg1.jpg'},
     {'text': "하나님의 미련한 것이 사람보다 지혜 있고 하나님의 약한 것이 사람보다 강하니라", 'reference': "고린도전서 1:25", 'image': 'assets/images/bg2.jpg'},
@@ -826,7 +827,7 @@ class VerseDatabase {
     {'text': "우리 주 예수 그리스도로 말미암아 우리에게 승리를 주시는 하나님께 감사하노니", 'reference': "고린도전서 15:57", 'image': 'assets/images/bg3.jpg'},
     {'text': "그러므로 내 사랑하는 형제들아 견실하며 흔들리지 말고 항상 주의 일에 더욱 힘쓰는 자들이 되라", 'reference': "고린도전서 15:58", 'image': 'assets/images/bg4.jpg'},
     {'text': "이는 너희 수고가 주 안에서 헛되지 않은 줄 앎이라", 'reference': "고린도전서 15:58", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 고린도후서 (20개)
     {'text': "찬송하리로다 그는 우리 주 예수 그리스도의 하나님이시요 자비의 아버지시요 모든 위로의 하나님이시며", 'reference': "고린도후서 1:3", 'image': 'assets/images/bg1.jpg'},
     {'text': "우리의 모든 환난 중에서 우리를 위로하사 우리로 하여금 하나님께 받는 위로로써 모든 환난 중에 있는 자들을 능히 위로하게 하시는 이시로다", 'reference': "고린도후서 1:4", 'image': 'assets/images/bg2.jpg'},
@@ -848,7 +849,7 @@ class VerseDatabase {
     {'text': "각각 그 마음에 정한 대로 할 것이요 인색함으로나 억지로 하지 말지니 하나님은 즐겨 내는 자를 사랑하시느니라", 'reference': "고린도후서 9:7", 'image': 'assets/images/bg3.jpg'},
     {'text': "하나님이 능히 모든 은혜를 너희에게 넘치게 하시나니 이는 너희로 모든 일에 항상 모든 것을 넉넉히 가져 모든 착한 일을 넘치게 하게 하려 하심이라", 'reference': "고린도후서 9:8", 'image': 'assets/images/bg4.jpg'},
     {'text': "내게 이르시기를 내 은혜가 네게 족하도다 이는 내 능력이 약한 데서 온전하여짐이라 하셨도다 그러므로 도리어 크게 기뻐함으로 나의 여러 약한 것들에 대하여 자랑하리니 이는 그리스도의 능력이 내게 머물게 하려 함이라", 'reference': "고린도후서 12:9", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 갈라디아서 (15개)
     {'text': "내가 그리스도와 함께 십자가에 못 박혔나니 그런즉 이제는 내가 사는 것이 아니요 오직 내 안에 그리스도께서 사시는 것이라", 'reference': "갈라디아서 2:20", 'image': 'assets/images/bg1.jpg'},
     {'text': "이제 내가 육체 가운데 사는 것은 나를 사랑하사 나를 위하여 자기 자신을 버리신 하나님의 아들을 믿는 믿음 안에서 사는 것이라", 'reference': "갈라디아서 2:20", 'image': 'assets/images/bg2.jpg'},
@@ -865,7 +866,7 @@ class VerseDatabase {
     {'text': "자기의 육체를 위하여 심는 자는 육체로부터 썩어질 것을 거두고 성령을 위하여 심는 자는 성령으로부터 영생을 거두리라", 'reference': "갈라디아서 6:8", 'image': 'assets/images/bg3.jpg'},
     {'text': "우리가 선을 행하되 낙심하지 말지니 포기하지 아니하면 때가 이르매 거두리라", 'reference': "갈라디아서 6:9", 'image': 'assets/images/bg4.jpg'},
     {'text': "그러므로 우리는 기회 있는 대로 모든 이에게 착한 일을 하되 더욱 믿음의 가정들에게 할지니라", 'reference': "갈라디아서 6:10", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 에베소서 (25개)
     {'text': "찬송하리로다 하나님 곧 우리 주 예수 그리스도의 아버지께서 그리스도 안에서 하늘에 속한 모든 신령한 복을 우리에게 주시되", 'reference': "에베소서 1:3", 'image': 'assets/images/bg1.jpg'},
     {'text': "곧 창세 전에 그리스도 안에서 우리를 택하사 우리로 사랑 안에서 그 앞에 거룩하고 흠이 없게 하시려고", 'reference': "에베소서 1:4", 'image': 'assets/images/bg2.jpg'},
@@ -892,7 +893,7 @@ class VerseDatabase {
     {'text': "술 취하지 말라 이는 방탕한 것이니 오직 성령으로 충만함을 받으라", 'reference': "에베소서 5:18", 'image': 'assets/images/bg3.jpg'},
     {'text': "끝으로 너희가 주 안에서와 그 힘의 능력으로 강건하여지고", 'reference': "에베소서 6:10", 'image': 'assets/images/bg4.jpg'},
     {'text': "하나님의 전신 갑주를 입으라 이는 마귀의 간계를 능히 대적하려 함이라", 'reference': "에베소서 6:11", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 빌립보서 (20개)
     {'text': "너희 안에서 착한 일을 시작하신 이가 그리스도 예수의 날까지 이루실 줄을 우리는 확신하노라", 'reference': "빌립보서 1:6", 'image': 'assets/images/bg1.jpg'},
     {'text': "내게 사는 것이 그리스도니 죽는 것도 유익함이라", 'reference': "빌립보서 1:21", 'image': 'assets/images/bg2.jpg'},
@@ -914,7 +915,7 @@ class VerseDatabase {
     {'text': "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라", 'reference': "빌립보서 4:13", 'image': 'assets/images/bg3.jpg'},
     {'text': "나의 하나님이 그리스도 예수 안에서 영광 가운데 그 풍성한 대로 너희 모든 쓸 것을 채우시리라", 'reference': "빌립보서 4:19", 'image': 'assets/images/bg4.jpg'},
     {'text': "우리 하나님 곧 아버지께 세세 무궁하도록 영광을 돌릴지어다 아멘", 'reference': "빌립보서 4:20", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 골로새서 (15개)
     {'text': "그는 보이지 아니하는 하나님의 형상이시요 모든 피조물보다 먼저 나신 이시니", 'reference': "골로새서 1:15", 'image': 'assets/images/bg1.jpg'},
     {'text': "만물이 그에게서 창조되되 하늘과 땅에서 보이는 것들과 보이지 않는 것들과 혹은 왕권들이나 주권들이나 통치자들이나 권세들이나 만물이 다 그로 말미암고 그를 위하여 창조되었고", 'reference': "골로새서 1:16", 'image': 'assets/images/bg2.jpg'},
@@ -931,7 +932,7 @@ class VerseDatabase {
     {'text': "무엇을 하든지 말에나 일에나 다 주 예수의 이름으로 하고 그를 힘입어 하나님 아버지께 감사하라", 'reference': "골로새서 3:17", 'image': 'assets/images/bg3.jpg'},
     {'text': "무슨 일을 하든지 마음을 다하여 주께 하듯 하고 사람에게 하듯 하지 말라", 'reference': "골로새서 3:23", 'image': 'assets/images/bg4.jpg'},
     {'text': "기도를 계속하고 기도에 감사함으로 깨어 있으라", 'reference': "골로새서 4:2", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 데살로니가전서 (10개)
     {'text': "항상 기뻐하라", 'reference': "데살로니가전서 5:16", 'image': 'assets/images/bg1.jpg'},
     {'text': "쉬지 말고 기도하라", 'reference': "데살로니가전서 5:17", 'image': 'assets/images/bg2.jpg'},
@@ -943,7 +944,7 @@ class VerseDatabase {
     {'text': "평강의 하나님이 친히 너희를 온전히 거룩하게 하시고 또 너희의 온 영과 혼과 몸이 우리 주 예수 그리스도께서 강림하실 때에 흠 없게 보전되기를 원하노라", 'reference': "데살로니가전서 5:23", 'image': 'assets/images/bg3.jpg'},
     {'text': "너희를 부르시는 이는 미쁘시니 그가 또한 이루시리라", 'reference': "데살로니가전서 5:24", 'image': 'assets/images/bg4.jpg'},
     {'text': "형제들아 우리를 위하여 기도하라", 'reference': "데살로니가전서 5:25", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 디모데전서 (10개)
     {'text': "미쁘다 이 말이여 그리스도 예수께서 죄인을 구원하시려고 세상에 임하셨다 하였도다 죄인 중에 내가 괴수니라", 'reference': "디모데전서 1:15", 'image': 'assets/images/bg1.jpg'},
     {'text': "하나님은 한 분이시요 또 하나님과 사람 사이에 중보자도 한 분이시니 곧 사람이신 그리스도 예수라", 'reference': "디모데전서 2:5", 'image': 'assets/images/bg2.jpg'},
@@ -955,7 +956,7 @@ class VerseDatabase {
     {'text': "믿음의 선한 싸움을 싸우라 영생을 취하라 이를 위하여 네가 부르심을 받았고 많은 증인 앞에서 선한 증언을 하였도다", 'reference': "디모데전서 6:12", 'image': 'assets/images/bg3.jpg'},
     {'text': "오직 죽지 아니하시고 가까이 가지 못할 빛에 거하시고 어떤 사람도 보지 못하였고 또 볼 수 없는 이시니 그에게 존귀와 영원한 능력을 돌릴지어다 아멘", 'reference': "디모데전서 6:16", 'image': 'assets/images/bg4.jpg'},
     {'text': "네게 맡긴 것을 지키라", 'reference': "디모데전서 6:20", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 디모데후서 (10개)
     {'text': "하나님이 우리에게 주신 것은 두려워하는 마음이 아니요 오직 능력과 사랑과 절제하는 마음이니", 'reference': "디모데후서 1:7", 'image': 'assets/images/bg1.jpg'},
     {'text': "그러므로 네가 우리 주의 증거와 또는 주를 위하여 갇힌 나를 부끄러워하지 말고 오직 하나님의 능력을 따라 복음과 함께 고난을 받으라", 'reference': "디모데후서 1:8", 'image': 'assets/images/bg2.jpg'},
@@ -967,7 +968,7 @@ class VerseDatabase {
     {'text': "이는 하나님의 사람으로 온전하게 하며 모든 선한 일을 행할 능력을 갖추게 하려 함이라", 'reference': "디모데후서 3:17", 'image': 'assets/images/bg3.jpg'},
     {'text': "나는 선한 싸움을 싸우고 나의 달려갈 길을 마치고 믿음을 지켰으니", 'reference': "디모데후서 4:7", 'image': 'assets/images/bg4.jpg'},
     {'text': "이제 후로는 나를 위하여 의의 면류관이 예비되었으므로 주 곧 의로우신 재판장이 그 날에 내게 주실 것이며 내게만 아니라 주의 나타나심을 사모하는 모든 자에게도니라", 'reference': "디모데후서 4:8", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 히브리서 (20개)
     {'text': "옛적에 선지자들을 통하여 여러 부분과 여러 모양으로 우리 조상들에게 말씀하신 하나님이", 'reference': "히브리서 1:1", 'image': 'assets/images/bg1.jpg'},
     {'text': "이 모든 날 마지막에는 아들을 통하여 우리에게 말씀하셨으니 이 아들을 만유의 상속자로 세우시고 또 그로 말미암아 모든 세계를 지으셨느니라", 'reference': "히브리서 1:2", 'image': 'assets/images/bg2.jpg'},
@@ -989,7 +990,7 @@ class VerseDatabase {
     {'text': "우리에게 있는 대제사장은 우리의 연약함을 동정하지 못하실 이가 아니요 모든 일에 우리와 똑같이 시험을 받으신 이로되 죄는 없으시니라", 'reference': "히브리서 4:15", 'image': 'assets/images/bg3.jpg'},
     {'text': "하나님의 말씀은 살았고 운동력이 있어 좌우에 날선 어떤 검보다도 예리하여 혼과 영과 및 관절과 골수를 찔러 쪼개기까지 하며 또 마음의 생각과 뜻을 판단하나니", 'reference': "히브리서 4:12", 'image': 'assets/images/bg4.jpg'},
     {'text': "지어진 것이 하나도 그 앞에 나타나지 않음이 없고 우리의 결산을 받으실 이의 눈앞에 만물이 벌거벗은 것 같이 드러나느니라", 'reference': "히브리서 4:13", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 야고보서 (15개)
     {'text': "내 형제들아 너희가 여러 가지 시험을 당하거든 온전히 기쁘게 여기라", 'reference': "야고보서 1:2", 'image': 'assets/images/bg1.jpg'},
     {'text': "이는 너희 믿음의 시련이 인내를 만들어 내는 줄 너희가 앎이라", 'reference': "야고보서 1:3", 'image': 'assets/images/bg2.jpg'},
@@ -1006,7 +1007,7 @@ class VerseDatabase {
     {'text': "형제들아 주께서 강림하시기까지 길이 참으라 보라 농부가 땅에서 나는 귀한 열매를 바라고 길이 참아 이른 비와 늦은 비를 기다리나니", 'reference': "야고보서 5:7", 'image': 'assets/images/bg3.jpg'},
     {'text': "의인의 간구는 역사하는 힘이 큼이니라", 'reference': "야고보서 5:16", 'image': 'assets/images/bg4.jpg'},
     {'text': "서로 죄를 고백하며 병이 낫기를 위하여 서로 기도하라 의인의 간구는 역사하는 힘이 큼이니라", 'reference': "야고보서 5:16", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 베드로전서 (15개)
     {'text': "찬송하리로다 우리 주 예수 그리스도의 아버지 하나님이 그 많으신 긍휼대로 예수 그리스도를 죽은 자 가운데서 부활하게 하심으로 말미암아 우리를 거듭나게 하사 산 소망이 있게 하시며", 'reference': "베드로전서 1:3", 'image': 'assets/images/bg1.jpg'},
     {'text': "썩지 않고 더럽지 않고 쇠하지 아니하는 유업을 잇게 하시나니 곧 너희를 위하여 하늘에 간직하신 것이라", 'reference': "베드로전서 1:4", 'image': 'assets/images/bg2.jpg'},
@@ -1023,7 +1024,7 @@ class VerseDatabase {
     {'text': "너희의 모든 염려를 주께 맡기라 이는 그가 너희를 돌보심이라", 'reference': "베드로전서 5:7", 'image': 'assets/images/bg3.jpg'},
     {'text': "근신하라 깨어라 너희 대적 마귀가 우는 사자 같이 두루 다니며 삼킬 자를 찾나니", 'reference': "베드로전서 5:8", 'image': 'assets/images/bg4.jpg'},
     {'text': "믿음을 굳건하게 하여 그를 대적하라 이는 세상에 있는 너희 형제들도 동일한 고난을 당하는 줄을 앎이라", 'reference': "베드로전서 5:9", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 요한일서 (15개)
     {'text': "우리가 그에게서 듣고 너희에게 전하는 소식은 이것이니 곧 하나님은 빛이시라 그에게는 어둠이 조금도 없으시다는 것이니라", 'reference': "요한일서 1:5", 'image': 'assets/images/bg1.jpg'},
     {'text': "만일 우리가 빛 가운데 행하면 그가 빛 가운데 계신 것 같이 우리가 서로 사귐이 있고 그 아들 예수의 피가 우리를 모든 죄에서 깨끗하게 하실 것이요", 'reference': "요한일서 1:7", 'image': 'assets/images/bg2.jpg'},
@@ -1040,7 +1041,7 @@ class VerseDatabase {
     {'text': "사랑 안에 두려움이 없고 온전한 사랑이 두려움을 내쫓나니 두려움에는 형벌이 있음이라 두려워하는 자는 사랑 안에서 온전히 이루지 못하였느니라", 'reference': "요한일서 4:18", 'image': 'assets/images/bg3.jpg'},
     {'text': "우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라", 'reference': "요한일서 4:19", 'image': 'assets/images/bg4.jpg'},
     {'text': "무릇 하나님께로부터 난 자는 세상을 이기느니라 세상을 이기는 승리는 이것이니 우리의 믿음이니라", 'reference': "요한일서 5:4", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 요한계시록 (20개)
     {'text': "볼지어다 그가 구름을 타고 오시리라 각 사람의 눈이 그를 보겠고 그를 찌른 자들도 볼 것이요 땅에 있는 모든 족속이 그로 말미암아 애곡하리니 그러하리라 아멘", 'reference': "요한계시록 1:7", 'image': 'assets/images/bg1.jpg'},
     {'text': "나는 알파와 오메가라 이제도 있고 전에도 있었고 장차 올 자요 전능한 자라", 'reference': "요한계시록 1:8", 'image': 'assets/images/bg2.jpg'},
@@ -1062,7 +1063,7 @@ class VerseDatabase {
     {'text': "보좌에 앉으신 이가 이르시되 보라 내가 만물을 새롭게 하노라 하시고 또 이르시되 이 말은 신실하고 참되니 기록하라 하시고", 'reference': "요한계시록 21:5", 'image': 'assets/images/bg3.jpg'},
     {'text': "또 내게 말씀하시되 이루었도다 나는 알파와 오메가요 처음과 마지막이라 내가 생명수 샘물을 목마른 자에게 값없이 주리니", 'reference': "요한계시록 21:6", 'image': 'assets/images/bg4.jpg'},
     {'text': "이기는 자는 이것들을 상속으로 받으리라 나는 그의 하나님이 되고 그는 내 아들이 되리라", 'reference': "요한계시록 21:7", 'image': 'assets/images/bg5.jpg'},
-    
+
     // 추가 말씀 (잠언, 전도서, 아가서)
     {'text': "지혜가 제일이니 지혜를 얻으라 네가 얻은 모든 것을 가지고 명철을 얻을지니라", 'reference': "잠언 4:7", 'image': 'assets/images/bg1.jpg'},
     {'text': "의인의 길은 돋는 햇살 같아서 크게 빛나 한낮의 광명에 이르거니와", 'reference': "잠언 4:18", 'image': 'assets/images/bg2.jpg'},
@@ -1100,13 +1101,20 @@ class VerseDatabase {
     {'text': "나를 도장 같이 마음에 품고 도장 같이 팔에 두라", 'reference': "아가 8:6", 'image': 'assets/images/bg4.jpg'},
     {'text': "주 예수의 은혜가 모든 자들에게 있을지어다 아멘", 'reference': "요한계시록 22:21", 'image': 'assets/images/bg5.jpg'},
   ];
-  
-  /// 날짜 기반으로 말씀을 가져오는 메서드
-  static Map<String, String> getVerseByDate(String? date) {
+
+  /// 날짜와 디바이스 ID를 조합하여 말씀을 가져오는 메서드
+  /// 각 디바이스마다 매일 다른 말씀이 표시됩니다
+  static Future<Map<String, String>> getVerseByDate(String? date) async {
     final targetDate = date ?? DateTime.now().toIso8601String().substring(0, 10);
-    final dateHash = targetDate.hashCode;
-    final verse = verses[dateHash.abs() % verses.length];
-    
+
+    // 디바이스 고유 ID 가져오기
+    final deviceId = await ConfigService.getDeviceId();
+
+    // 날짜 + 디바이스 ID를 조합하여 해시 생성
+    final combinedKey = '$targetDate-$deviceId';
+    final combinedHash = combinedKey.hashCode;
+    final verse = verses[combinedHash.abs() % verses.length];
+
     // 기존 이미지 대신 날짜를 저장 (나중에 UnsplashService에서 처리)
     return {
       'text': verse['text']!,
@@ -1115,13 +1123,13 @@ class VerseDatabase {
       'date': targetDate, // 날짜 정보 추가
     };
   }
-  
+
   /// 날짜 기반으로 이미지 URL을 가져오는 비동기 메서드
   static Future<String> getImageUrlForDate(String? date) async {
     final targetDate = date ?? DateTime.now().toIso8601String().substring(0, 10);
-    final verseData = getVerseByDate(targetDate);
+    final verseData = await getVerseByDate(targetDate);
     final reference = verseData['reference']!;
-    
+
     try {
       final imageData = await UnsplashService.fetchDailyImage(
         query: 'sky',

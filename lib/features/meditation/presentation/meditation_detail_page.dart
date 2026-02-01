@@ -19,7 +19,7 @@ import '../../home/widgets/verse_card.dart';
 class MeditationDetailPage extends ConsumerStatefulWidget {
   final String date;
   final bool fromHome;
-  
+
   const MeditationDetailPage({
     super.key,
     required this.date,
@@ -48,9 +48,9 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
       setState(() {
         _isLoadingNote = true;
       });
-      
+
       final note = await MemoService.getMemo(widget.date);
-      
+
       if (mounted) {
         setState(() {
           _savedNote = note;
@@ -63,32 +63,34 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           _savedNote = '';
           _isLoadingNote = false;
         });
-        
+
         ToastUtils.showError(context, '메모를 불러오는 중 오류가 발생했어요');
       }
     }
   }
 
-  Map<String, String> _getVerseData() {
+  Future<Map<String, String>> _getVerseData() async {
     // VerseCard와 동일한 데이터 소스 사용
-    return VerseDatabase.getVerseByDate(widget.date);
+    return await VerseDatabase.getVerseByDate(widget.date);
   }
 
-  String _getVerseText() {
-    return _getVerseData()['text']!;
+  Future<String> _getVerseText() async {
+    final data = await _getVerseData();
+    return data['text']!;
   }
 
-  String _getVerseReference() {
-    return _getVerseData()['reference']!;
+  Future<String> _getVerseReference() async {
+    final data = await _getVerseData();
+    return data['reference']!;
   }
 
   Future<void> _copyVerseToClipboard() async {
-    final verseText = _getVerseText();
-    final reference = _getVerseReference();
+    final verseText = await _getVerseText();
+    final reference = await _getVerseReference();
     final textToCopy = '$verseText\n\n$reference';
-    
+
     await Clipboard.setData(ClipboardData(text: textToCopy));
-    
+
     if (mounted) {
       ToastUtils.show(context, '말씀이 복사되었어요');
     }
@@ -97,7 +99,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
 
   Future<void> _downloadCard() async {
     if (_isDownloading) return;
-    
+
     setState(() {
       _isDownloading = true;
     });
@@ -105,20 +107,20 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
     try {
       // Wait a bit to ensure RepaintBoundary is ready
       await Future.delayed(const Duration(milliseconds: 100));
-      
+
       final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) {
         throw Exception('RepaintBoundary not found');
       }
-      
+
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData?.buffer.asUint8List();
-      
+
       if (pngBytes == null) {
         throw Exception('Failed to generate image bytes');
       }
-      
+
       final success = await ImageSaver.saveToGallery(pngBytes);
       if (mounted) {
         ToastUtils.show(context, success ? '말씀카드를 갤러리에 다운로드 했어요!' : '다운로드에 실패했어요');
@@ -138,22 +140,22 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
 
   Future<void> _saveNote(String noteText) async {
     if (!mounted) return;
-    
+
     try {
       setState(() {
         _isSavingNote = true;
       });
-      
+
       debugPrint('_saveNote 호출: date=${widget.date}, noteText=${noteText.length}자');
       final success = await MemoService.saveMemo(widget.date, noteText);
       debugPrint('MemoService.saveMemo 결과: $success');
-      
+
       if (mounted) {
         setState(() {
           _savedNote = noteText;
           _isSavingNote = false;
         });
-        
+
         // 성공했을 때만 성공 메시지 표시
         if (success) {
           debugPrint('성공 메시지 표시');
@@ -168,7 +170,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
         setState(() {
           _isSavingNote = false;
         });
-        
+
         ToastUtils.showError(context, '메모 저장에 실패했어요');
       }
     }
@@ -258,8 +260,8 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                 _buildShareOption(
                   icon: Icons.edit_note,
                   title: '말씀과 내 묵상메모 공유하기',
-                  subtitle: _savedNote.isEmpty 
-                      ? '아직 작성된 묵상메모가 없어요' 
+                  subtitle: _savedNote.isEmpty
+                      ? '아직 작성된 묵상메모가 없어요'
                       : '말씀과 나의 묵상을 함께 공유해요',
                   enabled: _savedNote.isNotEmpty,
                   onTap: _savedNote.isNotEmpty ? () {
@@ -346,22 +348,22 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   }
 
   Future<void> _executeShare({required bool includeMemo}) async {
-    final verseText = _getVerseText();
-    final verseRef = _getVerseReference();
-    
+    final verseText = await _getVerseText();
+    final verseRef = await _getVerseReference();
+
     String shareText;
     if (includeMemo && _savedNote.isNotEmpty) {
       shareText = '$verseText\n\n- $verseRef\n\n📝 나의 묵상\n$_savedNote\n\n#말씀묵상 #오늘의말씀';
     } else {
       shareText = '$verseText\n\n- $verseRef\n\n#말씀묵상 #오늘의말씀';
     }
-    
+
     // 공유 시트 위치 (iPad/시뮬레이터용)
     final box = context.findRenderObject() as RenderBox?;
-    final sharePositionOrigin = box != null 
+    final sharePositionOrigin = box != null
         ? Rect.fromLTWH(0, 0, box.size.width, box.size.height / 2)
         : null;
-    
+
     if (kIsWeb) {
       // 웹에서는 텍스트만 공유
       _fallbackWebShare(shareText, ConfigService.getShareUrl(widget.date));
@@ -375,21 +377,21 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
           return;
         }
-        
+
         final image = await boundary.toImage(pixelRatio: 3.0);
         final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
         final pngBytes = byteData?.buffer.asUint8List();
-        
+
         if (pngBytes == null) {
           await Share.share(shareText, subject: '오늘의 말씀', sharePositionOrigin: sharePositionOrigin);
           return;
         }
-        
+
         // 임시 파일로 저장
         final tempDir = await getTemporaryDirectory();
         final file = File('${tempDir.path}/verse_card_${DateTime.now().millisecondsSinceEpoch}.png');
         await file.writeAsBytes(pngBytes);
-        
+
         // 이미지와 텍스트 함께 공유
         await Share.shareXFiles(
           [XFile(file.path)],
@@ -397,7 +399,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
           subject: '오늘의 말씀',
           sharePositionOrigin: sharePositionOrigin,
         );
-        
+
         // 임시 파일 삭제
         if (await file.exists()) {
           await file.delete();
@@ -447,7 +449,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
   @override
   Widget build(BuildContext context) {
     final parsedDate = DateTime.tryParse(widget.date);
-    final displayDate = parsedDate != null 
+    final displayDate = parsedDate != null
       ? '${parsedDate.year}년 ${parsedDate.month}월 ${parsedDate.day}일'
       : widget.date;
 
@@ -505,9 +507,9 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                 isSquare: false, // 홈과 동일한 5:4 비율 사용
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Sample Verse Text
             Container(
               width: double.infinity,
@@ -546,29 +548,39 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    _getVerseText(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                      color: AppColors.slate700,
-                    ),
+                  FutureBuilder<String>(
+                    future: _getVerseText(),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 1.5,
+                          color: AppColors.slate700,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    _getVerseReference(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.slate600,
-                    ),
+                  FutureBuilder<String>(
+                    future: _getVerseReference(),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.slate600,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Note Section
             const Text(
               '묵상 메모',
@@ -578,9 +590,9 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                 color: AppColors.slate800,
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             Container(
               width: double.infinity,
               constraints: const BoxConstraints(minHeight: 120),
@@ -624,7 +636,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                           width: 160,
                           child: ElevatedButton(
                             onPressed: _isSavingNote ? null : _showEditMemoModal,
-                            child: _isSavingNote 
+                            child: _isSavingNote
                                 ? const SizedBox(
                                     width: 18,
                                     height: 18,
@@ -666,7 +678,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                           width: 160,
                           child: ElevatedButton(
                             onPressed: _isSavingNote ? null : _showEditMemoModal,
-                            child: _isSavingNote 
+                            child: _isSavingNote
                                 ? const SizedBox(
                                     width: 18,
                                     height: 18,
@@ -693,7 +705,7 @@ class _MeditationDetailPageState extends ConsumerState<MeditationDetailPage> {
                       ],
                     ),
             ),
-            
+
                     // 하단 여백 (플로팅 바를 위한 공간)
                     const SizedBox(height: 120),
                   ],
@@ -836,12 +848,12 @@ class _MemoEditModalState extends State<_MemoEditModal> {
 
   void _handleSave() {
     final text = _controller.text.trim();
-    
+
     if (text.isEmpty) {
       ToastUtils.show(context, '메모 내용을 입력해주세요');
       return;
     }
-    
+
     Navigator.of(context).pop();
     widget.onSave(text);
   }
@@ -902,7 +914,7 @@ class _MemoEditModalState extends State<_MemoEditModal> {
                   textInputAction: TextInputAction.newline,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
-                    hintText: widget.isNewMemo 
+                    hintText: widget.isNewMemo
                         ? '오늘 말씀을 통해 받은 은혜나 깨달음을 기록해보세요...'
                         : '묵상 메모를 수정해보세요...',
                     border: InputBorder.none,

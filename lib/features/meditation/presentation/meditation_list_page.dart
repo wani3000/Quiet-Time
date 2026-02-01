@@ -41,11 +41,11 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
     super.dispose();
   }
 
-  String _getVersePreview(String date) {
+  Future<String> _getVersePreview(String date) async {
     // VerseDatabase와 동일한 데이터 소스 사용
-    final verseData = VerseDatabase.getVerseByDate(date);
+    final verseData = await VerseDatabase.getVerseByDate(date);
     final fullText = verseData['text']!;
-    
+
     // 말씀이 길면 30자까지만 보여주고 "..." 추가
     if (fullText.length > 30) {
       return '${fullText.substring(0, 30)}...';
@@ -57,7 +57,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
   // Group dates by month for section headers
   Map<String, List<DateTime>> _groupDatesByMonth(List<DateTime> dates) {
     final Map<String, List<DateTime>> grouped = {};
-    
+
     for (final date in dates) {
       final monthKey = '${date.month}월';
       if (!grouped.containsKey(monthKey)) {
@@ -65,30 +65,41 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
       }
       grouped[monthKey]!.add(date);
     }
-    
+
     return grouped;
   }
 
   // 썸네일 이미지 빌드
   Widget _buildThumbnailImage(String dateString) {
-    final verseData = VerseDatabase.getVerseByDate(dateString);
-    
-    return FutureBuilder<String>(
-      future: VerseDatabase.getImageUrlForDate(dateString),
-      builder: (context, snapshot) {
-        String imageUrl;
-        
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // 로딩 중에는 폴백 이미지 사용
-          imageUrl = verseData['image']!;
-        } else if (snapshot.hasError || !snapshot.hasData) {
-          // 오류 시 폴백 이미지 사용
-          imageUrl = verseData['image']!;
-        } else {
-          // Unsplash 이미지 사용
-          imageUrl = snapshot.data!;
+    return FutureBuilder<Map<String, String>>(
+      future: VerseDatabase.getVerseByDate(dateString),
+      builder: (context, verseSnapshot) {
+        if (!verseSnapshot.hasData) {
+          return Container(
+            width: 56,
+            height: 56,
+            color: Colors.grey[200],
+          );
         }
-        
+
+        final verseData = verseSnapshot.data!;
+
+        return FutureBuilder<String>(
+          future: VerseDatabase.getImageUrlForDate(dateString),
+          builder: (context, snapshot) {
+            String imageUrl;
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // 로딩 중에는 폴백 이미지 사용
+              imageUrl = verseData['image']!;
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              // 오류 시 폴백 이미지 사용
+              imageUrl = verseData['image']!;
+            } else {
+              // Unsplash 이미지 사용
+              imageUrl = snapshot.data!;
+            }
+
         return Stack(
           fit: StackFit.expand,
           children: [
@@ -128,6 +139,8 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
             ),
           ],
         );
+          },
+        );
       },
     );
   }
@@ -143,10 +156,10 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        
+
         final installDate = snapshot.data ?? DateTime.now();
         final today = DateTime.now();
-        
+
         // 설치 날짜부터 오늘까지의 날짜 생성 (역순)
         final daysDifference = today.difference(installDate).inDays;
         final dates = List.generate(daysDifference + 1, (index) {
@@ -160,7 +173,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
       },
     );
   }
-  
+
   Widget _buildMeditationList(BuildContext context, Map<String, List<DateTime>> groupedDates) {
     return Scaffold(
       backgroundColor: Colors.white, // 강제로 화이트 배경 설정
@@ -184,7 +197,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
             ...groupedDates.entries.map((entry) {
               final monthName = entry.key;
               final monthDates = entry.value;
-              
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -202,7 +215,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                       ),
                     ),
                   ),
-                  
+
                   // White container with cards
                   Column(
                     children: [
@@ -211,7 +224,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                           final date = dateEntry.value;
                           final dateString = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                           final displayDate = '${date.month}월 ${date.day}일';
-                          
+
                           return Column(
                             children: [
                               // Card item
@@ -242,9 +255,9 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                                           child: _buildThumbnailImage(dateString),
                                         ),
                                       ),
-                                      
+
                                       const SizedBox(width: 16),
-                                      
+
                                       // Text content
                                       Expanded(
                                         child: Column(
@@ -288,17 +301,22 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                                               ],
                                             ),
                                             const SizedBox(height: 2),
-                                            Text(
-                                              _getVersePreview(dateString),
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: 'Pretendard',
-                                                color: Color(0xFF868E96), // #868E96
-                                                height: 1.38, // 18px line height for 13px font
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                                            FutureBuilder<String>(
+                                              future: _getVersePreview(dateString),
+                                              builder: (context, snapshot) {
+                                                return Text(
+                                                  snapshot.data ?? '...',
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: 'Pretendard',
+                                                    color: Color(0xFF868E96), // #868E96
+                                                    height: 1.38, // 18px line height for 13px font
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -307,7 +325,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                                   ),
                                 ),
                               ),
-                              
+
                               // Spacing between items (except last item)
                               if (dateIndex < monthDates.length - 1)
                                 const SizedBox(height: 12),
@@ -316,7 +334,7 @@ class _MeditationListPageState extends ConsumerState<MeditationListPage> {
                       }).toList(),
                     ],
                   ),
-                  
+
                   // Spacing between month sections
                   const SizedBox(height: 24),
                 ],

@@ -33,22 +33,26 @@ class VerseCardState extends State<VerseCard> {
 
   final GlobalKey _cardKey = GlobalKey();
   bool _isSaving = false;
-  
+
   // 이미지 Future를 캐싱하여 rebuild 시 깜빡임 방지
   late Future<Map<String, String>> _imageFuture;
-  late Map<String, String> _verseData;
-  
+  late Future<Map<String, String>> _verseDataFuture;
+  Map<String, String>? _cachedVerseData;
+
   bool get isSaving => _isSaving;
 
   @override
   void initState() {
     super.initState();
-    _verseData = _getVerseData();
-    // Future를 initState에서 한 번만 생성
-    _imageFuture = UnsplashService.fetchDailyImage(
-      query: 'sky',
-      uniqueId: _verseData['reference'],
-    );
+    _verseDataFuture = _getVerseData();
+    // _verseDataFuture를 통해 이미지 Future 생성
+    _imageFuture = _verseDataFuture.then((verseData) async {
+      _cachedVerseData = verseData;
+      return await UnsplashService.fetchDailyImage(
+        query: 'sky',
+        uniqueId: verseData['reference']!,
+      );
+    });
   }
 
   @override
@@ -56,18 +60,21 @@ class VerseCardState extends State<VerseCard> {
     super.didUpdateWidget(oldWidget);
     // date가 변경된 경우에만 Future를 다시 생성
     if (oldWidget.date != widget.date) {
-      _verseData = _getVerseData();
-      _imageFuture = UnsplashService.fetchDailyImage(
-        query: 'sky',
-        uniqueId: _verseData['reference'],
-      );
+      _verseDataFuture = _getVerseData();
+      _imageFuture = _verseDataFuture.then((verseData) async {
+        _cachedVerseData = verseData;
+        return await UnsplashService.fetchDailyImage(
+          query: 'sky',
+          uniqueId: verseData['reference']!,
+        );
+      });
     }
   }
 
   // Get verse data based on date
-  Map<String, String> _getVerseData() {
+  Future<Map<String, String>> _getVerseData() async {
     String targetDate;
-    
+
     if (widget.date != null) {
       targetDate = widget.date!;
     } else {
@@ -79,30 +86,30 @@ class VerseCardState extends State<VerseCard> {
         targetDate = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
       }
     }
-    
-    return VerseDatabase.getVerseByDate(targetDate);
+
+    return await VerseDatabase.getVerseByDate(targetDate);
   }
 
   // Public method for external access
   Future<void> saveCard() async {
     if (_isSaving) return;
-    
+
     setState(() {
       _isSaving = true;
     });
 
     try {
       final downloadWidget = _buildDownloadCard();
-      
+
       final downloadKey = GlobalKey();
       final downloadBoundary = RepaintBoundary(
         key: downloadKey,
         child: downloadWidget,
       );
-      
+
       final overlay = Overlay.of(context);
       late OverlayEntry overlayEntry;
-      
+
       overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
           left: -10000,
@@ -110,17 +117,17 @@ class VerseCardState extends State<VerseCard> {
           child: downloadBoundary,
         ),
       );
-      
+
       overlay.insert(overlayEntry);
-      
+
       // 렌더링 대기 시간 확보
       await Future.delayed(const Duration(milliseconds: 200));
-      
+
       final boundary = downloadKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) {
         throw Exception('Unable to capture download widget');
       }
-      
+
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final pngBytes = byteData!.buffer.asUint8List();
@@ -128,7 +135,7 @@ class VerseCardState extends State<VerseCard> {
       overlayEntry.remove();
 
       final success = await ImageSaver.saveToGallery(pngBytes);
-      
+
       if (mounted) {
         ToastUtils.show(context, success ? '말씀카드를 갤러리에 다운로드 했어요!' : '저장에 실패했어요');
       }
@@ -144,12 +151,17 @@ class VerseCardState extends State<VerseCard> {
       }
     }
   }
-  
+
   // 다운로드용 카드 위젯
   Widget _buildDownloadCard() {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = math.min(screenWidth - 32, 400.0);
     final cardHeight = cardWidth * 5 / 4;
+
+    // 캐시된 데이터가 없으면 빈 컨테이너 반환
+    if (_cachedVerseData == null) {
+      return Container();
+    }
 
     // 캐싱된 Future 사용 - 다운로드 시에도 동일한 이미지 사용
     return Material(
@@ -166,14 +178,14 @@ class VerseCardState extends State<VerseCard> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return OptimizedImage(
-                    imagePath: _verseData['image']!,
+                    imagePath: _cachedVerseData!['image']!,
                     width: cardWidth,
                     height: cardHeight,
                     fit: BoxFit.cover,
                   );
                 } else if (snapshot.hasError || !snapshot.hasData) {
                   return OptimizedImage(
-                    imagePath: _verseData['image']!,
+                    imagePath: _cachedVerseData!['image']!,
                     width: cardWidth,
                     height: cardHeight,
                     fit: BoxFit.cover,
@@ -197,7 +209,7 @@ class VerseCardState extends State<VerseCard> {
                           ),
                         ),
                         errorWidget: OptimizedImage(
-                          imagePath: _verseData['image']!,
+                          imagePath: _cachedVerseData!['image']!,
                           width: cardWidth,
                           height: cardHeight,
                           fit: BoxFit.cover,
@@ -222,7 +234,7 @@ class VerseCardState extends State<VerseCard> {
                   children: [
                     // Verse Text
                     Text(
-                      _verseData['text']!,
+                      _cachedVerseData!['text']!,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.nanumMyeongjo(
                         color: Colors.white,
@@ -237,7 +249,7 @@ class VerseCardState extends State<VerseCard> {
                     const SizedBox(height: 16),
                     // Verse Reference
                     Text(
-                      _verseData['reference']!,
+                      _cachedVerseData!['reference']!,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.nanumMyeongjo(
                         fontSize: 14,
@@ -260,78 +272,98 @@ class VerseCardState extends State<VerseCard> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = widget.isThumbnail 
-        ? double.infinity 
+    final cardWidth = widget.isThumbnail
+        ? double.infinity
         : widget.isSquare
-            ? screenWidth - 40 
-            : math.min(screenWidth - 32, 400.0); 
-    final cardHeight = widget.isThumbnail 
-        ? 200.0 
+            ? screenWidth - 40
+            : math.min(screenWidth - 32, 400.0);
+    final cardHeight = widget.isThumbnail
+        ? 200.0
         : widget.isSquare
-            ? screenWidth - 40 
-            : cardWidth * 5 / 4; 
-    
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        RepaintBoundary(
-          key: _cardKey,
-          child: Container(
+            ? screenWidth - 40
+            : cardWidth * 5 / 4;
+
+    return FutureBuilder<Map<String, String>>(
+      future: _verseDataFuture,
+      builder: (context, verseSnapshot) {
+        // 로딩 중이거나 데이터가 없으면 로딩 표시
+        if (!verseSnapshot.hasData) {
+          return Container(
             width: cardWidth,
             height: cardHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+              color: Colors.grey[200],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  FutureBuilder<Map<String, String>>(
-                    // 캐싱된 Future 사용 - rebuild 시 깜빡임 방지
-                    future: _imageFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return OptimizedImage(
-                          imagePath: _verseData['image']!,
-                          width: cardWidth,
-                          height: cardHeight,
-                          fit: BoxFit.cover,
-                        );
-                      } else if (snapshot.hasError || !snapshot.hasData) {
-                        return OptimizedImage(
-                          imagePath: _verseData['image']!,
-                          width: cardWidth,
-                          height: cardHeight,
-                          fit: BoxFit.cover,
-                        );
-                      } else {
-                        final imageData = snapshot.data!;
-                        final imageUrl = imageData['url']!;
+            child: const Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          );
+        }
 
-                        return Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            OptimizedImage(
-                              imagePath: imageUrl,
+        final verseData = verseSnapshot.data!;
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RepaintBoundary(
+              key: _cardKey,
+              child: Container(
+                width: cardWidth,
+                height: cardHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      FutureBuilder<Map<String, String>>(
+                        // 캐싱된 Future 사용 - rebuild 시 깜빡임 방지
+                        future: _imageFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return OptimizedImage(
+                              imagePath: verseData['image']!,
                               width: cardWidth,
                               height: cardHeight,
                               fit: BoxFit.cover,
-                              placeholder: Container(
-                                color: Colors.grey[200],
-                                child: const Center(
-                                  child: CircularProgressIndicator(strokeWidth: 2),
-                                ),
-                              ),
-                              errorWidget: OptimizedImage(
-                                imagePath: _verseData['image']!,
+                            );
+                          } else if (snapshot.hasError || !snapshot.hasData) {
+                            return OptimizedImage(
+                              imagePath: verseData['image']!,
+                              width: cardWidth,
+                              height: cardHeight,
+                              fit: BoxFit.cover,
+                            );
+                          } else {
+                            final imageData = snapshot.data!;
+                            final imageUrl = imageData['url']!;
+
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                OptimizedImage(
+                                  imagePath: imageUrl,
+                                  width: cardWidth,
+                                  height: cardHeight,
+                                  fit: BoxFit.cover,
+                                  placeholder: Container(
+                                    color: Colors.grey[200],
+                                    child: const Center(
+                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                    ),
+                                  ),
+                                  errorWidget: OptimizedImage(
+                                    imagePath: verseData['image']!,
                                 width: cardWidth,
                                 height: cardHeight,
                                 fit: BoxFit.cover,
@@ -356,7 +388,7 @@ class VerseCardState extends State<VerseCard> {
                         children: [
                           // Verse Text
                           Text(
-                            _verseData['text']!,
+                            verseData['text']!,
                             style: GoogleFonts.nanumMyeongjo(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
@@ -367,12 +399,12 @@ class VerseCardState extends State<VerseCard> {
                             maxLines: null,
                             overflow: TextOverflow.visible,
                           ),
-                          
+
                           const SizedBox(height: 24),
-                          
+
                           // Verse Reference
                           Text(
-                            _verseData['reference']!,
+                            verseData['reference']!,
                             style: GoogleFonts.nanumMyeongjo(
                               fontSize: 14,
                               color: Colors.white70,
@@ -390,6 +422,8 @@ class VerseCardState extends State<VerseCard> {
           ),
         ),
       ],
+    );
+      },
     );
   }
 }
