@@ -10,6 +10,10 @@ class MenuPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const SizedBox.shrink(),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),

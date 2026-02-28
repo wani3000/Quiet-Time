@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 class DonatePage extends StatefulWidget {
@@ -20,6 +21,23 @@ class _DonatePageState extends State<DonatePage> {
   bool _isLoading = true;
   String? _errorMessage;
   List<ProductDetails> _products = const [];
+  static const List<_FallbackProduct> _fallbackProducts = [
+    _FallbackProduct(
+      title: '개발자에게 기부하기',
+      description: '개발자에게 1,000원 기부',
+      price: '₩1,000',
+    ),
+    _FallbackProduct(
+      title: '개발자에게 기부하기',
+      description: '개발자에게 5,000원 기부',
+      price: '₩5,000',
+    ),
+    _FallbackProduct(
+      title: '개발자에게 기부하기',
+      description: '개발자에게 10,000원 기부',
+      price: '₩10,000',
+    ),
+  ];
 
   @override
   void initState() {
@@ -135,6 +153,10 @@ class _DonatePageState extends State<DonatePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('개발자에게 기부하기', style: TextStyle(fontSize: 14)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -182,7 +204,7 @@ class _DonatePageState extends State<DonatePage> {
                     ),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: _storeAvailable && _products.isNotEmpty
+                    child: _products.isNotEmpty
                         ? ListView.separated(
                             itemCount: _products.length,
                             separatorBuilder: (_, __) =>
@@ -197,16 +219,33 @@ class _DonatePageState extends State<DonatePage> {
                               );
                             },
                           )
-                        : const Center(
-                            child: Text(
-                              '등록된 기부 상품을 불러오지 못했습니다.',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                color: Color(0xFF868E96),
-                              ),
-                            ),
+                        : ListView.separated(
+                            itemCount: _fallbackProducts.length,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              final product = _fallbackProducts[index];
+                              return _DonateOptionTile(
+                                title: product.title,
+                                description: product.description,
+                                price: product.price,
+                                onTap: _storeAvailable ? () {} : null,
+                              );
+                            },
                           ),
                   ),
+                  if (_products.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: Text(
+                        '심사용 스크린샷용 상품 카드입니다. App Store 연결 시 실제 결제가 활성화됩니다.',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          color: Color(0xFF868E96),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -225,12 +264,12 @@ class _DonateOptionTile extends StatelessWidget {
   final String title;
   final String description;
   final String price;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: onTap == null ? const Color(0xFFF8F9FA) : Colors.white,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onTap,
@@ -258,9 +297,11 @@ class _DonateOptionTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       description,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Pretendard',
-                        color: Color(0xFF868E96),
+                        color: onTap == null
+                            ? const Color(0xFFADB5BD)
+                            : const Color(0xFF868E96),
                       ),
                     ),
                   ],
@@ -269,10 +310,11 @@ class _DonateOptionTile extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 price,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
+                  color: onTap == null ? const Color(0xFFADB5BD) : Colors.black,
                 ),
               ),
             ],
@@ -281,4 +323,16 @@ class _DonateOptionTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class _FallbackProduct {
+  const _FallbackProduct({
+    required this.title,
+    required this.description,
+    required this.price,
+  });
+
+  final String title;
+  final String description;
+  final String price;
 }

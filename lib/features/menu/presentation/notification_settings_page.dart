@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/notification_service.dart';
 
 class NotificationSettingsPage extends StatefulWidget {
@@ -323,6 +324,10 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('알림설정', style: TextStyle(fontSize: 14)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
