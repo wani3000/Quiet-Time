@@ -32,6 +32,17 @@ class MenuPage extends StatelessWidget {
           ),
           ListTile(
             title: const Text(
+              '개발자 이야기',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/menu/story'),
+          ),
+          ListTile(
+            title: const Text(
               '개발자에게 기부하기',
               style: TextStyle(
                 fontFamily: 'Pretendard',

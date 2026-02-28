@@ -10,6 +10,7 @@ import '../../features/paywall/presentation/paywall_page.dart';
 import '../../features/menu/presentation/menu_page.dart';
 import '../../features/menu/presentation/notification_settings_page.dart';
 import '../../features/menu/presentation/donate_page.dart';
+import '../../features/menu/presentation/developer_story_page.dart';
 
 class AppRouter {
   static const String home = '/';
@@ -65,6 +66,11 @@ class AppRouter {
             path: 'notifications',
             name: 'menu-notifications',
             builder: (context, state) => const NotificationSettingsPage(),
+          ),
+          GoRoute(
+            path: 'story',
+            name: 'menu-story',
+            builder: (context, state) => const DeveloperStoryPage(),
           ),
           GoRoute(
             path: 'donate',
