@@ -14,10 +14,11 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends ConsumerState<HomePage>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<VerseCardState> _verseCardKey = GlobalKey<VerseCardState>();
   bool _isDownloading = false;
-  
+
   // 슬라이드 업 애니메이션
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
@@ -26,31 +27,27 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    
+
     // 애니메이션 컨트롤러 초기화
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    
+
     // 아래에서 위로 슬라이드 (0.3 = 30% 아래에서 시작)
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
-    
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
+
     // 페이드 인 효과
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
-    
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+
     // 앱 첫 실행 시에만 애니메이션 재생
     if (!_hasPlayedInitialAnimation) {
       _hasPlayedInitialAnimation = true;
@@ -76,16 +73,16 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
     final now = DateTime.now();
     const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
     final weekday = weekdays[now.weekday - 1];
-    return '${now.month}월 ${now.day}일 ${weekday}요일';
+    return '${now.month}월 ${now.day}일 $weekday요일';
   }
 
   Future<void> _downloadCard() async {
     if (_isDownloading) return;
-    
+
     setState(() {
       _isDownloading = true;
     });
-    
+
     try {
       await _verseCardKey.currentState?.saveCard();
     } finally {
@@ -108,10 +105,7 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.slate50,
-                  AppColors.white,
-                ],
+                colors: [AppColors.slate50, AppColors.white],
               ),
             ),
             child: SafeArea(
@@ -120,28 +114,49 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
                 children: [
                   // 상단 헤더 타이틀 + 날짜
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 16, bottom: 24),
-                    child: Column(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 12,
+                      top: 16,
+                      bottom: 24,
+                    ),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          '오늘 주신 말씀',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Pretendard',
-                            color: Colors.black,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '오늘 주신 말씀',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Pretendard',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _getFormattedDate(),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Pretendard',
+                                  color: Color(0xFF868E96),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _getFormattedDate(),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Pretendard',
-                            color: Color(0xFF868E96),
+                        IconButton(
+                          onPressed: () => context.push('/menu'),
+                          icon: const Icon(
+                            Icons.menu,
+                            size: 24,
+                            color: Colors.black,
                           ),
+                          tooltip: '메뉴',
                         ),
                       ],
                     ),
@@ -149,8 +164,8 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.only(
-                        left: 16, 
-                        right: 16, 
+                        left: 16,
+                        right: 16,
                         bottom: 140, // 하단 여백 (플로팅 버튼 + 네비게이션 바)
                       ),
                       child: Column(
@@ -164,8 +179,11 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
                                 child: GestureDetector(
                                   onTap: () {
                                     final now = DateTime.now();
-                                    final today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
-                                    context.push('/meditation/detail/$today?from=home');
+                                    final today =
+                                        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+                                    context.push(
+                                      '/meditation/detail/$today?from=home',
+                                    );
                                   },
                                   child: SizedBox(
                                     width: double.infinity,
@@ -195,10 +213,7 @@ class _HomePageState extends ConsumerState<HomePage> with SingleTickerProviderSt
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: const Color(0xFFF1F3F5),
-                    width: 1,
-                  ),
+                  border: Border.all(color: const Color(0xFFF1F3F5), width: 1),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.15),

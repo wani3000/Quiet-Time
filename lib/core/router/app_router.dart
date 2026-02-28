@@ -7,12 +7,15 @@ import '../../features/meditation/presentation/meditation_detail_page.dart';
 import '../../features/meditation/presentation/fullscreen_verse_card_page.dart';
 import '../../features/meditation/presentation/shared_meditation_page.dart';
 import '../../features/paywall/presentation/paywall_page.dart';
+import '../../features/menu/presentation/menu_page.dart';
+import '../../features/menu/presentation/notification_settings_page.dart';
+import '../../features/menu/presentation/donate_page.dart';
 
 class AppRouter {
   static const String home = '/';
   static const String meditation = '/meditation';
   static const String meditationDetail = '/meditation/detail';
-  
+
   static final GoRouter router = GoRouter(
     initialLocation: home,
     routes: [
@@ -25,7 +28,7 @@ class AppRouter {
           return SharedMeditationPage(date: date);
         },
       ),
-      
+
       // 메인 탭 네비게이션 (애니메이션 완전 제거)
       GoRoute(
         path: home,
@@ -35,7 +38,7 @@ class AppRouter {
           child: const MainNavigationWrapper(initialIndex: 0),
         ),
       ),
-      
+
       GoRoute(
         path: meditation,
         name: 'meditation',
@@ -44,14 +47,33 @@ class AppRouter {
           child: const MainNavigationWrapper(initialIndex: 1),
         ),
       ),
-      
+
       // 페이월 페이지
       GoRoute(
         path: '/paywall',
         name: 'paywall',
         builder: (context, state) => const PaywallPage(),
       ),
-      
+
+      // 메뉴 페이지
+      GoRoute(
+        path: '/menu',
+        name: 'menu',
+        builder: (context, state) => const MenuPage(),
+        routes: [
+          GoRoute(
+            path: 'notifications',
+            name: 'menu-notifications',
+            builder: (context, state) => const NotificationSettingsPage(),
+          ),
+          GoRoute(
+            path: 'donate',
+            name: 'menu-donate',
+            builder: (context, state) => const DonatePage(),
+          ),
+        ],
+      ),
+
       // 묵상 상세 페이지 (탭 네비게이션 없이)
       GoRoute(
         path: '/meditation/detail/:date',
@@ -65,28 +87,36 @@ class AppRouter {
             child: MeditationDetailPage(date: date, fromHome: from == 'home'),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              // iOS 스타일 슬라이드 애니메이션
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.easeInOut;
-              
-              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              var offsetAnimation = animation.drive(tween);
-              
-              // 뒤로가기 시 이전 페이지가 살짝 왼쪽으로 밀리는 효과
-              var secondaryTween = Tween(begin: Offset.zero, end: const Offset(-0.3, 0.0))
-                  .chain(CurveTween(curve: curve));
-              var secondaryOffsetAnimation = secondaryAnimation.drive(secondaryTween);
-              
-              return SlideTransition(
-                position: secondaryOffsetAnimation,
-                child: SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                ),
-              );
-            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  // iOS 스타일 슬라이드 애니메이션
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOut;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+
+                  // 뒤로가기 시 이전 페이지가 살짝 왼쪽으로 밀리는 효과
+                  var secondaryTween = Tween(
+                    begin: Offset.zero,
+                    end: const Offset(-0.3, 0.0),
+                  ).chain(CurveTween(curve: curve));
+                  var secondaryOffsetAnimation = secondaryAnimation.drive(
+                    secondaryTween,
+                  );
+
+                  return SlideTransition(
+                    position: secondaryOffsetAnimation,
+                    child: SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    ),
+                  );
+                },
           );
         },
         routes: [
@@ -105,10 +135,7 @@ class AppRouter {
 }
 
 class MainNavigationWrapper extends StatefulWidget {
-  const MainNavigationWrapper({
-    super.key,
-    this.initialIndex = 0,
-  });
+  const MainNavigationWrapper({super.key, this.initialIndex = 0});
 
   final int initialIndex;
 
@@ -140,7 +167,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
     setState(() {
       _currentIndex = index;
     });
-    
+
     // 탭 변경 시 해당 URL로 네비게이션
     if (index == 0) {
       context.go('/');
@@ -172,13 +199,17 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
           children: [
             _buildNavItem(
               index: 0,
-              iconPath: _currentIndex == 0 ? 'assets/images/ic_home_black.svg' : 'assets/images/ic_home_gray.svg',
+              iconPath: _currentIndex == 0
+                  ? 'assets/images/ic_home_black.svg'
+                  : 'assets/images/ic_home_gray.svg',
               label: '홈',
               isSelected: _currentIndex == 0,
             ),
             _buildNavItem(
               index: 1,
-              iconPath: _currentIndex == 1 ? 'assets/images/ic_pray_black.svg' : 'assets/images/ic_pray_gray.svg',
+              iconPath: _currentIndex == 1
+                  ? 'assets/images/ic_pray_black.svg'
+                  : 'assets/images/ic_pray_gray.svg',
               label: '묵상',
               isSelected: _currentIndex == 1,
             ),
@@ -208,10 +239,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               transitionBuilder: (child, animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
+                return FadeTransition(opacity: animation, child: child);
               },
               child: SizedBox(
                 key: ValueKey(iconPath),
@@ -230,10 +258,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               transitionBuilder: (child, animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
+                return FadeTransition(opacity: animation, child: child);
               },
               child: Text(
                 label,
@@ -242,7 +267,9 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Pretendard',
-                  color: isSelected ? const Color(0xFF212529) : const Color(0xFFADB5BD),
+                  color: isSelected
+                      ? const Color(0xFF212529)
+                      : const Color(0xFFADB5BD),
                 ),
               ),
             ),
@@ -283,4 +310,3 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
     );
   }
 }
-
