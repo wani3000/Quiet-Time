@@ -19,6 +19,7 @@ class _DonatePageState extends State<DonatePage> {
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
   bool _storeAvailable = false;
   bool _isLoading = true;
+  bool _isPurchasing = false;
   String? _errorMessage;
   List<ProductDetails> _products = const [];
   static const List<_FallbackProduct> _fallbackProducts = [
@@ -61,6 +62,11 @@ class _DonatePageState extends State<DonatePage> {
   }
 
   Future<void> _loadStore() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
     if (kIsWeb) {
       setState(() {
         _isLoading = false;
@@ -103,15 +109,45 @@ class _DonatePageState extends State<DonatePage> {
       _products = sortedProducts;
       _isLoading = false;
       _storeAvailable = true;
-      _errorMessage = response.notFoundIDs.isNotEmpty
-          ? '일부 상품이 App Store Connect에 등록되지 않았습니다: ${response.notFoundIDs.join(', ')}'
-          : null;
+      if (response.notFoundIDs.isNotEmpty) {
+        _errorMessage =
+            '일부 상품이 App Store Connect에 등록되지 않았습니다: ${response.notFoundIDs.join(', ')}';
+      } else if (sortedProducts.isEmpty) {
+        _errorMessage = '기부 상품을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
+      } else {
+        _errorMessage = null;
+      }
     });
   }
 
   Future<void> _purchase(ProductDetails product) async {
-    final purchaseParam = PurchaseParam(productDetails: product);
-    await _iap.buyConsumable(purchaseParam: purchaseParam);
+    if (_isPurchasing) return;
+
+    setState(() {
+      _isPurchasing = true;
+    });
+
+    try {
+      final purchaseParam = PurchaseParam(productDetails: product);
+      final started = await _iap.buyConsumable(purchaseParam: purchaseParam);
+      if (!started && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('결제를 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.')),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('결제 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isPurchasing = false;
+        });
+      }
+    }
   }
 
   Future<void> _handlePurchaseUpdates(
@@ -215,37 +251,19 @@ class _DonatePageState extends State<DonatePage> {
                                 title: product.title,
                                 description: product.description,
                                 price: product.price,
-                                onTap: () => _purchase(product),
+                                onTap: _isPurchasing
+                                    ? null
+                                    : () => _purchase(product),
                               );
                             },
                           )
-                        : ListView.separated(
-                            itemCount: _fallbackProducts.length,
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(height: 12),
-                            itemBuilder: (context, index) {
-                              final product = _fallbackProducts[index];
-                              return _DonateOptionTile(
-                                title: product.title,
-                                description: product.description,
-                                price: product.price,
-                                onTap: _storeAvailable ? () {} : null,
-                              );
-                            },
+                        : _DonateEmptyState(
+                            isStoreAvailable: _storeAvailable,
+                            onRetry: _loadStore,
+                            showDebugFallback: kDebugMode,
+                            fallbackProducts: _fallbackProducts,
                           ),
                   ),
-                  if (_products.isEmpty)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: Text(
-                        '심사용 스크린샷용 상품 카드입니다. App Store 연결 시 실제 결제가 활성화됩니다.',
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          color: Color(0xFF868E96),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -335,4 +353,57 @@ class _FallbackProduct {
   final String title;
   final String description;
   final String price;
+}
+
+class _DonateEmptyState extends StatelessWidget {
+  const _DonateEmptyState({
+    required this.isStoreAvailable,
+    required this.onRetry,
+    required this.showDebugFallback,
+    required this.fallbackProducts,
+  });
+
+  final bool isStoreAvailable;
+  final VoidCallback onRetry;
+  final bool showDebugFallback;
+  final List<_FallbackProduct> fallbackProducts;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!showDebugFallback) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isStoreAvailable
+                  ? '기부 상품을 불러오는 중 문제가 발생했습니다.'
+                  : 'App Store 연결이 필요합니다.',
+              style: const TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: 14,
+                color: Color(0xFF495057),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextButton(onPressed: onRetry, child: const Text('다시 시도')),
+          ],
+        ),
+      );
+    }
+
+    return ListView.separated(
+      itemCount: fallbackProducts.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final product = fallbackProducts[index];
+        return _DonateOptionTile(
+          title: product.title,
+          description: '${product.description} (디버그 미리보기)',
+          price: product.price,
+          onTap: null,
+        );
+      },
+    );
+  }
 }

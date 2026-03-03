@@ -18,7 +18,7 @@ class DeveloperStoryPage extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+        padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
